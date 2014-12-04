@@ -37,8 +37,8 @@ if not input_is_MC:
 # OutputModule in PATTuple_cfg.
 process.p = cms.Path(process.patDefaultSequence)
 
-#from SUSYBSMAnalysis.Zprime2muAnalysis.PATTools import AODOnly
-#AODOnly(process)#da controllare ASSOLUTAMENTE
+from SUSYBSMAnalysis.Zprime2muAnalysis.PATTools import AODOnly
+AODOnly(process)
 
 ########################################################################
 
