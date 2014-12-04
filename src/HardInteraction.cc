@@ -71,7 +71,8 @@ void HardInteraction::Fill(const reco::GenParticleCollection& genParticles) {
   reco::GenParticleCollection::const_iterator genp = genParticles.begin();
   for (; genp != genParticles.end(); genp++) {
     const int pdgId = genp->pdgId();
-    if (genp->status() == 3) {
+    std::cout<<" pdgId "<<pdgId<<" status "<<genp->status()<<std::endl;
+    //if (genp->status() == 3) {<-----------
       if (IsResonance(pdgId)) {
 	// We found the resonance (Z0/Z'/etc.). Make sure we didn't
 	// find a second one.
@@ -93,7 +94,7 @@ void HardInteraction::Fill(const reco::GenParticleCollection& genParticles) {
 	else
 	  lepPlusNoIB = &*genp;
       }
-    }
+    //}
     else if (genp->status() == 1) {
       if (abs(pdgId) == leptonFlavor) {
 	// See if it has as an ancestor the resonance. Do this by just

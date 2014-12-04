@@ -3,8 +3,47 @@
 import sys, os, FWCore.ParameterSet.Config as cms
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import switch_hlt_process_name
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cfg import process
-#process.source.fileNames = ['/store/user/slava/DYToMuMu_M-2000_CT10_TuneZ2star_8TeV-powheg-pythia6/datamc_dy2000/ecac376f8fa7ccc229aaa06d757d785a/pat_1_1_G72.root']
-#process.maxEvents.input = 100
+#process.source.fileNames =['file:./pat.root']
+process.source.fileNames =['/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_10_1_pcu.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_11_1_UBS.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_12_1_lq2.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_13_1_c40.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_14_1_gCo.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_15_1_98O.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_16_1_0Lc.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_17_1_BHC.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_18_1_Dlr.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_19_1_LPx.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_1_1_h7g.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_20_1_eDE.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_21_1_6CX.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_22_1_cVB.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_23_1_8VF.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_24_1_amv.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_25_1_N4X.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_26_1_iqn.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_27_1_Fuc.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_28_1_Q54.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_29_1_cCT.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_2_1_Kch.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_30_1_PHP.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_31_1_7A7.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_32_1_2q8.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_33_1_pcO.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_34_1_Tp5.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_35_1_AbH.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_36_1_tm7.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_37_1_cvD.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_38_1_Exg.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_3_1_xaw.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_4_1_JT5.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_5_1_ulB.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_6_1_rOs.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_7_1_go3.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_8_1_4IV.root',
+       '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_9_1_T1U.root',]
+#process.source.fileNames=['/store/relval/CMSSW_7_1_0_pre4_AK4/RelValProdTTbar/AODSIM/START71_V1-v2/00000/7A3637AA-28B5-E311-BC25-003048678B94.root']
+process.maxEvents.input = -1
 from SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi import trigger_match, prescaled_trigger_match, trigger_paths, prescaled_trigger_paths, overall_prescale, offline_pt_threshold, prescaled_offline_pt_threshold
 
 # Since the prescaled trigger comes with different prescales in
@@ -53,14 +92,14 @@ cuts = {
 #    'VBTF'     : VBTFSelection,
 #    'OurOld'   : OurSelectionOld,
 #    'OurEPS'   : OurSelection2011EPS,
-    'OurNew'   : OurSelectionNew,
+    #'OurNew'   : OurSelectionNew,
     'Our2012'  : OurSelectionDec2012,
-    'OurNoIso' : OurSelectionDec2012,
-    'EmuVeto'  : OurSelectionDec2012,
+    #'OurNoIso' : OurSelectionDec2012,
+    #'EmuVeto'  : OurSelectionDec2012,
     'Simple'   : OurSelectionDec2012, # The selection cuts in the module listed here are ignored below.
 #    'VBTFMuPrescaled' : VBTFSelection,
-    'OurMuPrescaledNew'  : OurSelectionNew,
-    'OurMuPrescaled2012' : OurSelectionDec2012
+    #'OurMuPrescaledNew'  : OurSelectionNew,
+    #'OurMuPrescaled2012' : OurSelectionDec2012
     }
 
 # Loop over all the cut sets defined and make the lepton, allDilepton
@@ -248,15 +287,16 @@ if __name__ == '__main__' and 'submit' in sys.argv:
     crab_cfg = '''
 [CRAB]
 jobtype = cmssw
-scheduler = condor
-
+scheduler = remoteGlidein
+use_server = 0
 [CMSSW]
 datasetpath = %(ana_dataset)s
-dbs_url = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_02_writer/servlet/DBSServlet
+#dbs_url = https://cmsdbsprod.cern.ch:8443/cms_dbs_ph_analysis_02_writer/servlet/DBSServlet
+dbs_url=phys03
 pset = histos_crab.py
 get_edm_output = 1
 job_control
-
+use_dbs3=1
 [USER]
 ui_working_dir = crab/crab_ana_datamc_%(name)s
 return_data = 1
@@ -336,7 +376,7 @@ lumis_per_job = 500
         # Set crab_cfg for MC.
         crab_cfg = crab_cfg.replace('job_control','''
 total_number_of_events = -1
-events_per_job = 100000
+events_per_job = 50000
     ''')
 
         from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
