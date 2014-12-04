@@ -4,17 +4,12 @@ import sys, os
 from SUSYBSMAnalysis.Zprime2muAnalysis.PATTools import switchHLTProcessName,AODOnly,removeMuonMCClassification,removeSimLeptons, pruneMCLeptons
 from tuple_common import cms, process, crab_cfg
 
-# problema con pruned ed unscheduled, cioe anche se io ho il remove quello nn va avanti.
-pruneMCLeptons(process, use_sim=True) # need to decide whether to move AODOnly() call in here, if so use_sim should just be set False
+pruneMCLeptons(process, use_sim=True) # because of unscheduled I can't remove this for data.
 
-AODOnly(process) # definito in PATTools, ma l'ho modificato
-#oltre alle menate AOD only, contienea i due processi sotto
-#removeMuonMCClassification(process)#??? # throw the baby out with the
-#removeSimLeptons(process)
-#switchHLTProcessName(process, 'REDIGI311X')#no idea????
-
-#!!!!!
-#process.patDefaultSequence.remove(process.cleanPatElectrons*process.selectedPatElectrons*process.patElectrons*process.electronMatch)
+AODOnly(process)# it contains
+    #removeMuonMCClassification(process)#?
+    #removeSimLeptons(process)
+    #switchHLTProcessName(process, 'REDIGI311X')# ???
 
 process.source.fileNames = ['/store/mc/Phys14DR/DYJetsToEEMuMu_M-9500_13TeV-madgraph/AODSIM/PU20bx25_PHYS14_25_V1-v2/00000/18C7C360-E076-E411-9E2F-E0CB4E19F9BC.root',]
 #process.source.fileNames=['/store/relval/CMSSW_7_1_0/RelValZMM_13/GEN-SIM-RECO/POSTLS171_V15-v1/00000/6650F961-99FB-E311-BA90-0025905A48BC.root']
