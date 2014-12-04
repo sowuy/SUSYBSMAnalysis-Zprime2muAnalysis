@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& out, const reco::GenParticle& gen) {
   return out;
 }
 
-// questa parte commentata funziona in CMSSW_7_2_0_pre6 ma non in CMSSW_7_1_0
+// this works in CMSSW_7_2_0 but not in CMSSW_7_1_0
 std::ostream& operator<<(std::ostream& out, const reco::HitPattern& hp) {//raffa add reco::HitPattern::TRACK_HITS (to be checked)
   out << "# hits: " << hp.numberOfHits(reco::HitPattern::TRACK_HITS)
       << "\n  # valid: tot: " << hp.numberOfValidHits() << " tk: " << hp.numberOfValidTrackerHits() << " pxb: " << hp.numberOfValidPixelBarrelHits() << " pxe: " << hp.numberOfValidPixelEndcapHits() << " tib: " << hp.numberOfValidStripTIBHits() << " tob: " << hp.numberOfValidStripTOBHits() << " tid: " << hp.numberOfValidStripTIDHits() << " tec: " << hp.numberOfValidStripTECHits() << " mu: " << hp.numberOfValidMuonHits() << " csc: " << hp.numberOfValidMuonCSCHits() << " dt: " << hp.numberOfValidMuonDTHits() << " rpc: " << hp.numberOfValidMuonRPCHits()
