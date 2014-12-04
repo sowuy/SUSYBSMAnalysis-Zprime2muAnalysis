@@ -14,8 +14,8 @@ process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('fil
 process.load('Configuration.Geometry.GeometryIdeal_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-from Configuration.AlCa.GlobalTag import GlobalTag #raffa
-#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:startup') #raffa
+from Configuration.AlCa.GlobalTag import GlobalTag 
+#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:startup') 
 process.GlobalTag.globaltag = cms.string('PlaceHolder::All')
 
 # Configure the MessageLogger ~sanely. Also direct it to let the PAT
@@ -38,9 +38,9 @@ process.out = cms.OutputModule('PoolOutputModule',
                                # If your path in your top-level config is not called 'p', you'll need
                                # to change the next line. In test/PATTuple.py, 'p' is used.
 			       ## save only events passing the full path
-			       ## non va dichiarato p
+			       ## p is not declared using allowUnscheduled
 			       ##SelectEvents   = cms.untracked.PSet(SelectEvents = cms.vstring('p')),
-                               #SelectEvents   = cms.untracked.PSet(SelectEvents = cms.vstring('HLT_Mu*')),##??
+                               #SelectEvents   = cms.untracked.PSet(SelectEvents = cms.vstring('HLT_Mu*')),## something like this??
                                outputCommands = cms.untracked.vstring(
                                    'drop *',
                                    'keep patElectrons_cleanPatElectrons__*',
@@ -88,22 +88,21 @@ del process.patTaus.tauIDSources.againstMuonMedium
 process.cleanPatTaus.preselection = process.cleanPatTaus.preselection.value().replace('againstMuonMedium', 'againstMuonTight') ##credo che adesso Tight sia di default e che quindi questa non fa nulla
 
 from PATTools import pruneMCLeptons, addMuonMCClassification, addHEEPId
-# problema con pruned ed unscheduled, cioe anche se io ho il remove quello nn va avanti. sta messo dirett in tuple_mc
-#pruneMCLeptons(process, use_sim=True) # need to decide whether to move AODOnly() call in here, if so use_sim should just be set False
-#addMuonMCClassification(process)#raffa ho modificato /MuonAnalysis/MuonAssociators/muonClassificationByHits_cfi.py ma non va. Unable to find plugin 'TrackingTruthProducer
+#pruneMCLeptons(process, use_sim=True) # need to decide whether to move AODOnly() call in here, if so use_sim should just be set False.
+					# now moved in tuple_mc because using allowUnscheduled can't do remove for data
+#addMuonMCClassification(process) #Unable to find plugin 'TrackingTruthProducer
 addHEEPId(process)
 
 #from PhysicsTools.PatAlgos.tools.trigTools import switchOnTrigger, switchOnTriggerMatchEmbedding
 #switchOnTrigger(process) # Add full trigger information
-
 from PhysicsTools.PatAlgos.tools.trigTools import *
 switchOnTrigger( process )
 process.load('SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi')
 switchOnTriggerMatchEmbedding(process, triggerMatchers=['muonTriggerMatchHLTMuons']) # Add embedded example trigger matching information
 # add L1 algorithms' collection
-#process.patTrigger.addL1Algos = cms.bool( True ) # default: 'False' #????????
+#process.patTrigger.addL1Algos = cms.bool( True ) # default: 'False' #?
 # call once more to update the event content according to the changed parameters (?)
-#switchOnTrigger(process)#??????
+#switchOnTrigger(process)#?
 process.out.outputCommands += [
     'keep *_cleanPatMuonsTriggerMatch_*_*',
     'keep *_patTrigger_*_*', # keep these two for now, for Level-1 decisions
@@ -149,14 +148,13 @@ process.goodDataHLTPhysicsDeclared = cms.Path(process.hltPhysicsDeclared)
 process.goodDataPrimaryVertexFilter = cms.Path(process.primaryVertexFilter)
 process.goodDataNoScraping = cms.Path(process.noscraping)
 process.goodDataAll = cms.Path(process.hltPhysicsDeclared * process.primaryVertexFilter * process.noscraping)
-#process.goodDataAll = cms.Path(process.primaryVertexFilter) #??? <---------------- raffa
 
 # Add MET and jets. Configuration to be revisited later.
-from PhysicsTools.PatAlgos.tools.metTools import addMETCollection #raffa
+from PhysicsTools.PatAlgos.tools.metTools import addMETCollection 
 addMETCollection(process, labelName='patMETsPF', metSource='pfMetT1')
-#addMETCollection(process, labelName='patMETsTC', metSource='tcMet') 
+#addMETCollection(process, labelName='patMETsTC', metSource='tcMet') #to be checked
 
-from PhysicsTools.PatAlgos.tools.jetTools import switchJetCollection
+from PhysicsTools.PatAlgos.tools.jetTools import switchJetCollection #to be checked
 switchJetCollection(process, 
                     jetSource = cms.InputTag('ak5PFJets'),
                     #algo='ak',
