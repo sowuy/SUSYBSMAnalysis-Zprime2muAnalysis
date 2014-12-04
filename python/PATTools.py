@@ -72,7 +72,7 @@ def removeMCUse(process):
     # Remove anything that requires MC truth.
     from PhysicsTools.PatAlgos.tools.coreTools import removeMCMatching
     removeMCMatching(process, ['All'])
-#    removeMCMatching(process, ['METs'], postfix='TC')#raffa
+#    removeMCMatching(process, ['METs'], postfix='TC')
     removeMCMatching(process, ['METs'], postfix='PF')
     #removeMuonMCClassification(process)
     removeSimLeptons(process)
@@ -92,16 +92,16 @@ def addHEEPId(process):
     from SHarper.HEEPAnalyzer.HEEPSelectionCuts_cfi import heepBarrelCuts, heepEndcapCuts
     from SHarper.HEEPAnalyzer.HEEPEventParameters_cfi import heepEventPara
     process.HEEPId = cms.EDProducer('HEEPIdValueMapProducer',
-                                    eleLabel = cms.InputTag('gedGsfElectrons'),#raffa
+                                    eleLabel = cms.InputTag('gedGsfElectrons'),
                                     barrelCuts = heepBarrelCuts,
                                     endcapCuts = heepEndcapCuts,
                                     eleIsolEffectiveAreas = heepEventPara.eleIsolEffectiveAreas,
                                     applyRhoCorrToEleIsol = heepEventPara.applyRhoCorrToEleIsol,
-                                    #eleRhoCorrLabel = heepEventPara.eleRhoCorrTag,#raffa tra i parametri vedo queste opzioni
+                                    #eleRhoCorrLabel = heepEventPara.eleRhoCorrTag,#? possible options
 				    	#eleRhoCorrTag = cms.InputTag("fixedGridRhoFastjetAll"),
     					#eleRhoCorr2012Tag = cms.InputTag("kt6PFJets","rho"),
-				    eleRhoCorrLabel = cms.InputTag("kt6PFJetsForIsolation","rho"),#raffa
-				    verticesLabel = cms.InputTag("offlinePrimaryVerticesWithBS"),#raffa
+				    eleRhoCorrLabel = cms.InputTag("kt6PFJetsForIsolation","rho"),
+				    verticesLabel = cms.InputTag("offlinePrimaryVerticesWithBS"),
                                     writeIdAsInt = cms.bool(True),
                                     )
 
@@ -120,8 +120,8 @@ def addHEEPId(process):
 
 def AODOnly(process):
     #from PhysicsTools.PatAlgos.tools.coreTools import restrictInputToAOD
-    #restrictInputToAOD(process) credo nn serva piu
-    #removeMuonMCClassification(process) # throw the baby out with the bathwater...????????
+    #restrictInputToAOD(process) 
+    #removeMuonMCClassification(process) # throw the baby out with the bathwater...???
     removeSimLeptons(process)
 
 # Some scraps to aid in debugging that can be put in your top-level
