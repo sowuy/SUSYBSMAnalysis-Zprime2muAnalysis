@@ -85,7 +85,7 @@ process.load('PhysicsTools.PatAlgos.patSequences_cff')
 # consistent set of 52 samples, as this only occurs for 51 MC input.
 del process.patTaus.tauIDSources.againstElectronMVA5raw
 del process.patTaus.tauIDSources.againstMuonMedium
-process.cleanPatTaus.preselection = process.cleanPatTaus.preselection.value().replace('againstMuonMedium', 'againstMuonTight') ##credo che adesso Tight sia di default e che quindi questa non fa nulla
+process.cleanPatTaus.preselection = process.cleanPatTaus.preselection.value().replace('againstMuonMedium', 'againstMuonTight') #now Tight is the default choice
 
 from PATTools import pruneMCLeptons, addMuonMCClassification, addHEEPId
 #pruneMCLeptons(process, use_sim=True) # need to decide whether to move AODOnly() call in here, if so use_sim should just be set False.
