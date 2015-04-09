@@ -4,10 +4,11 @@ import sys, os, FWCore.ParameterSet.Config as cms
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import switch_hlt_process_name
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cfg import process
 #process.source.fileNames =['file:./pat.root']
-process.source.fileNames =['/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_10_1_pcu.root',
-      '/store/user/rradogna/DYJetsToEEMuMu_M-9500_13TeV-madgraph/datamc_dy9500/a8881ceec144e0dfafbb7486d1b7f8e6/pat_9_1_T1U.root',]
+process.source.fileNames =['/store/user/federica/PATTuple/DYJetsToEEMuMu_M-120To200_13TeV-madgraph/DY_M-120To200_Phys14_PU20BX25/150317_182312/0000/pat_1.root',
+                           #'/store/user/rradogna/ZprimeToMuMu_M-5000_Tune4C_13TeV-pythia8/datamc_zpsi5000/a8881ceec144e0dfafbb7486d1b7f8e6/pat_1_1_G9p.root',
+]
 #process.source.fileNames=['/store/relval/CMSSW_7_1_0_pre4_AK4/RelValProdTTbar/AODSIM/START71_V1-v2/00000/7A3637AA-28B5-E311-BC25-003048678B94.root']
-process.maxEvents.input = -1
+process.maxEvents.input = 10
 from SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi import trigger_match, prescaled_trigger_match, trigger_paths, prescaled_trigger_paths, overall_prescale, offline_pt_threshold, prescaled_offline_pt_threshold
 
 # Since the prescaled trigger comes with different prescales in
@@ -63,7 +64,7 @@ cuts = {
     'Simple'   : OurSelectionDec2012, # The selection cuts in the module listed here are ignored below.
 #    'VBTFMuPrescaled' : VBTFSelection,
     #'OurMuPrescaledNew'  : OurSelectionNew,
-    #'OurMuPrescaled2012' : OurSelectionDec2012 #doesn't work :( #to be checked 
+    #'OurMuPrescaled2012' : OurSelectionDec2012
     }
 
 # Loop over all the cut sets defined and make the lepton, allDilepton
@@ -247,6 +248,10 @@ if 'gogo' in sys.argv:
     from SUSYBSMAnalysis.Zprime2muAnalysis.cmsswtools import set_events_to_process
     set_events_to_process(process, [(run, event)])
 
+f = file('outfile', 'w')
+f.write(process.dumpPython())
+f.close()
+
 if __name__ == '__main__' and 'submit' in sys.argv:
     crab_cfg = '''
 [CRAB]
@@ -345,26 +350,31 @@ events_per_job = 50000
 
         from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
 
-        combine_dy_samples = len([x for x in samples if x.name in ['zmumu', 'dy120_c1', 'dy200_c1', 'dy500_c1', 'dy800_c1', 'dy1000_c1', 'dy1500_c1', 'dy2000_c1']]) > 0
+        combine_dy_samples = len([x for x in samples if x.name in ['dy50', 'dy120', 'dy200', 'dy400', 'dy800', 'dy1400', 'dy2300', 'dy3500', 'dy4500', 'dy6000', 'dy7500', 'dy8500', 'dy9500']]) > 0
         print 'combine_dy_samples:', combine_dy_samples
 
         for sample in reversed(samples):
             print sample.name
 
             new_py = open('histos.py').read()
-            sample.fill_gen_info = sample.name in ['zmumu', 'dy120_c1', 'dy200_c1', 'dy500_c1', 'dy800_c1', 'dy1000_c1', 'dy1500_c1', 'dy2000_c1', 'zssm1000']
+            sample.fill_gen_info = sample.name in ['dy50', 'dy120', 'dy200', 'dy400', 'dy800', 'dy1400', 'dy2300', 'dy3500', 'dy4500', 'dy6000', 'dy7500', 'dy8500', 'dy9500', 'zpsi5000']
             new_py += "\nfor_mc(process, hlt_process_name='%(hlt_process_name)s', fill_gen_info=%(fill_gen_info)s)\n" % sample
 
             if combine_dy_samples and (sample.name == 'zmumu' or 'dy' in sample.name):
                 mass_limits = {
-                    'zmumu'    : (  20,    120),
-                    'dy120_c1' : ( 120,    200),
-                    'dy200_c1' : ( 200,    500),
-                    'dy500_c1' : ( 500,    800),
-                    'dy800_c1' : ( 800,   1000),
-                    'dy1000_c1': (1000,   1500),
-                    'dy1500_c1': (1500,   2000),
-                    'dy2000_c1': (2000, 100000),
+                    'dy50'      : (  50,     120),
+                    'dy120'     : ( 120,     200),
+                    'dy200'     : ( 400,     800),
+                    'dy400'     : (2300,    3500),
+                    'dy800'     : (7500,    8500),
+                    'dy1400'    : ( 200,     400),
+                    'dy2300'    : ( 800,    1400),
+                    'dy3500'    : (1400,    2300),
+                    'dy4500'    : (3500,    4500),
+                    'dy6000'    : (4500,    6000),
+                    'dy7500'    : (6000,    7500),
+                    'dy8500'    : (8500,    9500),
+                    'dy9500'    : (9500,  100000),
                     }
                 lo,hi = mass_limits[sample.name]
                 from SUSYBSMAnalysis.Zprime2muAnalysis.DYGenMassFilter_cfi import dy_gen_mass_cut

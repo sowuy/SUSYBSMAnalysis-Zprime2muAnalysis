@@ -168,7 +168,7 @@ void Zprime2muCompositeCandidatePicker::embed_vertex_constrained_fit(pat::Compos
   }
 
   dil.addUserFloat("vertex_chi2", vtx.totalChiSquared()/vtx.degreesOfFreedom());
-
+  dil.addUserFloat("vertex_ndof", vtx.degreesOfFreedom());
   dil.addUserFloat("vertexX", vtx.position().x());
   dil.addUserFloat("vertexY", vtx.position().y());
   dil.addUserFloat("vertexZ", vtx.position().z());

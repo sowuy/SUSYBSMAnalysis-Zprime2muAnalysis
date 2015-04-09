@@ -9,14 +9,13 @@ readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 process.source = cms.Source ("PoolSource",fileNames = readFiles, secondaryFileNames = secFiles)
 readFiles.extend( [
-       '/store/user/rradogna/ZprimeToMuMu_M-1000_Tune4C_13TeV-pythia8/datamc_zpsi1000/5ae2dc0ad5519e42240ad5a71eb54bed/pat_100_1_Bc7.root',
-       '/store/user/rradogna/ZprimeToMuMu_M-1000_Tune4C_13TeV-pythia8/datamc_zpsi1000/5ae2dc0ad5519e42240ad5a71eb54bed/pat_9_1_RsK.root' ] );
+       '/store/user/rradogna/ZprimeToMuMu_M-5000_Tune4C_13TeV-pythia8/datamc_zpsi5000/a8881ceec144e0dfafbb7486d1b7f8e6/pat_100_1_Hw6.root' ] );
 
 
 secFiles.extend( [
                ] )
 
-process.maxEvents.input = -1
+process.maxEvents.input = 10
 
 # Define the numerators and denominators, removing cuts from the
 # allDimuons maker. "NoX" means remove cut X entirely (i.e. the
@@ -118,7 +117,7 @@ job_control
 use_dbs3=1
 
 [USER]
-#ui_working_dir = /crab/crab_ana_nminus1_%(name)s
+ui_working_dir = crab/crab_ana_nminus1_%(name)s
 return_data = 1
 '''
 
@@ -167,7 +166,7 @@ events_per_job = 50000
 ''')
 
         from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
-        samples = [zpsi1000]#zmumu, ttbar, dy120_c1, dy200_c1, dy500_c1, dy800_c1, dy1000_c1, dy1500_c1, dy2000_c1, inclmu15]
+        samples =[dy50, dy120, dy200, dy400, dy800, dy1400, dy2300, dy3500, dy4500, dy6000, dy7500, dy8500, dy9500, zpsi5000, ttbar, inclmu15]
         for sample in samples:
             print sample.name
             open('crab.cfg', 'wt').write(crab_cfg % sample)
