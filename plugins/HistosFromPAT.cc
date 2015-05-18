@@ -43,9 +43,8 @@ class Zprime2muHistosFromPAT : public edm::EDAnalyzer {
   void fillLeptonHistos(const reco::CandidateBaseRef&);
   void fillLeptonHistos(const edm::View<reco::Candidate>&); 
   void fillLeptonHistosFromDileptons(const pat::CompositeCandidateCollection&); 
-
-   void fillDileptonHistos(const pat::CompositeCandidate&, const edm::Event&);
-   void fillDileptonHistos(const pat::CompositeCandidateCollection&, const edm::Event&);
+  void fillDileptonHistos(const pat::CompositeCandidate&, const edm::Event&);
+  void fillDileptonHistos(const pat::CompositeCandidateCollection&, const edm::Event&);
   /* void fillDileptonHistos(const pat::CompositeCandidate&);
      void fillDileptonHistos(const pat::CompositeCandidateCollection&);*/  // Slava's changes
 
