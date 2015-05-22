@@ -35,7 +35,7 @@ process.load('PhysicsTools.PatAlgos.patSequences_cff')
     # Define the output file with the output commands defining the
     # branches we want to have in our PAT tuple.
 process.out = cms.OutputModule('PoolOutputModule',
-                               fileName = cms.untracked.string('patFilterON.root'),
+                               fileName = cms.untracked.string('testUsePv.root'),
                                # fileName = cms.untracked.string('file:PlaceHolder.root'),
                                SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
                                #SelectEvents   = cms.untracked.PSet(SelectEvents = cms.vstring('HLT_Mu*')),
@@ -90,7 +90,6 @@ del process.patTaus.tauIDSources.againstMuonMedium
 process.cleanPatTaus.preselection = process.cleanPatTaus.preselection.value().replace('againstMuonMedium', 'againstMuonTight') #now Tight is the default choice
 
 process.patMuons.embedTrack = True
-#process.patMuons.usePV = False
 
 ############ muon preselection
 from PhysicsTools.PatAlgos.selectionLayer1.muonSelector_cfi import *
