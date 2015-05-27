@@ -7,11 +7,12 @@ import FWCore.ParameterSet.Config as cms
 
 
 process = cms.Process('PAT')
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(500))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
 process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 #process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('file:PlaceHolder.root'))
 #process.source = cms.Source('PoolSource', fileNames =cms.untracked.vstring('/store/mc/Phys14DR/DYJetsToEEMuMu_M-9500_13TeV-madgraph/AODSIM/PU20bx25_PHYS14_25_V1-v2/00000/18C7C360-E076-E411-9E2F-E0CB4E19F9BC.root'))
-process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('root://xrootd.unl.edu//store/relval/CMSSW_7_4_0/RelValProdTTbar_13/AODSIM/MCRUN2_74_V7D_pxBest_gs7115-v1/00000/9081056A-10E7-E411-A322-00259059391E.root'))
+#process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('root://xrootd.unl.edu//store/relval/CMSSW_7_4_0/RelValProdTTbar_13/AODSIM/MCRUN2_74_V7D_pxBest_gs7115-v1/00000/9081056A-10E7-E411-A322-00259059391E.root'))
+process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('file:9081056A-10E7-E411-A322-00259059391E.root'))
 
     # Load services needed to run the PAT.
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
@@ -35,7 +36,7 @@ process.load('PhysicsTools.PatAlgos.patSequences_cff')
     # Define the output file with the output commands defining the
     # branches we want to have in our PAT tuple.
 process.out = cms.OutputModule('PoolOutputModule',
-                               fileName = cms.untracked.string('testUsePv.root'),
+                               fileName = cms.untracked.string('testMETFilter.root'),
                                # fileName = cms.untracked.string('file:PlaceHolder.root'),
                                SelectEvents = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
                                #SelectEvents   = cms.untracked.PSet(SelectEvents = cms.vstring('HLT_Mu*')),
@@ -150,17 +151,24 @@ switchOnTriggerMatchEmbedding( process,
                                triggerMatchers = [ 'muonTriggerMatchHLTMuons' ]
                                )
 
+
 process.load('SUSYBSMAnalysis.Zprime2muAnalysis.goodData_cff')
 process.goodDataHLTPhysicsDeclared = cms.Path(process.hltPhysicsDeclared)
 process.goodDataPrimaryVertexFilter = cms.Path(process.primaryVertexFilter)
 process.goodDataNoScraping = cms.Path(process.noscraping)
 process.goodDataAll = cms.Sequence(process.hltPhysicsDeclared * process.primaryVertexFilter) # * process.noscraping)
 
+#MET filter
+#process.load("RecoMET.METFilters.metFilters_cff")
+#has to be replaced in 7X because the import * inside refers to a c++ class that is not anymore defined 
+process.load("PhysicsTools.PatAlgos.slimming.metFilterPaths_cff")
+process.goodDataMETFilter =  cms.Path(process.metFilters)
+
 # Let it run
 #process.p = cms.Path(process.goodOfflinePrimaryVertices*process.GoodMuons *  process.GoodEvents * process.patTriggerMatching * process.goodDataAll)
 
 #process.p = cms.Path(process.selectedPatMuons * process.patTriggerMatching *  process.countPatMuons)
-process.p = cms.Path(process.selectedPatMuons *  process.countPatMuons)
+process.p = cms.Path(goodDataMETFilter * process.selectedPatMuons *  process.countPatMuons)
 process.outpath = cms.EndPath(process.out) 
 
 #print process.dumpPython()
