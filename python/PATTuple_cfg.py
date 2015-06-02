@@ -142,6 +142,8 @@ process.cleanPatJets.finalCut = 'pt > 30.0'
 
 
 ############## embedding of trigger info
+
+
 process.load('SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi')
 
 from PhysicsTools.PatAlgos.tools.trigTools import *
@@ -168,7 +170,7 @@ process.goodDataMETFilter =  cms.Path(process.metFilters)
 #process.p = cms.Path(process.goodOfflinePrimaryVertices*process.GoodMuons *  process.GoodEvents * process.patTriggerMatching * process.goodDataAll)
 
 #process.p = cms.Path(process.selectedPatMuons * process.patTriggerMatching *  process.countPatMuons)
-process.p = cms.Path(goodDataMETFilter * process.selectedPatMuons *  process.countPatMuons)
+process.p = cms.Path(process.selectedPatMuons *  process.countPatMuons)
 process.outpath = cms.EndPath(process.out) 
 
 #print process.dumpPython()

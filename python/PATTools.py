@@ -102,6 +102,8 @@ def addHEEPId(process):
     					#eleRhoCorr2012Tag = cms.InputTag("kt6PFJets","rho"),
 				    eleRhoCorrLabel = cms.InputTag("kt6PFJetsForIsolation","rho"),
 				    verticesLabel = cms.InputTag("offlinePrimaryVerticesWithBS"),
+                                    #eleRhoCorrLabel = heepEventPara.eleRhoCorrTag,
+                                    #verticesLabel = heepEventPara.verticesTag,
                                     writeIdAsInt = cms.bool(True),
                                     )
 

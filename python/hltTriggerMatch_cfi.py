@@ -1,9 +1,5 @@
 import FWCore.ParameterSet.Config as cms
 
-patTrigger = cms.EDProducer( "PATTriggerProducer", 
-                             onlyStandAlone = cms.bool( False ), 
-                             processName    = cms.string( "HLT" )             
-                             )
 
 # JMTBAD to drop
 muonTriggerMatchHLTMuons = cms.EDProducer('PATTriggerMatcherDRLessByR',
@@ -14,24 +10,13 @@ muonTriggerMatchHLTMuons = cms.EDProducer('PATTriggerMatcherDRLessByR',
     #matchedCuts           = cms.string('type( "TriggerMuon" ) && path("HLT_Mu40*" )'),
     #matchedCuts           = cms.string('type("TriggerMuon") && path("HLT_Mu40*")'), #raffa
     #matchedCuts 	= cms.string('filter("hltL3fL1sMu16L1f0L2f16QL3Filtered40Q")'),
-    matchedCuts           = cms.string('type("TriggerMuon") && (path("HLT_Mu9*",1,0) || path("HLT_Mu15*",1,0) || path("HLT_Mu24_v*",1,0)|| path("HLT_Mu24*",1,0) || path("HLT_Mu30*",1,0) || path("HLT_Mu40*",1,0))'),
+    matchedCuts           = cms.string('type("TriggerMuon") && (path("HLT_Mu9*",1,0) || path("HLT_Mu15*",1,0) ||  path("HLT_Mu24*",1,0) || path("HLT_Mu30*",1,0) || path("HLT_Mu40*",1,0))'),
     maxDPtRel             = cms.double(1),
     maxDeltaR             = cms.double(0.2),
     resolveAmbiguities    = cms.bool(True),
     resolveByMatchQuality = cms.bool(True)
 )
 
-## ==== Embed ====
-#from MuonAnalysis.MuonAssociators.patMuonsWithTrigger_cff import patMuonsWithTrigger
-cleanPatMuonsTriggerMatch =  cms.EDProducer("PATTriggerMatchMuonEmbedder",                                           
-                                            src = cms.InputTag("cleanPatMuons"),                                         
-                                            matches = cms.VInputTag("muonTriggerMatchHLTMuons")  
-                                            )
-
-## ==== Trigger Sequence ====
-patTriggerMatching = cms.Sequence(patTrigger *
-                                  muonTriggerMatchHLTMuons *
-                                  cleanPatMuonsTriggerMatch)
 
 trigger_pt_threshold = 40
 offline_pt_threshold = 45
