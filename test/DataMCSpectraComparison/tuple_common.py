@@ -1,11 +1,14 @@
 import os, FWCore.ParameterSet.Config as cms
 
 from SUSYBSMAnalysis.Zprime2muAnalysis.PATTuple_cfg import process
+## ---
+## Define the path ---> no need to define the path in the unscheduled mode (TJ)
+## ---
 process.p = cms.Path(process.countPatLeptons)
 
-# Loose cut on muons; stronger cuts to be applied for different
-# sets of plots (e.g. add our isolation cut, or apply VBTF).
 process.selectedPatMuons.cut = 'isGlobalMuon && pt > 20'
+#process.selectedPatMuons.filter = cms.bool(True)
+
 
 # Want to select only events that have at least two leptons (=
 # muons+electrons), where the electrons must pass HEEP id, but don't
@@ -27,7 +30,7 @@ config = config()
 
 config.General.requestName = '%(name)s' 
 config.General.workArea = 'PAT_%(name)s'
-
+                                      
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '%(pset)s'   
 config.JobType.priority = 1
@@ -38,10 +41,10 @@ config.Data.splitting = 'EventAwareLumiBased'
 config.Data.unitsPerJob = 10000
 config.Data.publication = True
 config.Data.publishDataName = '%(name)s'
-config.Data.outLFNDirBase = '/store/user/federica/PATTuple' 
-
-config.Site.storageSite = 'T2_US_Purdue'
+config.Data.outLFNDirBase = '/store/user/alfloren/PAATuples'
+                                                  
+config.Site.storageSite = 'T2_CH_CERN'
 
 '''
 
-#os.system('mkdir -p crab/psets')
+os.system('mkdir -p crab/psets')

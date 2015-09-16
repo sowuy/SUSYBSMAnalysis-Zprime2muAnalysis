@@ -21,6 +21,7 @@
 #include "SUSYBSMAnalysis/Zprime2muAnalysis/src/HardInteraction.h"
 #include "SUSYBSMAnalysis/Zprime2muAnalysis/src/PATUtilities.h"
 #include "SUSYBSMAnalysis/Zprime2muAnalysis/src/ToConcrete.h"
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 
 class SimpleNtupler : public edm::EDAnalyzer {
 public:
@@ -30,9 +31,11 @@ public:
 
 private:
   struct tree_t {
+   
     unsigned run;
     unsigned lumi;
     unsigned event;
+    float genWeight;
     float beamspot_x;
     float beamspot_x_err;
     float beamspot_y;
@@ -151,7 +154,10 @@ private:
   const edm::InputTag beamspot_src;
   const edm::InputTag vertices_src;
   const bool fill_gen_info;
+  const edm::InputTag genEventInfo_;
   HardInteraction* hardInteraction;
+  
+
 };
 
 TString replace_all(const TString& a, const TString& b, const TString& c) {
@@ -165,7 +171,9 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
     beamspot_src(cfg.getParameter<edm::InputTag>("beamspot_src")),
     vertices_src(cfg.getParameter<edm::InputTag>("vertices_src")),
     fill_gen_info(cfg.existsAs<edm::ParameterSet>("hardInteraction")),
+    genEventInfo_(cfg.getUntrackedParameter<edm::InputTag>("genEventInfo")),
     hardInteraction(fill_gen_info ? new HardInteraction(cfg.getParameter<edm::ParameterSet>("hardInteraction")) : 0)
+   
 {
   edm::Service<TFileService> fs;
   tree = fs->make<TTree>("t", "");
@@ -266,6 +274,7 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
   tree->Branch("GoodVtx", &t.GoodVtx, "GoodVtx/O");
   tree->Branch("NoScraping", &t.NoScraping, "NoScraping/O");
   if (fill_gen_info) {
+    tree->Branch("genWeight", &t.genWeight, "genWeight/F");
     tree->Branch("gen_res_mass", &t.gen_res_mass, "gen_res_mass/F");
     tree->Branch("gen_res_pt", &t.gen_res_pt, "gen_res_pt/F");
     tree->Branch("gen_res_rap", &t.gen_res_rap, "gen_res_rap/F");
@@ -457,9 +466,17 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
     if (vtx.ndof() > 4 && fabs(vtx.z()) <= 24 && fabs(vtx.position().rho()) <= 2)
       t.nvertices += 1;
   
+
   if (fill_gen_info) {
     // This only works for DY/Z'/RSG events, and really just for PYTHIA!
     hardInteraction->Fill(event);
+
+   int EventWeight = 1.;
+   edm::Handle<GenEventInfoProduct> gen_ev_info;
+   event.getByLabel(genEventInfo_, gen_ev_info);
+   EventWeight = gen_ev_info->weight();
+   t.genWeight = ( EventWeight > 0 ) ? 1 : -1;
+
     if(hardInteraction->IsValid()){
 
     t.gen_res_mass = hardInteraction->resonance->mass();

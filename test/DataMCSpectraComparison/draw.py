@@ -9,7 +9,7 @@ from optparse import OptionParser
 # We have to optparse before ROOT does, or else it will eat our
 # options (at least -h/--help gets eaten). So don't move this!
 parser = OptionParser()
-parser.add_option('-d', '--histo-dir', dest='histo_dir', default='data/Run2012MuonsOnly',
+parser.add_option('-d', '--histo-dir', dest='histo_dir', default='data/Run2015MuonsOnly',
                   help='Directory containing the input files for the data. Default is %default. The files expected to be in this directory are ana_datamc_data.root, the ROOT file containing the input histograms, and ana_datamc_data.lumi, the log file from the output of LumiCalc. Optionally the directory can contain a link to a directory for MC histogram ROOT files; the link/directory must be named "mc".')
 parser.add_option('--no-print-table', action='store_false', dest='print_table', default=True,
                   help='Do not print out the ASCII table of event counts in specified mass ranges.')
@@ -231,7 +231,7 @@ class Drawer:
             if quantity_to_compare == 'DileptonMass':
                 return 20
         if quantity_to_compare in ['DileptonMass', 'DimuonMassVertexConstrained', 'DileptonPt', 'LeptonPt']:
-            return 10
+            return 1
 #            return 50
 #        if quantity_to_compare in ['RelCombIso', 'RelIsoSumPt']:
 #            return 5
@@ -270,7 +270,7 @@ class Drawer:
             if quantity_to_compare in ['DileptonMass', 'DimuonMassVertexConstrained']:
                 return 50, 880
         if quantity_to_compare in ['DileptonMass', 'DimuonMassVertexConstrained']:
-            return 60, 3000
+            return 50, 120
 #            return 60, 2000
 #            return 120, 1120
         elif quantity_to_compare in ['DileptonPt', 'LeptonPt']:
@@ -323,9 +323,9 @@ class Drawer:
         rescale_factor = 1.
         if 'New' in cutset:
            # rescale_factor = 21671./22531.7
-            rescale_factor = 21471./22450.4
+            rescale_factor = 1.
         elif '2012' in cutset or cutset =='OurNoIso':
-            rescale_factor = 24422./24521.8
+            rescale_factor = 1.
            # rescale_factor = 24502./24610.4
         return rescale_factor
 
@@ -436,7 +436,7 @@ class Drawer:
                 for ibin in range(1, 3001):
                     if ibin < xlow or ibin > xupp:
                         extended_hist.SetBinContent(ibin, 0)
-                            extended_hist.SetBinError(ibin, 0)
+                        extended_hist.SetBinError(ibin, 0)
                     else:
                         jbin = ibin-xlow
                         extended_hist.SetBinContent(ibin, sample.histogram.GetBinContent(jbin))
@@ -812,7 +812,7 @@ class Drawer:
         # Adorn the plot with legend and labels.
         l = self.draw_legend(dilepton, cumulative, log_x)
 #        t = ROOT.TPaveLabel(0.20, 0.89, 0.86, 0.99, 'CMS Preliminary   #sqrt{s} = 8 TeV    #int L dt = %.f pb^{-1}' % round(self.int_lumi), 'brNDC')
-        t = ROOT.TPaveLabel(0.30, 0.89, 0.96, 0.99, 'CMS Preliminary   #sqrt{s} = 8 TeV   #int L dt = 20.6 fb^{-1}', 'brNDC')
+        t = ROOT.TPaveLabel(0.30, 0.89, 0.96, 0.99, 'CMS Preliminary   #sqrt{s} = 13 TeV   #int L dt = 46.3 pb^{-1}', 'brNDC')
         t.SetTextSize(0.35)
         t.SetBorderSize(0)
         t.SetFillColor(0)
