@@ -5,7 +5,6 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.PATTuple_cfg import process
 process.p = cms.Path(process.countPatLeptons)
 
 process.selectedPatMuons.cut = 'isGlobalMuon && pt > 20'
-#process.selectedPatMuons.cut = 'isGlobalMuon'# per provare i dati
 
 # Want to select only events that have at least two leptons (=
 # muons+electrons), where the electrons must pass HEEP id, but don't
@@ -19,8 +18,7 @@ process.heepPatElectrons = cms.EDFilter('PATElectronSelector',
 process.patDefaultSequence.replace(process.selectedPatElectrons, process.selectedPatElectrons * process.heepPatElectrons)
 process.countPatMuons.minNumber = 0
 process.countPatLeptons.electronSource = cms.InputTag('heepPatElectrons')
-#process.countPatLeptons.minNumber = 2
-process.countPatLeptons.minNumber = 2# per provare i dati
+process.countPatLeptons.minNumber = 2
 
 crab_cfg = '''
 from CRABClient.UserUtilities import config
