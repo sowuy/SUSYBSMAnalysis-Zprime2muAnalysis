@@ -19,6 +19,6 @@ process.load('TrackingTools.TransientTrack.TransientTrackBuilder_cfi')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 #from Configuration.AlCa.GlobalTag import GlobalTag
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-#process.GlobalTag.globaltag = '74X_dataRun2_Express_v0'
-process.GlobalTag.globaltag = 'MCRUN2_74_V9A'
+process.GlobalTag.globaltag = 'MCRUN2_74_V9'
+
 process.load('SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff')

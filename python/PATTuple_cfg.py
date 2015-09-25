@@ -10,17 +10,15 @@ process = cms.Process('PAT')
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 process.options = cms.untracked.PSet(wantSummary = cms.untracked.bool(True))
 process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('file:PlaceHolder.root'))
-#process.source = cms.Source('PoolSource', fileNames =cms.untracked.vstring('/store/mc/Phys14DR/DYJetsToEEMuMu_M-9500_13TeV-madgraph/AODSIM/PU20bx25_PHYS14_25_V1-v2/00000/18C7C360-E076-E411-9E2F-E0CB4E19F9BC.root'))
-#process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('root://xrootd.unl.edu//store/relval/CMSSW_7_4_0/RelValProdTTbar_13/AODSIM/MCRUN2_74_V7D_pxBest_gs7115-v1/00000/9081056A-10E7-E411-A322-00259059391E.root'))
-#process.source = cms.Source('PoolSource', fileNames = cms.untracked.vstring('file:9081056A-10E7-E411-A322-00259059391E.root'))
 
     # Load services needed to run the PAT.
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
+#process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+#from Configuration.AlCa.GlobalTag import GlobalTag
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-#process.GlobalTag.globaltag = cms.string('MCRUN2_74_V6B')
-process.GlobalTag.globaltag = cms.string('MCRUN2_74_V9')
+process.GlobalTag.globaltag = cms.string('PlaceHolder::All')
 
 process.load('FWCore.MessageLogger.MessageLogger_cfi')
 process.MessageLogger.cerr.FwkReport.reportEvery = 5000

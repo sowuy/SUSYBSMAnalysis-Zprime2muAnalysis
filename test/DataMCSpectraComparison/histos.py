@@ -4,11 +4,18 @@ import sys, os, FWCore.ParameterSet.Config as cms
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import switch_hlt_process_name
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cfg import process
 
-process.source.fileNames =['file:dy50.root',
-                           #'root://xrootd-cms.infn.it//store/user/rradogna/SingleMuon/datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409/150713_080429/0000/pat_10.root',
+process.source.fileNames =[#'file:./pat.root',
+                           
+#                           '/store/user/rradogna/SingleMuon/datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018/150831_130042/0000/pat_1.root',
+                           '/store/user/rradogna/SingleMuon/datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018/150831_130042/0000/pat_447.root'
+#
+
                            ]
 process.maxEvents.input = -1
-#process.GlobalTag.globaltag = '74X_dataRun2_Express_v0'## solo per proare i dati
+process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'## for Run2 data
+#process.GlobalTag.globaltag = 'MCRUN2_74_V9A'## for mc
+#process.GlobalTag.globaltag = '74X_mcRun2_startup_realistic50ns_v0' #mc startup
+
 #process.options.wantSummary = cms.untracked.bool(True)# false di default
 process.MessageLogger.cerr.FwkReport.reportEvery = 1 # default 1000
 
@@ -67,7 +74,7 @@ cuts = {
     'Simple'   : OurSelectionDec2012, # The selection cuts in the module listed here are ignored below.
 #    'VBTFMuPrescaled' : VBTFSelection,
     #'OurMuPrescaledNew'  : OurSelectionNew,
-   #'OurMuPrescaled2012' : OurSelectionDec2012
+#    'OurMuPrescaled2012' : OurSelectionDec2012
     }
 
 # Loop over all the cut sets defined and make the lepton, allDilepton
@@ -125,8 +132,8 @@ for cut_name, Selection in cuts.iteritems():
         # not the ones passed into the LeptonProducer to set cutFor above.
         if cut_name == 'Simple':
             alldil.electron_cut_mask = cms.uint32(0)
-            #alldil.loose_cut = 'isGlobalMuon && pt > 20.'#to be changed for first runs
-            alldil.loose_cut = 'isGlobalMuon && pt > 20.'
+            alldil.loose_cut = 'isGlobalMuon && pt > 20.'#to be changed for first runs
+            #alldil.loose_cut = 'isGlobalMuon && pt > 0.'
             alldil.tight_cut = ''
             dil.max_candidates = 100
             dil.sort_by_pt = True
@@ -157,9 +164,9 @@ for cut_name, Selection in cuts.iteritems():
     pathname = 'path' + cut_name
     pobj = process.muonPhotonMatch * reduce(lambda x,y: x*y, path_list)
     if 'VBTF' not in cut_name and cut_name != 'Simple':
-        pobj = process.goodDataFilter * pobj
-    if 'MuPrescaled' in cut_name: ####### Now it seams that there are no prescaled path ########
-        pobj = process.PrescaleToCommon * pobj ####### Now it seams that there are no prescaled path ########
+        pobj = process.goodDataFilter * pobj # goodDataFilter is not applied if you run locally the code
+#    if 'MuPrescaled' in cut_name: ####### Now it seams that there are no prescaled path ########
+#        pobj = process.PrescaleToCommon * pobj ####### Now it seams that there are no prescaled path ########
     path = cms.Path(pobj)
     setattr(process, pathname, path)
 
@@ -179,7 +186,7 @@ def ntuplify(process, fill_gen_info=False):
         
     if hasattr(process, 'pathSimple'):
         process.pathSimple *= process.SimpleNtupler * process.SimpleNtuplerEmu
-#ntuplify(process) #to have ntuples also running in interactive way
+ntuplify(process) #to have ntuples also running without crab
 
 def printify(process):
     process.MessageLogger.categories.append('PrintEvent')
@@ -213,11 +220,10 @@ def check_prescale(process, trigger_paths, hlt_process_name='HLT'):
     process.load('SUSYBSMAnalysis.Zprime2muAnalysis.CheckPrescale_cfi')
     process.CheckPrescale.trigger_paths = cms.vstring(*trigger_paths)
     process.pCheckPrescale = cms.Path(process.CheckPrescale)
+###check_prescale(process, trigger_paths) ### ony to check if it works
 
 def for_data(process):
-    process.GlobalTag.globaltag ='GR_P_V56'
-    #process.GlobalTag.globaltag = 'GR_E_V47'
-   # process.GlobalTag.globaltag = 'GR_P_V54'
+    process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'
     ntuplify(process)
     #check_prescale(process, trigger_paths) ####### Now it seams that there are no prescaled path ########
 
@@ -275,7 +281,7 @@ if __name__ == '__main__' and 'submit' in sys.argv:
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_datamc_%(name)s_Trig50_WeightLeave'
+config.General.requestName = 'ana_datamc_%(name)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
@@ -288,10 +294,10 @@ config.Data.inputDBS = 'phys03'
 job_control
 config.Data.publication = False
 config.Data.publishDataName = 'ana_datamc_%(name)s'
-config.Data.outLFNDirBase = '/store/user/alfloren'
+config.Data.outLFNDirBase = '/store/user/rradogna'
 
-
-config.Site.storageSite = 'T2_CH_CERN'
+#config.Site.storageSite = 'T2_IT_Bari'
+config.Site.storageSite = 'T2_IT_Legnaro'
 
 '''
     
@@ -302,30 +308,22 @@ config.Site.storageSite = 'T2_CH_CERN'
         from SUSYBSMAnalysis.Zprime2muAnalysis.goodlumis import *
 
         dataset_details = [
-#            ('SingleMuRun2012A_13Jul2012_190450_193751', '/SingleMu/slava-datamc_SingleMuRun2012A-13Jul2012_190450_193751_20121011073628-426a2d966f78bce6bde85f3ed41c07ba/USER'),
-#            ('SingleMuRun2012A_06Aug2012_190782_190949', '/SingleMu/slava-datamc_SingleMuRun2012A-recover-06Aug2012_190782_190949_20121011120430-426a2d966f78bce6bde85f3ed41c07ba/USER'),
-#            ('SingleMuRun2012B_13Jul2012_193752_196531', '/SingleMu/slava-datamc_SingleMuRun2012B-13Jul2012_193752_196531_20121012044921-426a2d966f78bce6bde85f3ed41c07ba/USER'),
-#            ('SingleMuRun2012C_24Aug2012_197556_198913', '/SingleMu/slava-datamc_SingleMuRun2012C-24Aug2012_197556_198913_20121012113325-426a2d966f78bce6bde85f3ed41c07ba/USER'),
-#            ('SingleMuRun2012C_Prompt_198934_203772',    '/SingleMu/slava-datamc_SingleMuRun2012C-Prompt_198934_203772_20121015023300-8627c6a48d2426dec4aa557620a039a0/USER'),
-#            ('SingleMuRun2012D_Prompt_203773_204563',    '/SingleMu/slava-datamc_SingleMuRun2012D-Prompt_203773_204563_20121016104501-8627c6a48d2426dec4aa557620a039a0/USER'),
-#            ('SingleMuRun2012D_Prompt_204564_206087',    '/SingleMu/slava-datamc_SingleMuRun2012D-Prompt_204564_206087_20121029121943-8627c6a48d2426dec4aa557620a039a0/USER'),
-#            ('SingleMuRun2012D_Prompt_206066_206066',    '/SingleMu/slava-datamc_SingleMuRun2012D-Prompt_206066_206066_20130115083834-5fce88899b8479b9df01fc5ef8a1e921/USER'),
-          #  ('ExpressPhysicsRun2015B-Express_251522_251562_Mu50',    '/ExpressPhysics/rradogna-datamc_ExpressPhysicsRun2015B-Express_251522_251562_20150712181215-b1bb0cb9d6986acfdad6df64560b6f76/USER'),
-           # ('ExpressPhysicsRun2015B-Express_251253_251521_Mu50',    '/ExpressPhysics/rradogna-datamc_ExpressPhysicsRun2015B-Express_251253_251521_20150711154626-b1bb0cb9d6986acfdad6df64560b6f76/USER'),
-          # ('ExpressPhysicsRun2015B-Express_251161_251252_Mu50',    '/ExpressPhysics/rradogna-datamc_ExpressPhysicsRun2015B-Express_251161_251252_20150709121231-b1bb0cb9d6986acfdad6df64560b6f76/USER'),
+
+
             ('SingleMuonRun2015B-Prompt_251162_251499',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409-3aa7688518cb1f1b044caf15b1a9ed05/USER'),
             ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER'),
             ('SingleMuonRun2015B-Prompt_251613_251883',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251613_251883_20150719000207-9996471c14459acaec01707975d1e954/USER'),
-#            ('SingleMuRun2015A-Prompt_246865_246957',    '/SingleMu/rradogna-datamc_SingleMuRun2015A-Prompt_246865_246957_20150707105042-c884408f3bf22365836363f3be40cb0b/USER'),
-#            ('SingleMuRun2015A-Prompt_246958_247068',    '/SingleMu/rradogna-datamc_SingleMuRun2015A-Prompt_246958_247068_20150626155427-c884408f3bf22365836363f3be40cb0b/USER'),
+                           
+            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER'),
+
             ]
 
         lumi_lists = [
 #            'NoLumiMask'
-            #'DCSOnly',
+#            'DCSOnly',
 #            'Run2012PlusDCSOnlyMuonsOnly',
             'Run2015MuonsOnly',
-           # 'Run2015',
+#            'Run2015',
             ]
 
         jobs = []
@@ -352,6 +350,7 @@ config.Site.storageSite = 'T2_CH_CERN'
 config.Data.splitting = 'LumiBased'
 config.Data.totalUnits = -1
 config.Data.unitsPerJob = 200
+#config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_254833_13TeV_PromptReco_Collisions15_JSON.txt' #runC 50ns
 config.Data.lumiMask = '%(lumi_mask)s' #######
 ''' % locals()
 
@@ -360,6 +359,7 @@ config.Data.lumiMask = '%(lumi_mask)s' #######
 
             if not just_testing:
                 os.system('crab submit -c crabConfig.py')
+#                os.system('crab submit -c crabConfig.py --dryrun')#debug
             else:
                 cmd = 'diff histos.py histos_crab.py | less'
                 print cmd
@@ -375,33 +375,40 @@ config.Data.lumiMask = '%(lumi_mask)s' #######
     if 'no_mc' not in sys.argv:
         # Set crab_cfg for MC.
         crab_cfg = crab_cfg.replace('job_control','''
-#config.Data.splitting = 'EventAwareLumiBased'
-config.Data.splitting = 'FileBased'
+config.Data.splitting = 'EventAwareLumiBased'
+#config.Data.splitting = 'FileBased'
 config.Data.totalUnits = -1
-config.Data.unitsPerJob  = 100
+config.Data.unitsPerJob  = 5000
+#config.Data.unitsPerJob  = 100
     ''')
 
         from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
 
-        combine_dy_samples = len([x for x in samples if x.name in ['dy200', 'dy400', 'dy500', 'dy700', 'dy800', 'dy1500', 'dy2000', 'dy3000']]) > 0
+        combine_dy_samples = len([x for x in samples if x.name in []]) > 0
+        #combine_dy_samples = len([x for x in samples if x.name in ['dy50','dy100-200', 'dy200-400', 'dy400-500','dy500-700', 'dy700-800']]) > 0
         print 'combine_dy_samples:', combine_dy_samples
 
         for sample in reversed(samples):
             print sample.name
 
             new_py = open('histos.py').read()
-            sample.fill_gen_info = sample.name in ['dy50', 'dy100to200', 'dy200to400', 'dy400', 'dy800', 'dy1400', 'dy2300', 'dy3500', 'dy4500', 'dy6000', 'dy7500', 'dy8500', 'dy9500', 'zpsi5000']
+            sample.fill_gen_info = sample.name in ['dy50','dy100-200', 'dy200-400', 'dy400-500','dy500-700', 'dy700-800']
             new_py += "\nfor_mc(process, hlt_process_name='%(hlt_process_name)s', fill_gen_info=%(fill_gen_info)s)\n" % sample
+            
+            if sample.is_madgraph:
+                print "Madgraph: re-weight applied"
+                new_py += "\nHistosFromPAT.useMadgraphWeight= cms.untracked.bool(True)\n"
+                #new_py += "\nprocess.Histosstartup.useMadgraphWeight= True\n" #to let it work specify the correct process name
 
             if combine_dy_samples and (sample.name == 'zmumu' or 'dy' in sample.name):
                 mass_limits = {
-                    #'dy50'      : (  50,     120),
+                    'dy50'      : (  50,     100),
                     #'dy120'     : ( 120,     200),
-                    'dy200'     : ( 100,     200),
-                    'dy400'     : ( 200,     400),
-                    'dy500'     : ( 400,     500),
-                    'dy700'     : ( 500,     700),
-                    'dy800'     : ( 700,     800),
+                    'dy100-200'     : ( 100,     200),
+                    'dy200-400'     : ( 200,     400),
+                    'dy400-500'     : ( 400,     500),
+                    'dy500-700'     : ( 500,     700),
+                    'dy700-800'     : ( 700,     800),
                     'dy1500'    : (1000,    1500),
                     'dy2000'    : (1500,    2000),
                     'dy3000'    : (2000,    3000),
@@ -425,7 +432,7 @@ for pn,p in process.paths.items():
 
             open('crabConfig.py', 'wt').write(crab_cfg % sample)
             if not just_testing:
-                os.system('crab submit -c crabConfig.py')
+                os.system('crab submit --dryrun -c crabConfig.py')
             else:
                 cmd = 'diff histos.py histos_crab.py | less'
                 print cmd
@@ -434,5 +441,5 @@ for pn,p in process.paths.items():
                 print cmd
                 os.system(cmd)
 
-        if not just_testing:
-            os.system('rm crabConfig.py histos_crab.py histos_crab.pyc')
+#        if not just_testing:
+#            os.system('rm crabConfig.py histos_crab.py histos_crab.pyc')
