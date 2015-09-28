@@ -165,10 +165,9 @@ config.Data.inputDBS = 'phys03'
 job_control
 config.Data.publication = False
 config.Data.publishDataName = 'ana_datamc_%(name)s'
-config.Data.outLFNDirBase = '/store/user/rradogna'
+config.Data.outLFNDirBase = '/store/user/cschnaib'
 
-#config.Site.storageSite = 'T2_IT_Bari'
-config.Site.storageSite = 'T2_IT_Legnaro'
+config.Site.storageSite = 'T2_CH_CERN'
 
 '''
     
