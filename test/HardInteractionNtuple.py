@@ -28,7 +28,7 @@ config.Data.splitting = 'EventAwareLumiBased'
 config.Data.unitsPerJob = 10000
 config.Data.publication = True
 config.Data.publishDataName = '%(name)s'
-config.Data.outLFN = '/store/user/federica/HIntuple' 
+config.Data.outLFN = '/store/user/cschnaib/HIntuple' 
 
 config.Site.storageSite = 'T2_US_Purdue'
 

@@ -35,7 +35,7 @@ config.Data.splitting = 'EventAwareLumiBased'
 config.Data.unitsPerJob = 10000
 config.Data.publication = True
 config.Data.publishDataName = 'merge_%(uniq)s_%(name)s'
-config.Data.outLFN = '/store/user/federica/PATTuple' 
+config.Data.outLFN = '/store/user/cschnaib/PATTuple' 
 
 config.Site.storageSite = 'T2_US_Purdue'
 
