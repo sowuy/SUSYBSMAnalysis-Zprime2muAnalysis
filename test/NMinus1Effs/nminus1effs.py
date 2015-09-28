@@ -156,8 +156,8 @@ config.Site.storageSite = 'T2_CH_CERN'
 config.Data.splitting = 'LumiBased'
 config.Data.totalUnits = -1
 config.Data.unitsPerJob = 100
-#config.Data.lumiMask = 'tmp.json' #######
-config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_254833_13TeV_PromptReco_Collisions15_JSON.txt'
+config.Data.lumiMask = 'tmp.json' ####### use lumiMask as defined in goodlumis.py
+#config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_254833_13TeV_PromptReco_Collisions15_JSON.txt'
 '''
             new_crab_cfg = new_crab_cfg.replace('job_control', job_control)
             open('crabConfig.py', 'wt').write(new_crab_cfg)
