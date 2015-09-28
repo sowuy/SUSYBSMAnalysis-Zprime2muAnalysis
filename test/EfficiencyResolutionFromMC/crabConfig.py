@@ -19,7 +19,6 @@ config.Data.publication = True
 #config.Data.publishDBS = 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter/'
 config.Data.publishDBS = 'phys03'
 config.Data.publishDataName = 'effres_dy50'
-config.Data.outLFNDirBase = '/store/user/rradogna'
+config.Data.outLFNDirBase = '/store/user/cschnaib'
 
-#config.Site.storageSite = 'T2_IT_Bari'
-config.Site.storageSite = 'T2_IT_Legnaro'
+config.Site.storageSite = 'T2_CH_CERN'

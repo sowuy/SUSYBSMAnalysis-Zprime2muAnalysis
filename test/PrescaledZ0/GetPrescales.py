@@ -41,10 +41,9 @@ config.Data.unitsPerJob = 300
 config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_MuonPhys.txt'
 config.Data.publication = False
 config.Data.publishDataName = 'getprescales_%(name)s'
-config.Data.outLFNDirBase = '/store/user/rradogna'
+config.Data.outLFNDirBase = '/store/user/cschnaib'
 
-#config.Site.storageSite = 'T2_IT_Bari'
-config.Site.storageSite = 'T2_IT_Legnaro'
+config.Site.storageSite = 'T2_CH_CERN'
 '''
 
     just_testing = 'testing' in sys.argv
