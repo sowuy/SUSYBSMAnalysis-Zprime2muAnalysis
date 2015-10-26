@@ -52,7 +52,8 @@ class tupleonlysample(sample):
 # Single-top cross sections are from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SingleTopSigma
 # K factor for Drell-Yan samples is the ratio of the NNLO to POWHEG cross sections for M > 20 GeV bin, 1915/1871=1.024
 samples = [
-#    sample('zpsi5000',  'Z\'_{#psi} (5 TeV) #rightarrow #mu^{+}#mu^{-}',  '/ZprimeToMuMu_M-5000_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 99320, 48, 1., 0.0369,  k_factor=1, is_zprime=True),
+    sample('zpsi5000',  'Z\'_{#psi} (5 TeV) #rightarrow #mu^{+}#mu^{-}',  '/ZprimeToMuMu_M-5000_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 99320, 48, 1., 0.0369,  k_factor=1, is_zprime=True),
+    sample('zpsi5000_s',  'Z\'_{#psi} (5 TeV) #rightarrow #mu^{+}#mu^{-}',  '/ZprimeToMuMu_M-5000_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 48, 1., 0.0369,  k_factor=1, is_zprime=True), #McM 0.000052
     #sample('zpsi2250',  'Z\'_{#psi} (2.25 TeV) #rightarrow #mu^{+}#mu^{-}', '/RelValZpMM_13/CMSSW_7_4_0-MCRUN2_74_V7_gensim_740pre7-v1/GEN-SIM-RECO',      9000,  48, 1.,  0.0369,  k_factor=1.3, is_zprime=True),
            
 #    sample('dy50',          'DY50', '/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM', 13344402, 209 , 1., 6025.2,    k_factor=1., is_madgraph=True), #19917018 events without weight. -N*fraction of neg + N*(1-frac) frac=16.5%
@@ -65,9 +66,23 @@ samples = [
     sample('DY400to800Powheg',  'DY400to800', '/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 100000, 212, 1., 0.241, k_factor=1.),
     sample('DY800to1400Powheg',     'DY800to1400', '/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 100000, 72, 1., 0.01678, k_factor=1.),
     sample('dy1400to2300',          'DY1400to2300', '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 99600, 70 , 1., 0.00139,    k_factor=1.),
-#    sample('DY3500to4500Powheg',  'DY3500to4500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 100000, 30, 1., 0.0000041, k_factor=1.),
+    sample('dy2300to3500',          'DY2300to3500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/AODSIM', 100000, 70 , 1., 0.00139,    k_factor=1.),
+    sample('DY3500to4500Powheg',  'DY3500to4500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 100000, 30, 1., 0.0000041, k_factor=1.),
+    sample('dy4500to6000',          'DY4500to6000', '/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 100000, 31 , 1., 0.00139,    k_factor=1.),
 #    sample('dy50to120',          'DY50', '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 19917018, 8 , 1., 6025.2,    k_factor=1.),
-##
+
+           ####POWHEG STARTUP
+    sample('dy50to120_s',          'DY50to120', '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 2898838, 209 , 1., 1975,    k_factor=1.), # cross sect by Benj
+    sample('dy120to200_s',     'DY120to200', '/ZToMuMu_NNPDF30_13TeV-powheg_M_120_200/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 210, 1., 19.32, k_factor=1.),#mcm 19.32
+    sample('dy200to400_s',  'DY200to400', '/ZToMuMu_NNPDF30_13TeV-powheg_M_200_400/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 211, 1., 2.731, k_factor=1.),#mcm 2.731
+    sample('dy400to800_s',  'DY400to800', '/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 212, 1., 0.241, k_factor=1.),
+    sample('dy800to1400_s',     'DY800to1400', '/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 72, 1., 0.01678, k_factor=1.),
+    sample('dy1400to2300_s',          'DY1400to2300', '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 99600, 71 , 1., 0.00139,    k_factor=1.),
+    sample('dy2300to3500_s',          'DY2300to3500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 70 , 1., 0.00008948,    k_factor=1.),
+    sample('dy3500to4500_s',  'DY3500to4500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 30, 1., 0.0000041, k_factor=1.),
+    sample('dy4500to6000_s',          'DY4500to6000', '/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 31 , 1., 4.56E-7,    k_factor=1.),
+    sample('dy6000_s',          'DY6000', '/ZToMuMu_NNPDF30_13TeV-powheg_M_6000_Inf/RunIISpring15DR74-Startup_EXOReReco_74X_Spring15_mcRun2_startup_v0-v1/AODSIM', 100000, 31 , 1., 2.066e-8,    k_factor=1.),
+
 #           #####aMC@NLO
 #    sample('dy100to200',    'DY100-200', '/DYJetsToLL_M-100to200_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 66471, 210 , 1., 226,    k_factor=1., is_madgraph=True), #initial 101638 frac 17.3
 #    sample('dy200to400',    'DY200-400', '/DYJetsToLL_M-200to400_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 55741,  211, 1., 7.67,    k_factor=1., is_madgraph=True), #initial 97111 frac 21.3
@@ -90,13 +105,26 @@ samples = [
     sample('ww_incl',   'WW', '/WW_TuneCUETP8M1_13TeV-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 994416,   91, 1., 118.7 , k_factor=1. ),
 
     sample('wjets',     'W+jets', '/WJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 16430759, 52, 1., 61500, k_factor=1., is_madgraph=True), #without weights:24162881 ratio negative 16%
-#    sample('inclmu15', 'QCD',  '/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM', 4767935, 801, 1., 867000000, k_factor=1.),
+    sample('inclmu15', 'QCD',  '/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM', 4767935, 801, 1., 867000000, k_factor=1.),
     sample('ttbar_pow',     't#bar{t}', '/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v4/AODSIM', 19699896, 4 , 1., 815.96, k_factor=1.),
 #    sample('ttbar',     't#bar{t}', '/TTJets_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM', 4995842, 4 , 1., 815.96, k_factor=1.),
 #    sample('ttbar_startup',     't#bar{t}', '/RelValTTbar_13/CMSSW_7_4_6_patch6-74X_mcRun2_startup_realistic50ns_v0_trackPog2015Jul24-v1/GEN-SIM-RECO', 9000, 4 , 1., 815.96, k_factor=1.),
 #
-    sample('tWantitop', 'tWantiTop', '/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM',1000000,63 , 1., 35.85, k_factor=1.),#aidan 35.6*0.1086
-    sample('tWtop',     'tWTop', '/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM',998400,66 , 1., 35.85, k_factor=1.)#aidan 35.6*0.1086
+    sample('tWantitop', 'tWantiTop', '/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v2/AODSIM',1000000,63 , 1., 35.85,k_factor=1.),#aidan 35.6*0.1086
+    sample('tWtop',     'tWTop', '/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Asympt50ns_MCRUN2_74_V9A-v1/AODSIM',998400,66 , 1., 35.85,k_factor=1.),#aidan 35.6*0.1086
+    sample('qcd1000to1400', 'QCD1000to1400', '/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd120to170', 'QCD120to170', '/QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,    k_factor=1.),
+    sample('qcd1400to1800', 'QCD1400to1800', '/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd170to300', 'QCD170to300', '/QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd1800to2400', 'QCD1800to2400', '/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd2400to3200', 'QCD2400to3200', 'QCD_Pt_2400to3200_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd300to470', 'QCD300to470', '/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd470to600', 'QCD470to600', '/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd3200', 'QCD3200', '/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd50to80', 'QCD50to80', '/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd600to800', 'QCD600to800', '/QCD_Pt_600to800_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd800to1000', 'QCD800to1000', '/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v2/AODSIM', 90067,  43, 1., 0.016,k_factor=1.),
+    sample('qcd80to120', 'QCD80to120', '/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/RunIISpring15DR74-Asympt25ns_MCRUN2_74_V9-v1/AODSIM', 90067, 43, 1., 0.016,k_factor=1.)
            
     ]
 
@@ -127,15 +155,20 @@ for sample in samples:
 #dy2000to3000.ana_dataset = '/DYJetsToLL_M-2000to3000_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/rradogna-datamc_dy2000to3000-1e36332d8badf10b79a5027340f46eb1/USER'
 
 #zpsi5000.ana_dataset = '/ZprimeToMuMu_M-5000_TuneCUETP8M1_13TeV-pythia8/rradogna-datamc_zpsi5000-1e36332d8badf10b79a5027340f46eb1/USER'
+zpsi5000.ana_dataset = '/ZprimeToMuMu_M-5000_TuneCUETP8M1_13TeV-pythia8/federica-Zprime5000-bd8368177ad37334caf3ba3ccf63ed1c/USER'
 #dy50_startup.ana_dataset = '/RelValZMM_13/rradogna-datamc_dy50_startup-8b577364235a1c7c11f4fb31512a2917/USER'
+#dy50to120.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/rradogna-datamc_dy50to120-1e36332d8badf10b79a5027340f46eb1/USER' # 50ns
+#dy1400to2300.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/rradogna-datamc_dy1400to2300-1e36332d8badf10b79a5027340f46eb1/USER' 50ns
 
-dy50to120.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/rradogna-datamc_dy50to120-1e36332d8badf10b79a5027340f46eb1/USER'
+dy50to120.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/rradogna-datamc_dy50to120-586c586423adca66870850e07fce764e/USER' # 25ns
 DY120to200Powheg.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_120_200/alfloren-DY120to200Powheg-ea459820ba8ecaf0b251c44e2defe317/USER'
 DY200to400Powheg.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_200_400/alfloren-DY200to400Powheg-ea459820ba8ecaf0b251c44e2defe317/USER'
 DY400to800Powheg.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/alfloren-DY400to800Powheg-ea459820ba8ecaf0b251c44e2defe317/USER'
 DY800to1400Powheg.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/alfloren-DY800to1400Powheg-d361b004739dfc1dad40e50368455d7a/USER'
-dy1400to2300.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/rradogna-datamc_dy1400to2300-1e36332d8badf10b79a5027340f46eb1/USER'
-#DY3500to4500Powheg.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/alfloren-DY3500to4500Powheg-ea459820ba8ecaf0b251c44e2defe317/USER'
+dy1400to2300.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/rradogna-datamc_dy1400to2300-586c586423adca66870850e07fce764e/USER'#25ns
+dy2300to3500.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/rradogna-datamc_dy2300to3500-586c586423adca66870850e07fce764e/USER'
+DY3500to4500Powheg.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/alfloren-DY3500to4500Powheg-ea459820ba8ecaf0b251c44e2defe317/USER'
+dy4500to6000.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/rradogna-datamc_dy4500to6000-586c586423adca66870850e07fce764e/USER'
 
 ww_incl.ana_dataset = '/WW_TuneCUETP8M1_13TeV-pythia8/rradogna-datamc_ww_incl-1e36332d8badf10b79a5027340f46eb1/USER'
 zz_incl.ana_dataset = '/ZZ_TuneCUETP8M1_13TeV-pythia8/rradogna-datamc_zz_incl-1e36332d8badf10b79a5027340f46eb1/USER'
@@ -146,7 +179,31 @@ ttbar_pow.ana_dataset = '/TT_TuneCUETP8M1_13TeV-powheg-pythia8/rradogna-datamc_t
 ##ttbar_startup.ana_dataset = '/RelValTTbar_13/rradogna-datamc_ttbar_startup-8b577364235a1c7c11f4fb31512a2917/USER'
 tWantitop.ana_dataset = '/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/alfloren-tWantitop-728a04705e311faf7e2183c346d6b42c/USER'
 tWtop.ana_dataset = '/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/alfloren-tWtop-728a04705e311faf7e2183c346d6b42c/USER'
+inclmu15.ana_dataset = '/QCD_Pt-20toInf_MuEnrichedPt15_TuneCUETP8M1_13TeV_pythia8/rradogna-datamc_inclmu15-c4b4ec8fa143ea00cec443e9d0afb38f/USER'
 
+#STARTUP
+zpsi5000_s.ana_dataset = '/ZprimeToMuMu_M-5000_TuneCUETP8M1_13TeV-pythia8/rradogna-datamc_zpsi5000_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy50to120_s.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/rradogna-datamc_dy50to120_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy200to400_s.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_200_400/rradogna-datamc_dy200to400_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy400to800_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/rradogna-datamc_dy400to800_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy800to1400_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/rradogna-datamc_dy800to1400_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy1400to2300_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/rradogna-datamc_dy1400to2300_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy2300to3500_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/rradogna-datamc_dy2300to3500_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy3500to4500_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/rradogna-datamc_dy3500to4500_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy4500to6000_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/rradogna-datamc_dy4500to6000_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+dy6000_s.ana_dataset = '/ZToMuMu_NNPDF30_13TeV-powheg_M_6000_Inf/rradogna-datamc_dy6000_s-0b6bcee552194577bc9cd7f37ddb97e3/USER'
+
+qcd50to80.ana_dataset = '/QCD_Pt_50to80_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd50to80-728a04705e311faf7e2183c346d6b42c/USER'
+qcd80to120.ana_dataset = '/QCD_Pt_80to120_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd80to120-728a04705e311faf7e2183c346d6b42c/USER'
+qcd120to170.ana_dataset = '/QCD_Pt_120to170_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd120to170-728a04705e311faf7e2183c346d6b42c/USER'
+qcd170to300.ana_dataset = '/QCD_Pt_170to300_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd170to300-728a04705e311faf7e2183c346d6b42c/USER'
+qcd300to470.ana_dataset = '/QCD_Pt_300to470_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd300to470-728a04705e311faf7e2183c346d6b42c/USER'
+qcd470to600.ana_dataset = '/QCD_Pt_470to600_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd470to600-728a04705e311faf7e2183c346d6b42c/USER'
+qcd800to1000.ana_dataset = '/QCD_Pt_800to1000_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd800to1000-728a04705e311faf7e2183c346d6b42c/USER'
+qcd1000to1400.ana_dataset = '/QCD_Pt_1000to1400_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd1000to1400-728a04705e311faf7e2183c346d6b42c/USER'
+qcd1400to1800.ana_dataset = '/QCD_Pt_1400to1800_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd1400to1800-728a04705e311faf7e2183c346d6b42c/USER'
+qcd1800to2400.ana_dataset = '/QCD_Pt_1800to2400_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd1800to2400-728a04705e311faf7e2183c346d6b42c/USER'
+qcd3200.ana_dataset = '/QCD_Pt_3200toInf_TuneCUETP8M1_13TeV_pythia8/alfloren-qcd3200-728a04705e311faf7e2183c346d6b42c/USER'
 
 __all__ = ['samples'] + [s.name for s in samples]
 
