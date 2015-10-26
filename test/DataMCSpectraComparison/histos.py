@@ -12,7 +12,10 @@ process.source.fileNames =[#'file:./pat.root',
 
                            ]
 process.maxEvents.input = -1
-process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'## for Run2 data
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0'## for Run B data
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'## for Run C data
+#process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2'## for Run D data
+
 #process.GlobalTag.globaltag = 'MCRUN2_74_V9A'## for mc
 #process.GlobalTag.globaltag = '74X_mcRun2_startup_realistic50ns_v0' #mc startup
 
@@ -176,7 +179,7 @@ def ntuplify(process, fill_gen_info=False):
                                            dimu_src = cms.InputTag('SimpleMuonsAllSigns'),
                                            beamspot_src = cms.InputTag('offlineBeamSpot'),
                                            vertices_src = cms.InputTag('offlinePrimaryVertices'),
-                                           genEventInfo = cms.untracked.InputTag('generator')
+                                           #genEventInfo = cms.untracked.InputTag('generator')
                                            )
     process.SimpleNtuplerEmu = process.SimpleNtupler.clone(dimu_src = cms.InputTag('SimpleMuonsElectronsAllSigns'))
 
@@ -223,7 +226,7 @@ def check_prescale(process, trigger_paths, hlt_process_name='HLT'):
 ###check_prescale(process, trigger_paths) ### ony to check if it works
 
 def for_data(process):
-    process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'
+#    process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'
     ntuplify(process)
     #check_prescale(process, trigger_paths) ####### Now it seams that there are no prescaled path ########
 
@@ -281,7 +284,7 @@ if __name__ == '__main__' and 'submit' in sys.argv:
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_datamc_%(name)s'
+config.General.requestName = 'ana_datamc_%(name)s_%(spacing)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
@@ -293,7 +296,7 @@ config.Data.inputDataset =  '%(ana_dataset)s'
 config.Data.inputDBS = 'phys03'
 job_control
 config.Data.publication = False
-config.Data.publishDataName = 'ana_datamc_%(name)s'
+config.Data.publishDataName = 'ana_datamc_%(name)s_%(spacing)s'
 config.Data.outLFNDirBase = '/store/user/cschnaib'
 
 config.Site.storageSite = 'T2_CH_CERN'
@@ -307,50 +310,59 @@ config.Site.storageSite = 'T2_CH_CERN'
         from SUSYBSMAnalysis.Zprime2muAnalysis.goodlumis import *
 
         dataset_details = [
+#            ('SingleMuonRun2015B-Prompt_251162_251499',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409-3aa7688518cb1f1b044caf15b1a9ed05/USER','74X_dataRun2_Prompt_v0','50ns'),
+            ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
+#            ('SingleMuonRun2015B-Prompt_251613_251883',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251613_251883_20150719000207-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
 
+#            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','50ns'),
+#            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','25ns'),
 
-            ('SingleMuonRun2015B-Prompt_251162_251499',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409-3aa7688518cb1f1b044caf15b1a9ed05/USER'),
-            ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER'),
-            ('SingleMuonRun2015B-Prompt_251613_251883',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251613_251883_20150719000207-9996471c14459acaec01707975d1e954/USER'),
-                           
-            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER'),
-
+#             ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+#             ('SingleMuonRun2015D-Prompt_258159_258750',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258159_258750_20151021181222-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
             ]
 
-        lumi_lists = [
+#        lumi_lists = [
 #            'NoLumiMask'
 #            'DCSOnly',
 #            'Run2012PlusDCSOnlyMuonsOnly',
-            'Run2015MuonsOnly',
+#            'Run2015MuonsOnly',
 #            'Run2015',
-            ]
+#            ]
 
-        jobs = []
-        for lumi_name in lumi_lists:
-            ll = eval(lumi_name + '_ll') if lumi_name != 'NoLumiMask' else None
-            for dd in dataset_details:
-                jobs.append(dd + (lumi_name, ll))
+#        jobs = []
+#        for lumi_name in lumi_lists:
+#            ll = eval(lumi_name + '_ll') if lumi_name != 'NoLumiMask' else None
+#            for dd in dataset_details:
+#                jobs.append(dd + (lumi_name, ll))
                 
-        for dataset_name, ana_dataset, lumi_name, lumi_list in jobs:
-            json_fn = 'tmp.json'
-            lumi_list.writeJSON(json_fn)
-            lumi_mask = json_fn
+        for name, ana_dataset, gtag, spacing in dataset_details:
+            print name, gtag, spacing
 
-            name = '%s_%s' % (lumi_name, dataset_name)
-            print name
+            if spacing == '25ns':
+                Run2015MuonsOnly25ns_ll.writeJSON('tmp.json')
+            if spacing == '50ns':
+                Run2015MuonsOnly50ns_ll.writeJSON('tmp.json')
+#            json_fn = 'tmp.json'
+#            lumi_list.writeJSON(json_fn)
+#            lumi_mask = json_fn
+
+#            name = '%s_%s' % (lumi_name, dataset_name)
+#            print name
 
             new_py = open('histos.py').read()
-            new_py += "\nfor_data(process)\n"
+            #new_py += "\nfor_data(process)\n"
+            new_py += "\nprocess.GlobalTag.globaltag = '%s'\n"%(gtag)
             open('histos_crab.py', 'wt').write(new_py)
 
             new_crab_cfg = crab_cfg % locals()
 
             job_control = '''
+#config.Data.runRange = '246908-258432'
 config.Data.splitting = 'LumiBased'
 config.Data.totalUnits = -1
 config.Data.unitsPerJob = 200
 #config.Data.lumiMask = 'https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions15/13TeV/Cert_254833_13TeV_PromptReco_Collisions15_JSON.txt' #runC 50ns
-config.Data.lumiMask = '%(lumi_mask)s' #######
+config.Data.lumiMask = 'tmp.json'
 ''' % locals()
 
             new_crab_cfg = new_crab_cfg.replace('job_control', job_control)
@@ -411,6 +423,7 @@ config.Data.unitsPerJob  = 5000
                     'dy1500'    : (1000,    1500),
                     'dy2000'    : (1500,    2000),
                     'dy3000'    : (2000,    3000),
+                    'dy6000'    : (3000,    6000),
                     #'dy7500'    : (6000,    7500),
                     #'dy8500'    : (8500,    9500),
                     #'dy9500'    : (9500,  100000),
@@ -442,3 +455,15 @@ for pn,p in process.paths.items():
 
 #        if not just_testing:
 #            os.system('rm crabConfig.py histos_crab.py histos_crab.pyc')
+
+
+
+
+
+
+#            ('SingleMuonRun2015D-Prompt_256629_256842',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_256842_20150926113604-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+#            ('SingleMuonRun2015D-Prompt_256843_257819',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256843_257819_20151002140028-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+#            ('SingleMuonRun2015D-Prompt_257820_258157',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_257820_258157_20151004232715-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns')
+
+#            ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v1','25ns'),
+#            ('SingleMuonRun2015D-Prompt_258159_258432',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258159_258432_20151009203706-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v1','25ns'),
