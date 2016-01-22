@@ -15,10 +15,12 @@ ROOT.TH1.AddDirectory(0)
 outfile = ROOT.TFile("whargl.root","recreate")
 iarp=0
 do_tight = 'tight' in sys.argv
-psn = 'plots/nminus1effs'
+#psn = 'plots/nminus1effs'
+psn = 'plots'
+# 'plots' = '/afs/cern.ch/work/c/cschnaib/NMinus1Effs/plots/TAG/'
 if do_tight:
     psn += '_tight'
-ps = plot_saver(psn, size=(600,600), log=False, pdf=True)
+ps = plot_saver(psn, size=(600,600), log=False, pdf=True, name='WaldErr')
 ps.c.SetBottomMargin(0.2)
 
 
@@ -54,11 +56,11 @@ pretty = {
     'NoTkLayers': '# tk lay > 5',
     'NoPxHits': '# px hits > 0',
     'NoMuStns': '# mu segs > 1',
-    'NoDB': '|dB| < 0.2',
+    'NoDB': '|dxy| < 0.2',
     'NoGlbChi2': 'glb #chi^{2}/ndf < 10',
     'NoTkMuon': 'isTrackerMuon',
     'NoMuHits': '# mu hits > 0',
-    'NoMuMatch': '# tk. #mu seg > 1',
+    'NoMuMatch': '# matched stations > 1',
     'NoCosm': 'anti-cosmic',
     'NoTrgMtch': 'HLT match',
     'NoB2B': 'back-to-back',
@@ -66,9 +68,10 @@ pretty = {
     'NoDptPt': 'dpT/pT',
     'NoIso': 'rel. tk. iso.',
     #'data': 'Data, %.1f fb^{-1}',
-    'data': 'Data, %.1f pb^{-1}, MuonOnly',
-    'dataB': 'Data RunB, %.1f pb^{-1}, MuonOnly',
-    'dataCD': 'Data RunC+D, %.1f pb^{-1}, MuonOnly',
+    'data': 'Data, %.1f fb^{-1}, MuonOnly',
+    'dataB': 'Data RunB, %.1f fb^{-1}, MuonOnly',
+    'dataCD': 'Data RunC+D, %.1f fb^{-1}, MuonOnly',
+    'dataBCD': 'Data RunB+C+D, %.1f fb^{-1}, MuonOnly',
     'mcsum_lumi': 'Simulation',
     'mcsum_ref': 'Simulation',
     'mc50m120_lumi': 'Simulation 60 < M < 120 GeV',
@@ -103,6 +106,7 @@ pretty = {
     '60m120_BCD': '60 < m < 120 GeV',
     '60m120_CD': '60 < m < 120 GeV',
     '60m120': '60 < m < 120 GeV',
+    '60m': 'm > 60 GeV',
     '70m110': '70 < m < 110 GeV',
     '120m200': '120 < m < 200 GeV', 
     '200m400': '200 < m < 400 GeV',
@@ -137,10 +141,13 @@ class nm1entry:
         else:
             self.name = sample.name
             self.fn = self.make_fn(self.name)
+            self.partial_weight = sample.partial_weight
         self.prepare_histos()
             
+
     def make_fn(self, name):
-        return 'nminus1_histos/ana_nminus1_%s.root' % name
+        #return 'nminus1_histos/ana_nminus1_%s.root' % name
+        return '/afs/cern.ch/work/c/cschnaib/NMinus1Effs/nminus1_histos/ana_nminus1_%s.root' % name
     
     def prepare_histos(self):
         self.histos = {}
@@ -156,14 +163,20 @@ class nm1entry:
         self.histos = {}
         for nminus1 in nminus1s + ['NoNo']:
             hs = []
-            print '%20s%20s%21s%20s%20s' % ('cut', 'sampe name', 'partial weight', 'scale(ref)','scale(lumi)')
+            #print '%20s%20s%21s%20s%20s' % ('cut', 'sampe name', 'partial weight', 'scale(ref)','scale(lumi)')
             for sample in samples:
                 f = ROOT.TFile(self.make_fn(sample.name))
                 if 'wjets' in sample.name:
-                    h = f.Get(nminus1).Get('DimuonMassVertexConstrainedWeight').Clone()
+                    if nminus1 == 'NoVtxProb':
+                        h = f.Get(nminus1).Get('dileptonMassWeight').Clone()
+                    else:
+                        h = f.Get(nminus1).Get('DimuonMassVertexConstrainedWeight').Clone()
                 else:
-                    h = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()
-                print '%20s%20s%20.15f%20f%20f' % (nminus1, sample.name, sample.partial_weight, refN/refXS, lumiCD)
+                    if nminus1 == 'NoVtxProb':
+                        h = f.Get(nminus1).Get('dileptonMass').Clone()
+                    else:
+                        h = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()
+                #print '%20s%20s%20.15f%20f%20f' % (nminus1, sample.name, sample.partial_weight, refN/refXS, lumiBCD)
                 # partial_weight = cross_section * k_factor / Nevents
                 if lumi>0:
                     # scale to luminosity for comparision of single dataset to MC
@@ -184,29 +197,43 @@ class nm1entry:
 #data, lumi = nm1entry('data', True), 242.8 # lumi in pb
 nolumi = -1
 lumiB = 50.7 
-lumiCD = 1052.24 
-lumiD = 1004.99
+lumiCD = 2619.44
+lumiD = 2572.19
+#lumiBCD = 2660.14
+lumiBCD = 2800
 dataB = nm1entry('dataB', True, lumiB)#lumiB )
 dataCD = nm1entry('dataCD', True, lumiCD)#lumiCD )
+dataBCD = nm1entry('dataBCD', True, lumiBCD)#lumiCD )
 #dataD = nm1entry('dataD', True, lumiD )
-mcsum_lumi = nm1entry('mcsum_lumi',False,lumiCD)
+mcsum_lumi = nm1entry('mcsum_lumi',False,lumiBCD)
 mcsum_ref = nm1entry('mcsum_ref',False,nolumi)
-mc50m120_lumi = nm1entry('mc50m120_lumi',False,lumiCD)
-#mc50m120_ref = nm1entry('mc50m120_ref',False,nolumi)
-mc120m_lumi = nm1entry('mc120m_lumi',False,lumiCD)
-#mc120m_ref = nm1entry('mc120m_ref',False,nolumi)
+mc50m_lumi = nm1entry('mc50m_lumi',False,lumiBCD)
+mc50m_ref = nm1entry('mc50m_ref',False,nolumi)
+mc50m120_lumi = nm1entry('mc50m120_lumi',False,lumiBCD)
+mc50m120_ref = nm1entry('mc50m120_ref',False,nolumi)
+mc120m_lumi = nm1entry('mc120m_lumi',False,lumiBCD)
+mc120m_ref = nm1entry('mc120m_ref',False,nolumi)
 #mc800m2300_lumi = nm1entry('mc800m2300_lumi',False,lumiCD)
 #mc800m2300_ref = nm1entry('mc800m2300_ref',False,nolumi)
 #mc400m2300_lumi = nm1entry('mc400m2300_lumi',False,lumiCD)
 #mc400m2300_ref = nm1entry('mc400m2300_ref',False,nolumi)
 
 from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
-raw_samples = [dy50to120,DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy1400to2300,dy2300to3500,DY3500to4500Powheg,dy4500to6000,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets,inclmu15,zpsi5000]
+# old startup alignment
+#raw_samples = [dy50to120,DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy1400to2300,dy2300to3500,DY3500to4500Powheg,dy4500to6000,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets,inclmu15,zpsi5000,qcd50to80,qcd80to120,qcd120to170,qcd170to300,qcd300to470,qcd470to600,qcd600to800,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]
 #raw_samples = [dy50to120,DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy1400to2300,dy2300to3500,DY3500to4500Powheg,dy4500to6000,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,zpsi5000]
-raw_samples50m120 = [dy50to120,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets]#,inclmu15]
-raw_samples120m = [DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy2300to3500,DY3500to4500Powheg,dy4500to6000,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets]#inclmu15
-#raw_samples800m2300 = [DY800to1400Powheg,dy1400to2300,ttbar_pow]
-#raw_samples400m2300 = [DY400to800Powheg,DY800to1400Powheg,dy1400to2300,ttbar_pow]
+#raw_samples50m120 = [dy50to120,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets,qcd50to80,qcd80to120,qcd120to170,qcd170to300,qcd300to470,qcd470to600,qcd600to800,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#,inclmu15]
+#raw_samples120m = [DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy2300to3500,DY3500to4500Powheg,dy4500to6000,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets,qcd50to80,qcd80to120,qcd120to170,qcd170to300,qcd300to470,qcd470to600,qcd600to800,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#inclmu15
+#qcd120to170,qcd600to800
+# new startup alignment
+
+raw_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,wjets,inclmu15,zpsi5000,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#,dy6000_s
+raw_samples50m120 = [dy50to120_s,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#,inclmu15],dy6000_s
+raw_samples120m = [dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#inclmu15
+raw_samples50m = [dy50to120,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s]#,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#inclmu15,dy6000_s
+
+#raw_samples800m2300 = [dy800to1400_s,dy1400to2300,ttbar_pow]
+#raw_samples400m2300 = [dy400to800_s,dy800to1400_s,dy1400to2300,ttbar_pow]
 
 #raw_samples = [dy50to120, ttbar_pow]
 #raw_samples = [dy50, ttbar, ww_incl, zz_incl, wz, dy50to120, ttbar_pow, dy50_startup, ttbar_startup]
@@ -217,23 +244,35 @@ refN = dy50to120.nevents
 
 # All MC samples
 # lumi
-mcsum_lumi.prepare_histos_sum(raw_samples,lumiCD)
-mc_samples_lumi = [nm1entry(sample,False,lumiCD) for sample in raw_samples]
-for mc_sample in mc_samples_lumi:
+#mcsum_lumi.prepare_histos_sum(raw_samples,lumiCD)
+mc_samples_sum_lumi = [nm1entry(sample,False,lumiBCD) for sample in raw_samples]
+for mc_sample in mc_samples_sum_lumi:
     exec '%s = mc_sample' % mc_sample.name
-## ref
+# ref
 #mcsum_ref.prepare_histos_sum(raw_samples, nolumi) 
-#mc_samples_ref = [nm1entry(sample,False,nolumi) for sample in raw_samples]
+#mc_samples_sum_ref = [nm1entry(sample,False,nolumi) for sample in raw_samples]
+#for mc_sample in mc_samples_ref:
+#    exec '%s = mc_sample' % mc_sample.name
+#
+# m > 50 GeV
+# lumi
+#mc50m_lumi.prepare_histos_sum(raw_samples50m, lumiBCD)
+mc_samples_50m_lumi = [nm1entry(sample,False,lumiBCD) for sample in raw_samples50m]
+for mc_sample in mc_samples_50m_lumi:
+    exec '%s = mc_sample' % mc_sample.name
+# ref
+#mc50m_ref.prepare_histos_sum(raw_samples50m, nolumi)
+#mc_samples_50m_ref = [nm1entry(sample,False,nolumi) for sample in raw_samples50m]
 #for mc_sample in mc_samples_ref:
 #    exec '%s = mc_sample' % mc_sample.name
 #
 # 50 < m < 120 GeV
 # lumi
-mc50m120_lumi.prepare_histos_sum(raw_samples50m120, lumiCD)
-mc_samples_lumi = [nm1entry(sample,False,lumiCD) for sample in raw_samples50m120]
-for mc_sample in mc_samples_lumi:
+#mc50m120_lumi.prepare_histos_sum(raw_samples50m120, lumiBCD)
+mc_samples_50m120_lumi = [nm1entry(sample,False,lumiBCD) for sample in raw_samples50m120]
+for mc_sample in mc_samples_50m120_lumi:
     exec '%s = mc_sample' % mc_sample.name
-## ref
+# ref
 #mc50m120_ref.prepare_histos_sum(raw_samples50m120, nolumi)
 #mc_samples_ref = [nm1entry(sample,False,nolumi) for sample in raw_samples50m120]
 #for mc_sample in mc_samples_ref:
@@ -241,16 +280,16 @@ for mc_sample in mc_samples_lumi:
 #
 # M > 120 GeV
 # lumi
-mc120m_lumi.prepare_histos_sum(raw_samples120m, lumiCD)
-mc_samples120m_lumi = [nm1entry(sample,False,lumiCD) for sample in raw_samples120m]
-for mc_sample in mc_samples120m_lumi:
+#mc120m_lumi.prepare_histos_sum(raw_samples120m, lumiBCD)
+mc_samples_120m_lumi = [nm1entry(sample,False,lumiBCD) for sample in raw_samples120m]
+for mc_sample in mc_samples_120m_lumi:
     exec '%s = mc_sample' % mc_sample.name
-## ref
+# ref
 #mc120m_ref.prepare_histos_sum(raw_samples120m, nolumi)
 #mc_samples120m_ref = [nm1entry(sample,False,nolumi) for sample in raw_samples120m]
 #for mc_sample in mc_samples120m_ref:
 #    exec '%s = mc_sample' % mc_sample.name
-#
+
 ## 800 < m < 2300 GeV
 ## lumi
 #mc800m2300_lumi.prepare_histos_sum(raw_samples800m2300, lumiCD)
@@ -299,6 +338,7 @@ mass_ranges = [
 #    ('zpsi5000_1m3TeV',(1e3,3e3)),
 #    ('zpsi5000_3mTeV',(3e3,1e9)),
      ('60m120',(60,120)),
+#     ('60m',(60,2000)),
      ('120m',(120,2000)),
     ]
 
@@ -314,8 +354,15 @@ to_use = {
 #    '50m':    [data, dy50to120],
 #    '70m':    [data, dy50to120]
 #    '120m_BCD':   [dataB,dataCD,mc120m_ref],
-    '120m':   [dataCD,mc120m_lumi],
-    '60m120':   [dataCD,mc50m120_lumi],
+#    '120m':   [dataCD,mc120m_lumi],
+#    '60m120':   [dataCD,mc50m120_lumi],
+#    '60m120':   [dataBCD,mc_samples_50m120_lumi],
+    '60m120':   [dataBCD,mc_samples_50m120_lumi],
+#    '60m':      [dataCD,mc50m_lumi],
+#    '120m':   [dataCD,mc120m_ref],
+#    '120m':   [dataBCD,mc_samples_120m_lumi],
+    '120m':   [dataBCD,mc_samples_120m_lumi],
+#    '60m120':   [dataCD,mc50m120_ref],
 #    '60m120_BCD':  [dataB,dataCD, mc50m120_ref], #, zmumu, ttbar],#powheg
 #    'all_lumi': [dataCD,mc120m_lumi],
 #    'all_ref': [dataCD,mc120m_ref],
@@ -337,6 +384,7 @@ styles = {
 #    'data':      (ROOT.kBlack,     -1),
     'dataB':      (ROOT.kBlack,     -1),
     'dataCD':      (ROOT.kBlack,     -1),
+    'dataBCD':      (ROOT.kBlack,     -1),
 #    'zmumu':     (ROOT.kRed,     3001),
 #    'dy50':      (ROOT.kBlue,     1001),
 #    'dy50_startup':      (ROOT.kViolet+2,     3001),
@@ -351,6 +399,8 @@ styles = {
 #    'inclmu15':  (28,            3002),
     'mc50m120_lumi':     (ROOT.kGreen+2, 1001),
     'mc50m120_ref':     (ROOT.kGreen+2, 1001),
+    'mc50m_lumi':     (ROOT.kGreen+2, 1001),
+    'mc50m_ref':     (ROOT.kGreen+2, 1001),
     'mc120m_lumi':     (ROOT.kGreen+2, 1001),
     'mc120m_ref':     (ROOT.kGreen+2, 1001),
     'mc800m2300_lumi':     (ROOT.kGreen+2, 1001),
@@ -370,6 +420,8 @@ styles = {
     'zpsi5000_m1TeV':    (ROOT.kBlue, 1001),
     'zpsi5000_1m3TeV':    (ROOT.kBlue, 1001),
     'zpsi5000_3mTeV':    (ROOT.kBlue, 1001),
+    'mc_samples_50m120_lumi': (ROOT.kGreen+2,1001),
+    'mc_samples_120m_lumi': (ROOT.kGreen+2,1001),
     }
 
 ymin = {
@@ -380,6 +432,7 @@ ymin = {
 #    '50m':    0.6,
 #    '70m':    0.6,
 #    '60m120_CD':  0.8,
+    '60m':  0.6,
     '60m120':  0.7,
 #    '60m120_BCD':  0.8,
 #    '120m_BCD':    0.5,
@@ -403,6 +456,35 @@ ymin = {
 #global_ymin = 0.
 global_ymin = None
 
+
+def table_wald(entry, mass_range):
+    print entry.name
+    hnum = entry.histos['NoNo']
+    mlo, mhi = mass_range
+    num = get_integral(hnum, mlo, mhi, integral_only=True, include_last_bin=False)
+    print 'mass range %5i-%5i:' % mass_range
+    print 'numerator:', num
+    print '%20s%20s%21s%25s%26s' % ('cut', 'denominator', 'efficiency', '- 68% CL-CP +','68% CL-Wald')
+    for nminus1 in nminus1s:
+        hden = entry.histos[nminus1]
+        den = get_integral(hden, mlo, mhi, integral_only=True, include_last_bin=False)
+        if num==0 and den==0:
+            eff = 0
+            errw = 0
+        else:
+            eff = float(num)/den
+            errw = wald_binomial_err2(eff, 1, den)**0.5
+        ecp,lcp,hcp = clopper_pearson(num, den)
+        print '%20s%20f%20f%15f%15f%23f' % (nminus1, den, eff, eff-lcp, hcp-eff, errw)
+        print '%20s%20f%20f%15f%15f%15f%16f' % (nminus1, den, eff, lcp, hcp, eff-errw, eff+errw)
+        print ' '
+    print '---------------------------------------------'
+
+def print_wald_eff(y,eyl,eyh):
+    print 'MC Sum'
+    for i,nminus1 in enumerate(nminus1s):
+        print nminus1, y[i], eyl[i], eyh[i]
+
 def table(entry, mass_range):
     print entry.name
     hnum = entry.histos['NoNo']
@@ -415,7 +497,7 @@ def table(entry, mass_range):
         hden = entry.histos[nminus1]
         den = get_integral(hden, mlo, mhi, integral_only=True, include_last_bin=False)
         e,l,h = clopper_pearson(num, den)
-        print '%20s%20f%20f%15f%15f' % (nminus1, den, e, l, h)
+        print '%20s%20f%20f%15f%15f' % (nminus1, den, e, e-l, h-e)
 
 ROOT.gStyle.SetTitleX(0.25)
 ROOT.gStyle.SetTitleY(0.50)
@@ -424,7 +506,7 @@ for name, mass_range in mass_ranges:
     pretty_name = pretty[name]
     print name, pretty_name
 
-    lg = ROOT.TLegend(0.25, 0.21, 0.81, 0.44)
+    lg = ROOT.TLegend(0.25, 0.21, 0.91, 0.44)
     lg.SetTextSize(0.03)
     lg.SetFillColor(0)
     lg.SetBorderSize(1)
@@ -433,41 +515,62 @@ for name, mass_range in mass_ranges:
     effs = []
     
     for entry in to_use[name]:
-        table(entry, mass_range)
-        color, fill = styles[entry.name]
 
         l = len(nminus1s)
-        nminus1_num = ROOT.TH1F('num', '', l, 0, l)
-        nminus1_den = ROOT.TH1F('den', '', l, 0, l)
-
-        hnum = entry.histos['NoNo']
-        num = get_integral(hnum, *mass_range, integral_only=True, include_last_bin=False)
-        for i,nminus1 in enumerate(nminus1s):
-            hden = entry.histos[nminus1]
-            den = get_integral(hden, *mass_range, integral_only=True, include_last_bin=False)
-            nminus1_num.SetBinContent(i+1, num)
-            nminus1_den.SetBinContent(i+1, den)
-
-        eff = binomial_divide(nminus1_num, nminus1_den)
+        if not isinstance(entry,(list,tuple)) and 'data' in entry.name:
+            table(entry, mass_range)
+            color, fill = styles[entry.name]
+            nminus1_num = ROOT.TH1F('num', '', l, 0, l)
+            nminus1_den = ROOT.TH1F('den', '', l, 0, l)
+            hnum = entry.histos['NoNo']
+            num = get_integral(hnum, *mass_range, integral_only=True, include_last_bin=False)
+            for i,nminus1 in enumerate(nminus1s):
+                hden = entry.histos[nminus1]
+                den = get_integral(hden, *mass_range, integral_only=True, include_last_bin=False)
+                nminus1_num.SetBinContent(i+1, num)
+                nminus1_den.SetBinContent(i+1, den)
+            eff,ycp,eylcp,eyhcp = binomial_divide(nminus1_num, nminus1_den)
+        else:
+            color = ROOT.kGreen+2
+            fill = 1001
+            nMC = len(entry)
+            num = []
+            pw = []
+            den = []
+            for i, mc in enumerate(entry):
+                #table_wald(mc, mass_range)
+                den.append([])
+                hnum = mc.histos['NoNo']
+                num.append(get_integral(hnum, *mass_range, integral_only=True, include_last_bin=False))
+                pw.append(mc.partial_weight * lumiCD)
+                for j, nminus1 in enumerate(nminus1s):
+                    hden = mc.histos[nminus1]
+                    den[i].append(get_integral(hden, *mass_range, integral_only=True, include_last_bin=False))
+                    #if den[i][j]==0 and num[i]==0:
+                    #    print mc.name, nminus1
+            nm1Temp = ROOT.TH1F('temp','',l,0,l)
+            eff,y,eyl,eyh = eff_wald(num, den, l, nMC, pw, nm1Temp)
+            print_wald_eff(y,eyl,eyh)
         eff.SetTitle(pretty_name)
         eff.GetYaxis().SetRangeUser(global_ymin if global_ymin is not None else ymin[name], 1.01)
         eff.GetXaxis().SetTitle('cut')
         eff.GetYaxis().SetLabelSize(0.027)
         eff.GetYaxis().SetTitle('n-1 efficiency')
-        if 'data' in entry.name:
+        if not isinstance(entry,(list,tuple)) and 'data' in entry.name:
             draw = 'P'
             eff.SetLineColor(color)
             eff.SetMarkerStyle(20)
             eff.SetMarkerSize(1.05)
             eff.SetMarkerColor(color)
             #lg.AddEntry(eff, pretty.get(entry.name, entry.name) % (lumi/1000.), 'LP')
-            lg.AddEntry(eff, pretty.get(entry.name, entry.name) % (entry.lumi/1.), 'LP')
+            lg.AddEntry(eff, pretty.get(entry.name, entry.name) % (entry.lumi/1000.), 'LP')
         else:
             draw = '2'
             eff.SetLineColor(color)
             eff.SetFillColor(color)
             eff.SetFillStyle(fill)
-            lg.AddEntry(eff, pretty.get(entry.name, entry.name), 'LF')
+            #lg.AddEntry(eff, pretty.get(entry.name, entry.name), 'LF')
+            lg.AddEntry(eff, 'Simulation', 'LF')
         draw += same
         eff.Draw(draw)
         effs.append(eff)
@@ -481,5 +584,5 @@ for name, mass_range in mass_ranges:
         iarp+=1
 
     lg.Draw()
-    ps.save(name)
+    ps.save(name+"_WaldErr")
     print

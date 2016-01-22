@@ -112,10 +112,10 @@ if __name__ == '__main__' and 'submit' in sys.argv:
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_nminus1_%(name)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
+config.General.requestName = 'ana_nminus1_%(name)s_jobNtest'
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'nminus1effs.py'
 #config.JobType.priority = 1
@@ -147,7 +147,7 @@ config.Site.storageSite = 'T2_CH_CERN'
 #            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','50ns'),
 #             ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','25ns'),
 
-#              ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+              ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
               ('SingleMuonRun2015D-Prompt_258159_258750',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258159_258750_20151021181222-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
             ]
 
@@ -188,7 +188,7 @@ config.Data.lumiMask = 'tmp.json' ####### use lumiMask as defined in goodlumis.p
         crab_cfg = crab_cfg.replace('job_control','''
 config.Data.splitting = 'EventAwareLumiBased'
 config.Data.totalUnits = -1
-config.Data.unitsPerJob  = 10000
+config.Data.unitsPerJob  = 1000
 ''')
 
         from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
@@ -199,8 +199,7 @@ config.Data.unitsPerJob  = 10000
         #samples =[dy50, dy120, dy200, dy400, dy800, dy1400, dy2300, dy3500, dy4500, dy6000, dy7500, dy8500, dy9500, zpsi5000, ttbar, inclmu15]
         #samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,dy6000_s]#,zpsi5000_s]
         #samples = [qcd50to80,qcd80to120,qcd120to170,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]
-        #samples = [zpsi5000_s,zpsi5000]
-        samples = [zpsi5000_s,dy120to200_s,dy800to1400_s,dy3500to4500_s,qcd50to80,qcd80to120,qcd1800to2400]
+        samples = [qcd120to170]
         for sample in samples:
             print sample.name
             open('crabConfig.py', 'wt').write(crab_cfg % sample)
@@ -210,7 +209,7 @@ config.Data.unitsPerJob  = 10000
                 os.system('crab submit -c crabConfig.py --dryrun')
 
         if not just_testing:
-            os.system('rm crabConfig.py crabConfig.pyc')
+            os.system('rm crabConfig.py nminus1effs_crab.py nminus1effs_crab.pyc tmp.json crabConfig.pyc')
 
 
 

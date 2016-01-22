@@ -8,4 +8,5 @@ HistosFromPAT = cms.EDAnalyzer('Zprime2muHistosFromPAT',
                                vertex_src = cms.InputTag('offlinePrimaryVertices'),
                                use_bs_and_pv = cms.bool(True),
                                useMadgraphWeight = cms.bool(False),
+                               #genEventInfo = cms.untracked.InputTag('generator'),
                                )

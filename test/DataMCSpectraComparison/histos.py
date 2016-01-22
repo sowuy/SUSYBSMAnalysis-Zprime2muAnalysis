@@ -12,6 +12,7 @@ process.source.fileNames =[#'file:./pat.root',
 
                            ]
 process.maxEvents.input = -1
+# running locally
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v0'## for Run B data
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v1'## for Run C data
 #process.GlobalTag.globaltag = '74X_dataRun2_Prompt_v2'## for Run D data
@@ -280,11 +281,10 @@ f.close()
 
 if __name__ == '__main__' and 'submit' in sys.argv:
     crab_cfg = '''
-
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_datamc_%(name)s_%(spacing)s'
+config.General.requestName = 'ana_datamc_%(name)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
@@ -295,13 +295,15 @@ config.JobType.psetName = 'histos_crab.py'
 config.Data.inputDataset =  '%(ana_dataset)s'
 config.Data.inputDBS = 'phys03'
 job_control
+config.Data.publishDataName = 'ana_datamc_%(name)s'
 config.Data.publication = False
-config.Data.publishDataName = 'ana_datamc_%(name)s_%(spacing)s'
 config.Data.outLFNDirBase = '/store/user/cschnaib'
 
 config.Site.storageSite = 'T2_CH_CERN'
 
 '''
+#config.General.requestName = 'ana_datamc_%(name)s_%(spacing)s'
+#config.Data.publishDataName = 'ana_datamc_%(name)s_%(spacing)s'
     
     just_testing = 'testing' in sys.argv
         
@@ -311,7 +313,7 @@ config.Site.storageSite = 'T2_CH_CERN'
 
         dataset_details = [
 #            ('SingleMuonRun2015B-Prompt_251162_251499',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409-3aa7688518cb1f1b044caf15b1a9ed05/USER','74X_dataRun2_Prompt_v0','50ns'),
-            ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
+#            ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
 #            ('SingleMuonRun2015B-Prompt_251613_251883',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251613_251883_20150719000207-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
 
 #            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','50ns'),
@@ -384,17 +386,10 @@ config.Data.lumiMask = 'tmp.json'
             os.system('rm crabConfig.py histos_crab.py histos_crab.pyc tmp.json')
 
     if 'no_mc' not in sys.argv:
-        # Set crab_cfg for MC.
-        crab_cfg = crab_cfg.replace('job_control','''
-config.Data.splitting = 'EventAwareLumiBased'
-#config.Data.splitting = 'FileBased'
-config.Data.totalUnits = -1
-config.Data.unitsPerJob  = 5000
-#config.Data.unitsPerJob  = 100
-    ''')
 
-        from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
-
+        from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
+        #samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,]#,dy4500to6000_s,dy6000_s,zpsi5000_s]
+        samples = [dy3500to4500_s]
         combine_dy_samples = len([x for x in samples if x.name in []]) > 0
         #combine_dy_samples = len([x for x in samples if x.name in ['dy50','dy100-200', 'dy200-400', 'dy400-500','dy500-700', 'dy700-800']]) > 0
         print 'combine_dy_samples:', combine_dy_samples
@@ -440,11 +435,18 @@ for pn,p in process.paths.items():
     setattr(process, pn, cms.Path(process.DYGenMassFilter*p._seq))
 ''' % locals()
 
+            crab_cfg = crab_cfg.replace('job_control','''
+config.Data.splitting = 'EventAwareLumiBased'
+#config.Data.splitting = 'FileBased'
+config.Data.totalUnits = -1
+config.Data.unitsPerJob  = 5000
+#config.Data.unitsPerJob  = 100
+''')
             open('histos_crab.py', 'wt').write(new_py)
 
             open('crabConfig.py', 'wt').write(crab_cfg % sample)
             if not just_testing:
-                os.system('crab submit --dryrun -c crabConfig.py')
+                os.system('crab submit -c crabConfig.py')
             else:
                 cmd = 'diff histos.py histos_crab.py | less'
                 print cmd
@@ -453,8 +455,8 @@ for pn,p in process.paths.items():
                 print cmd
                 os.system(cmd)
 
-#        if not just_testing:
-#            os.system('rm crabConfig.py histos_crab.py histos_crab.pyc')
+        if not just_testing:
+            os.system('rm crabConfig.py crabConfig.pyc histos_crab.py histos_crab.pyc')
 
 
 

@@ -7,6 +7,8 @@ from itertools import combinations
 from FWCore.PythonUtilities.LumiList import LumiList
 from SUSYBSMAnalysis.Zprime2muAnalysis.hadd import hadd
 from SUSYBSMAnalysis.Zprime2muAnalysis.tools import big_warn
+from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
+mcList = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy4500to6000_s,dy6000_s,zpsi5000_s]
 
 just_testing = 'testing' in sys.argv
 if just_testing:
@@ -58,25 +60,29 @@ elif cmd == 'maketagdirs':
     do('rm data mc plots')
     for which in ['data', 'mc', 'plots']:
         #d = '~/nobackup/zp2mu_ana_datamc_%s/%s' % (which,extra)
-        d = './zp2mu_ana_datamc_%s/%s' % (which,extra)
+        #d = './zp2mu_ana_datamc_%s/%s' % (which,extra)
+        d = '/afs/cern.ch/work/c/cschnaib/DataMCSpectraComparision/%s/%s' % (which,extra)
         do('mkdir -p %s' % d)
         do('ln -s %s %s' % (d, which))
 
 elif cmd == 'checkevents':
-    from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
-    for sample in samples:
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    #for sample in samples:
+    for sample in mcList:
         print sample.name
         do('grep TrigReport crab/crab_datamc_%s/res/*stdout | grep \' p$\' | sed -e "s/ +/ /g" | awk \'{ s += $4; t += $5; u += $6; } END { print "summary: total: ", s, "passed: ", t, "failed: ", u }\'' % sample.name)
 
 elif cmd == 'checkstatus':
-    from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
-    for sample in samples:
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    #for sample in samples:
+    for sample in mcList:
         print sample.name
         do('crab status -d crab/crab_ana_datamc_%(name)s ' % sample)
 
 elif cmd == 'getoutput':
-    from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
-    for sample in samples:
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    #for sample in samples:
+    for sample in mcList:
         print sample.name
         do('crab getoutput -d crab/crab_ana_datamc_%(name)s ' % sample)
 
@@ -87,8 +93,9 @@ elif cmd == 'getoutput':
 
 elif cmd == 'anadatasets':
     print 'paste this into python/MCSamples.py:\n'
-    from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
-    for sample in samples:
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    #for sample in samples:
+    for sample in mcList:
         ana_dataset = None
         fn = 'crab/publish_logs/publish.crab_datamc_%s' % sample.name
         # yay fragile parsing
@@ -101,9 +108,10 @@ elif cmd == 'anadatasets':
         print '%s.ana_dataset = "%s"' % (sample.name, ana_dataset)
 
 elif cmd == 'gathermc':
-    from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
     extra = '_' + extra[0] if extra else ''
-    for sample in samples:
+    #for sample in samples:
+    for sample in mcList:
         name = sample.name
         pattern = 'crab/crab_ana%(extra)s_datamc_%(name)s/results/zp2mu_histos*root' % locals()
         fn = 'ana_datamc_%(name)s.root' % locals()
@@ -120,7 +128,7 @@ elif cmd == 'gatherdata':
     for lumi_mask in lumi_masks:
         print lumi_mask
 #        dirs = glob.glob('crab/crab_ana_datamc_%s_ExpressPhysicsRun2015B*' % lumi_mask)
-        dirs = glob.glob('crab/crab_ana_datamc_%s_SingleMuonRun2015C*' % lumi_mask)
+        dirs = glob.glob('crab/crab_ana_datamc_SingleMuonRun2015*')# % lumi_mask)
 #        dirs = glob.glob('crab/crab_ana_datamc_%s_ExpressPhysicsRun2015B-Express_251161_251252' % lumi_mask)
         files = []
         for d in dirs:
