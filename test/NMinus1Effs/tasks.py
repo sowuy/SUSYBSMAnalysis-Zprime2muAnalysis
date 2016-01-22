@@ -7,8 +7,8 @@ from itertools import combinations
 from FWCore.PythonUtilities.LumiList import LumiList
 from SUSYBSMAnalysis.Zprime2muAnalysis.hadd import hadd
 from SUSYBSMAnalysis.Zprime2muAnalysis.tools import big_warn
-from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
-mcList = []
+from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
+mcList = [zpsi5000_s,dy120to200_s,dy800to1400_s,qcd50to80,qcd80to120]
 
 just_testing = 'testing' in sys.argv
 if just_testing:
@@ -57,7 +57,7 @@ if cmd == 'setdirs':
 
 elif cmd == 'maketagdirs':
     extra = extra[0]
-    do('rm data mc plots histos')
+    do('rm data mc plots')
     #for which in ['data', 'mc', 'plots']:
         #d = '~/nobackup/zp2mu_ana_nminus1_%s/%s' % (which,extra)
         #d = './zp2mu_ana_nminus1_%s/%s' % (which,extra)
