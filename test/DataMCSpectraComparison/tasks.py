@@ -8,7 +8,17 @@ from FWCore.PythonUtilities.LumiList import LumiList
 from SUSYBSMAnalysis.Zprime2muAnalysis.hadd import hadd
 from SUSYBSMAnalysis.Zprime2muAnalysis.tools import big_warn
 from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
-mcList = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy4500to6000_s,dy6000_s,zpsi5000_s]
+#mcList = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy4500to6000_s,dy6000_s,zpsi5000_s]
+#mcList =[wz,tWtop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]
+#mcList =[ttbar_pow,ww_incl,zz_incl,tWantitop]
+mcList = [dy50to120_s, dy120to200_s, dy200to400_s, dy400to800_s, dy800to1400_s, dy1400to2300_s, dy2300to3500_s, dy3500to4500_s, dy4500to6000_s,
+                    ttbar_pow_s, ww_incl_s, wz_s, zz_incl_s, tWtop_s, tWantitop_s,
+                    zpsi5000_s] # dy6000_s, wjets_s, 
+dataList = ['SingleMuonRun2015B-rerecoPrompt_250985_253888_50ns',
+            'SingleMuonRun2015C-Prompt_253888_254914_50ns','SingleMuonRun2015C-Prompt_253888_254914_25ns',
+            'SingleMuonRun2015D-Prompt_256629_258158_25ns','SingleMuonRun2015D-Prompt_258159_258750_25ns',
+            'SingleMuonRun2015D-Prompt_259430_259891_25ns','SingleMuonRun2015D-Prompt_259892_260426_25ns',
+            'SingleMuonRun2015D-Prompt_260427_260627_25ns']#'SingleMuonRun2015D-Prompt_258751_259429_25ns',
 
 just_testing = 'testing' in sys.argv
 if just_testing:
@@ -77,14 +87,21 @@ elif cmd == 'checkstatus':
     #for sample in samples:
     for sample in mcList:
         print sample.name
-        do('crab status -d crab/crab_ana_datamc_%(name)s ' % sample)
+        do('crab status -d crab/crab_ana_datamc_%(name)s25 ' % sample)
+
+elif cmd == 'resubmit':
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    #for sample in samples:
+    for sample in mcList:
+        print sample.name
+        do('crab resubmit -d crab/crab_ana_datamc_%(name)s ' % sample)
 
 elif cmd == 'getoutput':
     #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
     #for sample in samples:
     for sample in mcList:
         print sample.name
-        do('crab getoutput -d crab/crab_ana_datamc_%(name)s ' % sample)
+        do('crab getoutput -d crab/crab_ana_datamc_%(name)s25 ' % sample)
 
 #elif cmd == 'publishmc':
 #    from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
@@ -113,18 +130,64 @@ elif cmd == 'gathermc':
     #for sample in samples:
     for sample in mcList:
         name = sample.name
-        pattern = 'crab/crab_ana%(extra)s_datamc_%(name)s/results/zp2mu_histos*root' % locals()
+        pattern = 'crab/crab_ana%(extra)s_datamc_%(name)s25/results/zp2mu_histos*root' % locals()
         fn = 'ana_datamc_%(name)s.root' % locals()
         n = len(glob.glob(pattern))
         if n == 0:
             big_warn('no files matching %s' % pattern)
         else:
-            files = glob.glob('crab/crab_ana%(extra)s_datamc_%(name)s/results/zp2mu_histos*root' % locals())
+            files = glob.glob('crab/crab_ana%(extra)s_datamc_%(name)s25/results/zp2mu_histos*root' % locals())
             hadd('mc/ana_datamc_%s.root' % name, files)
+            #hadd('/afs/cern.ch/work/c/cschnaib/MuonPtScale/histos/ana_datamc_%s.root' % name, files)
+
+elif cmd == 'clearmcroot_test':
+    #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+    extra = '_' + extra[0] if extra else ''
+    #for sample in samples:
+    for sample in mcList:
+        name = sample.name
+        print sample.name
+        do('rm crab/crab_ana%(extra)s_datamc_%(name)s25/results/zp2mu_histos*root' % locals())
+
+elif cmd == 'checkdata_test':
+    extra = (extra[0] + '_') if extra else ''
+    for name in dataList:
+        do('crab status -d crab/crab_ana%(extra)s_datamc_%(name)s/' %locals())
+
+elif cmd == 'getoutputdata_test':
+    extra = (extra[0] + '_') if extra else ''
+    for name in dataList:
+        do('crab getoutput -d crab/crab_ana%(extra)s_datamc_%(name)s/' %locals())
+
+elif cmd == 'reportdata_test':
+    extra = (extra[0] + '_') if extra else ''
+    for name in dataList:
+        do('crab report -d crab/crab_ana%(extra)s_datamc_%(name)s/' % locals())
+
+elif cmd == 'gatherdata_test':
+    extra = (extra[0] + '_') if extra else ''
+    for name in dataList:
+        pattern = 'crab/crab_ana%(extra)s_datamc_%(name)s/results/zp2mu_histos*root' %locals()
+        fn = 'ana_datamc_%(name)s.root' %locals()
+        n = len(glob.glob(pattern))
+        if n==0:
+            big_warn('no files matching %s' % pattern)
+        else:
+            files = glob.glob('crab/crab_ana%(extra)s_datamc_%(name)s/results/zp2mu_histos*root' % locals())
+            hadd('mc/ana_datamc_%s.root' %name, files)
+
+elif cmd == 'getlumidata_test':
+    extra = (extra[0] + '_') if extra else ''
+    for name in dataList:
+        do('brilcalc lumi --normtag /afs/cern.ch/user/c/cmsbril/public/normtag_json/OfflineNormtagV1.json -i crab/crab_ana%(extra)s_datamc_%(name)s/results/lumiSummary.json > lumi/%(name)s.lumi' % locals())
+
+elif cmd == 'cleardata_test':
+    extra = (extra[0] +'_') if extra else ''
+    for name in dataList:
+        do('rm crab/crab_ana%(extra)s_datamc_%(name)s/results/zp2mu_histos*root' % locals())
 
 elif cmd == 'gatherdata':
     extra = (extra[0] + '_') if extra else ''
-
     for lumi_mask in lumi_masks:
         print lumi_mask
 #        dirs = glob.glob('crab/crab_ana_datamc_%s_ExpressPhysicsRun2015B*' % lumi_mask)
