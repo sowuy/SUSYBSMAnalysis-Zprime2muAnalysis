@@ -284,7 +284,7 @@ if __name__ == '__main__' and 'submit' in sys.argv:
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_datamc_%(name)s'
+config.General.requestName = 'ana_datamc_%(name)s_%(spacing)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
@@ -295,15 +295,15 @@ config.JobType.psetName = 'histos_crab.py'
 config.Data.inputDataset =  '%(ana_dataset)s'
 config.Data.inputDBS = 'phys03'
 job_control
-config.Data.publishDataName = 'ana_datamc_%(name)s'
+config.Data.outputDatasetTag = 'ana_datamc_%(name)s_%(spacing)s'
 config.Data.publication = False
 config.Data.outLFNDirBase = '/store/user/cschnaib'
 
 config.Site.storageSite = 'T2_CH_CERN'
 
 '''
-#config.General.requestName = 'ana_datamc_%(name)s_%(spacing)s'
-#config.Data.publishDataName = 'ana_datamc_%(name)s_%(spacing)s'
+#config.General.requestName = 'ana_datamc_%(name)s'
+#config.Data.publishDataName = 'ana_datamc_%(name)s'
     
     just_testing = 'testing' in sys.argv
         
@@ -312,15 +312,14 @@ config.Site.storageSite = 'T2_CH_CERN'
         from SUSYBSMAnalysis.Zprime2muAnalysis.goodlumis import *
 
         dataset_details = [
-#            ('SingleMuonRun2015B-Prompt_251162_251499',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409-3aa7688518cb1f1b044caf15b1a9ed05/USER','74X_dataRun2_Prompt_v0','50ns'),
-#            ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
-#            ('SingleMuonRun2015B-Prompt_251613_251883',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251613_251883_20150719000207-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
+            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','25ns'),
 
-#            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','50ns'),
-#            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','25ns'),
-
-#             ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
-#             ('SingleMuonRun2015D-Prompt_258159_258750',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258159_258750_20151021181222-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+            ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+            ('SingleMuonRun2015D-Prompt_258159_258750',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258159_258750_20151021181222-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+#            ('SingleMuonRun2015D-Prompt_258751_259429',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258751_259429_20151022191133-c9b39dd88dc98b683a1d7cecc8f6c42c/USER'),
+            ('SingleMuonRun2015D-Prompt_259430_259891',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_259430_259891_20151102003703-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+            ('SingleMuonRun2015D-Prompt_259892_260426',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_259892_260426_20151111121335-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+            ('SingleMuonRun2015D-Prompt_260427_260627',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_260427_260627_20151109122734-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns')
             ]
 
 #        lumi_lists = [
@@ -460,8 +459,22 @@ config.Data.unitsPerJob  = 5000
 
 
 
+# 74X rereco
+#                ('SingleMuonRun2015B-rerecoPrompt_250985_253888',  '/SingleMuon/alfloren-SingleMuonRun2015B-rerecoPrompt_250985_253888_20151118172721-1d9529fc26a16d8064170a693ba5a754/USER','74X_dataRun2_Prompt_v4','50ns'),
+#                ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','50ns'),
 
+# 74X startup
+#            ('SingleMuonRun2015B-Prompt_251162_251499',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251162_251499_20150713100409-3aa7688518cb1f1b044caf15b1a9ed05/USER','74X_dataRun2_Prompt_v0','50ns'),
+#            ('SingleMuonRun2015B-Prompt_251500_251603',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251500_251603_20150718235715-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
+#            ('SingleMuonRun2015B-Prompt_251613_251883',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015B-Prompt_251613_251883_20150719000207-9996471c14459acaec01707975d1e954/USER','74X_dataRun2_Prompt_v0','50ns'),
+#            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','50ns'),
+#            ('SingleMuonRun2015C-Prompt_253888_254914',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015C-Prompt_253888_254914_20150831150018-681693e882ba0f43234b3b41b1bbc39d/USER','74X_dataRun2_Prompt_v1','25ns'),
 
+#             ('SingleMuonRun2015D-Prompt_256629_258158',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_258158_20151013000746-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+#             ('SingleMuonRun2015D-Prompt_258159_258750',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_258159_258750_20151021181222-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
+# 76X rereco
+#            ('SingleMuon2015B-Prompt_reReco_251162_251499','/SingleMuon/alfloren-SingleMuRun2015B-Rereco-Suite_251162_251559_20160120153115-332cf72ab044858cbe7c1d1b03f22dbc/USER','74X_dataRun2_Prompt_v0','50ns'),
+#            ('SingleMuon2015C-Prompt_reReco_254883_255899','/SingleMuon/alfloren-SingleMuRun2015C50ns-Rereco_254883_255899_20160120153444-332cf72ab044858cbe7c1d1b03f22dbc/USER','74X_dataRun2_Prompt_v1','50ns'),
 
 #            ('SingleMuonRun2015D-Prompt_256629_256842',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256629_256842_20150926113604-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),
 #            ('SingleMuonRun2015D-Prompt_256843_257819',    '/SingleMuon/rradogna-datamc_SingleMuonRun2015D-Prompt_256843_257819_20151002140028-c9b39dd88dc98b683a1d7cecc8f6c42c/USER','74X_dataRun2_Prompt_v2','25ns'),

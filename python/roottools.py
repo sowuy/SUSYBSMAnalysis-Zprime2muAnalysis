@@ -261,6 +261,9 @@ def get_bin_content_error(hist, value):
 def get_integral(hist, xlo, xhi=None, integral_only=False, include_last_bin=True):
     """For the given histogram, return the integral of the bins
     corresponding to the values xlo to xhi along with its error.
+
+    Edited to return 0 if integral is negative (for N-1 calculation 
+    to prevent negative efficeincy when events have negative weights)
     """
     
     binlo = hist.FindBin(xlo)
@@ -273,12 +276,18 @@ def get_integral(hist, xlo, xhi=None, integral_only=False, include_last_bin=True
 
     integral = hist.Integral(binlo, binhi)
     if integral_only:
-        return integral
+        if integral < 0:
+            return 0
+        else:
+            return integral
 
     wsq = 0
     for i in xrange(binlo, binhi+1):
         wsq += hist.GetBinError(i)**2
-    return integral, wsq**0.5
+    if integral < 0:
+        return 0,0
+    else:
+        return integral, wsq**0.5
 
 def get_hist_stats(hist, factor=None, draw=False):
     """For the given histogram, return a five-tuple of the number of

@@ -15,6 +15,8 @@ ROOT.TH1.AddDirectory(0)
 
 outfile = ROOT.TFile("whargl.root","recreate")
 iarp=0
+mcN=0
+drawDY = True
 do_tight = 'tight' in sys.argv
 #psn = 'plots/nminus1effs'
 psn = 'plots'
@@ -153,10 +155,7 @@ class nm1entry:
         if self.fn is not None:
             f = ROOT.TFile(self.fn)
             for nminus1 in nminus1s + ['NoNo']:
-                if 'wjets' in self.name:
-                    self.histos[nminus1] = f.Get(nminus1).Get('DimuonMassVertexConstrainedWeight').Clone()#DileptonMass
-                else:
-                    self.histos[nminus1] = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()#DileptonMass
+                self.histos[nminus1] = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()#DileptonMass
 
     def prepare_histos_sum(self, samples, lumi):
         self.histos = {}
@@ -165,16 +164,10 @@ class nm1entry:
             #print '%20s%20s%21s%20s%20s' % ('cut', 'sampe name', 'partial weight', 'scale(ref)','scale(lumi)')
             for sample in samples:
                 f = ROOT.TFile(self.make_fn(sample.name))
-                if 'wjets' in sample.name:
-                    if nminus1 == 'NoVtxProb':
-                        h = f.Get(nminus1).Get('dileptonMassWeight').Clone()
-                    else:
-                        h = f.Get(nminus1).Get('DimuonMassVertexConstrainedWeight').Clone()
+                if nminus1 == 'NoVtxProb':
+                    h = f.Get(nminus1).Get('dileptonMass').Clone()
                 else:
-                    if nminus1 == 'NoVtxProb':
-                        h = f.Get(nminus1).Get('dileptonMass').Clone()
-                    else:
-                        h = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()
+                    h = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()
                 #print '%20s%20s%20.15f%20f%20f' % (nminus1, sample.name, sample.partial_weight, refN/refXS, lumiBCD)
                 # partial_weight = cross_section * k_factor / Nevents
                 if lumi>0:
@@ -214,12 +207,37 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
 #raw_samples = [dy50to120,DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy1400to2300,dy2300to3500,DY3500to4500Powheg,dy4500to6000,ttbar_pow_s,ww_incl_s,zz_incl,wz,tWtop,tWantitop,wjets]#inclmu15,
 #,qcd600to800,qcd120to170
 raw_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,dy6000_s,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,inclmu15,zpsi5000,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]
-use_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#dy6000_s,
-#DYmc_list = [dy50to120,DY120to200Powheg,DY200to400Powheg,DY400to800Powheg,DY800to1400Powheg,dy1400to2300,dy2300to3500,DY3500to4500Powheg,dy4500to6000]
-#nonDYmc_list = [ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop]
 
-refXS = dy50to120_s.cross_section
-refN = dy50to120_s.nevents
+use_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#dy6000_s,
+
+dy_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s]#dy6000_s,
+
+nonDY_samples = [ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop,qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]#dy6000_s,
+
+EWKnoDY_samples = [ttbar_pow,ww_incl,zz_incl,wz,tWtop,tWantitop]#dy6000_s,
+
+noQCD_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,ttbar_pow,ww_incl,zz_incl,wz,wjets,tWtop,tWantitop]
+
+QCD_samples = [qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]
+
+diboson_samples = [ww_incl, zz_incl, wz]
+
+stop_samples = [tWtop, tWantitop]
+
+ttbar_samples = [ttbar_pow]
+
+wjets_samples = [wjets]
+
+noQCDwjets_samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,ttbar_pow,ww_incl,zz_incl,wz,tWtop,tWantitop]
+
+QCDwjets_samples = [qcd50to80,qcd80to120,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200,wjets]
+
+zpsi5000_samples = [zpsi5000]
+
+EWKnoDYwjets_samples = [ttbar_pow,ww_incl,zz_incl,wz,tWtop,tWantitop]
+
+#refXS = dy50to120_s.cross_section
+#refN = dy50to120_s.nevents
 
 # All MC samples
 # lumi
@@ -227,6 +245,28 @@ refN = dy50to120_s.nevents
 mc_samples = [nm1entry(sample,False,lumiBCD) for sample in use_samples]
 for mc_sample in mc_samples:
     exec '%s = mc_sample' % mc_sample.name
+
+dy = [nm1entry(sample,False,lumiBCD) for sample in dy_samples]
+for dy_sample in dy_samples:
+    exec '%s = dy_sample' % dy_sample.name
+noDY = [nm1entry(sample,False,lumiBCD) for sample in nonDY_samples]
+for nonDY_sample in nonDY_samples:
+    exec '%s = nonDY_sample' % nonDY_sample.name
+qcd = [nm1entry(sample,False,lumiBCD) for sample in QCD_samples]
+for QCD_sample in QCD_samples:
+    exec '%s = QCD_sample' % QCD_sample.name
+diboson = [nm1entry(sample,False,lumiBCD) for sample in diboson_samples]
+stop = [nm1entry(sample,False,lumiBCD) for sample in stop_samples]
+ttbar = [nm1entry(sample,False,lumiBCD) for sample in ttbar_samples]
+noQCD = [nm1entry(sample,False,lumiBCD) for sample in noQCD_samples]
+wjets = [nm1entry(sample,False,lumiBCD) for sample in wjets_samples]
+noQCDwjets = [nm1entry(sample,False,lumiBCD) for sample in noQCDwjets_samples]
+EWKnoDY = [nm1entry(sample,False,lumiBCD) for sample in EWKnoDY_samples]
+QCDwjets = [nm1entry(sample,False,lumiBCD) for sample in QCDwjets_samples]
+Zpsi5000 = [nm1entry(sample,False,lumiBCD) for sample in zpsi5000_samples]
+EWKnoDYwjets = [nm1entry(sample,False,lumiBCD) for sample in EWKnoDYwjets_samples]
+
+
 # ref
 #mcsum_ref.prepare_histos_sum(use_samples, nolumi) 
 #mc_samples_ref = [nm1entry(sample,False,nolumi) for sample in use_samples]
@@ -252,17 +292,6 @@ to_use = {
     #'NoDptPt':[DYmc,nonDYmc,dataCD],
     #'NoTrgMtch':[DYmc,nonDYmc,dataCD],
 
-    #'NoPt#':[mcsum_lumi,dataCD],
-    #'NoDB#':[mcsum_lumi,dataCD],
-    #'NoIso#':[mcsum_lumi,dataCD],
-    #'NoTkLayers#':[mcsum_lumi,dataCD],
-    #'NoPxHits#':[mcsum_lumi,dataCD],
-    #'NoMuHits#':[mcsum_lumi,dataCD],
-    #'NoMuMatch#':[mcsum_lumi,dataCD],
-    #'NoVtxProb#':[mcsum_lumi,dataCD],
-    #'NoB2B#':[mcsum_lumi,dataCD],
-    #'NoDptPt#':[mcsum_lumi,dataCD],
-    #'NoTrgMtch#':[mcsum_lumi,dataCD],
     'NoPt':[mc_samples,dataBCD],
     'NoDB':[mc_samples,dataBCD],
     'NoIso':[mc_samples,dataBCD],
@@ -274,6 +303,18 @@ to_use = {
     'NoB2B':[mc_samples,dataBCD],
     'NoDptPt':[mc_samples,dataBCD],
     'NoTrgMtch':[mc_samples,dataBCD],
+
+    #'NoPt':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoDB':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoIso':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoTkLayers':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoPxHits':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoMuHits':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoMuMatch':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoVtxProb':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoB2B':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoDptPt':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
+    #'NoTrgMtch':[EWKnoDY,Zpsi5000,noDY,dy,dataBCD],
     }
 
 styles = {
@@ -323,11 +364,11 @@ yrange = {
 #   'sample':    (ymin,ymax),
     'NoPt':      (0.00,1.01),
     'NoDB':      (0.95,1.001),
-    'NoIso':     (0.75,1.01),
+    'NoIso':     (0.6,1.01),
     'NoTkLayers':(0.95,1.001),
     'NoPxHits':  (0.95,1.001),
     'NoMuHits':  (0.95,1.001),
-    'NoMuMatch': (0.65,1.005),
+    'NoMuMatch': (0.90,1.005),
     'NoVtxProb': (0.90,1.001),
     'NoB2B':     (0.95,1.001),
     'NoDptPt':   (0.95,1.001),
@@ -358,6 +399,9 @@ def table_wald(entry,nminus1, mass_range):
                 print nminus1, entry.name, mlow, mhigh, num, den
             else:
                 errw = (eff*(1-eff)/den)**0.5
+        if 'data' not in entry.name:
+            num = num*entry.partial_weight*lumiBCD
+            den = den*entry.partial_weight*lumiBCD
         print '%20s%15i%15i%20f%20f%15f%15f%15f%23f'     % (nminus1, mlow, mhigh, num, den, eff, eff-lcp, hcp-eff,        errw)
         print '%20s%15i%15i%20f%20f%15f%15f%15f%15f%16f' % (nminus1, mlow, mhigh, num, den, eff, lcp,     hcp,     eff-errw, eff+errw)
         print ' '
@@ -402,7 +446,7 @@ for nminus1 in nminus1s:
         nminus1_den = ROOT.TH1F('den', '', l, array('f',mass_range))
 
         if not isinstance(entry,(list,tuple)) and 'data' in entry.name:
-            #table_wald(entry,nminus1,mass_range)
+            table_wald(entry,nminus1,mass_range)
             color, fill = styles[entry.name]
             hnum = entry.histos['NoNo']
             hden = entry.histos[nminus1]
@@ -416,8 +460,8 @@ for nminus1 in nminus1s:
                 nminus1_den.SetBinContent(mbin+1, den)
             eff,p,epl,eph = binomial_divide(nminus1_num, nminus1_den)
         else:
-            #for a,mc in enumerate(entry):
-            #    table_wald(mc,nminus1,mass_range)
+            for a,mc in enumerate(entry):
+                table_wald(mc,nminus1,mass_range)
             p_hats = []
             errsW = []
             x = []
@@ -450,8 +494,12 @@ for nminus1 in nminus1s:
                     numsW.append(_num*mc.partial_weight)
                     densW.append(_den*mc.partial_weight)
                     err2s.append(_err2)
-                _p_hat = float(numTot)/denTot
-                _err2sum = sum( ((m/denTot)**2 * e2) for m,e2 in zip(densW,err2s))
+                if denTot!=0:
+                    _p_hat = float(numTot)/denTot
+                    _err2sum = sum( ((m/denTot)**2 * e2) for m,e2 in zip(densW,err2s))
+                else:
+                    _p_hat = 0
+                    _err2sum = 0
                 p_hats.append(_p_hat)
                 errsW.append(_err2sum**0.5)
                 x.append(nminus1_num.GetXaxis().GetBinCenter(mbin+1))
@@ -472,12 +520,61 @@ for nminus1 in nminus1s:
             #lg.AddEntry(eff, pretty.get(entry.name, entry.name) % (lumi/1000.), 'LP')
             lg.AddEntry(eff, pretty.get(entry.name, entry.name) % (entry.lumi/1000.), 'LP')
         else:
-            draw = '2'
-            eff.SetLineColor(ROOT.kGreen+2)
-            eff.SetFillColor(ROOT.kGreen+2)
-            eff.SetFillStyle(1001)
-            lg.AddEntry(eff,'Simulation','LF')
-            #lg.AddEntry(eff, pretty.get(entry.name, entry.name), 'LF')
+            if len(entry)==9:
+                draw = '2'
+                eff.SetLineColor(ROOT.kGreen+2)
+                eff.SetFillColor(ROOT.kGreen+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'DY MC','LF')
+            elif len(entry)==15:
+                draw = '2'
+                eff.SetLineColor(ROOT.kOrange+2)
+                eff.SetFillColor(ROOT.kOrange+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'EWK MC','LF')
+            elif len(entry)==1:
+                draw = '2'
+                eff.SetLineColor(ROOT.kYellow+1)
+                eff.SetFillColor(ROOT.kYellow+1)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'Z\'_{#psi} (5 TeV)','LF')
+            elif len(entry)==10:
+                draw = '2'
+                eff.SetLineColor(ROOT.kViolet)
+                eff.SetFillColor(ROOT.kViolet)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'QCD MC','LF')
+            elif len(entry)==11:
+                draw = '2'
+                eff.SetLineColor(ROOT.kBlue+2)
+                eff.SetFillColor(ROOT.kBlue+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'QCD + W+jets MC','LF')
+            elif len(entry)==7:
+                draw = '2'
+                eff.SetLineColor(ROOT.kRed+2)
+                eff.SetFillColor(ROOT.kRed+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'EWK no DY MC','LF')
+            elif len(entry)==6:
+                draw = '2'
+                eff.SetLineColor(ROOT.kRed+2)
+                eff.SetFillColor(ROOT.kRed+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'EWK','LF')
+            elif len(entry)==26:
+                draw = '2'
+                eff.SetLineColor(ROOT.kGreen+2)
+                eff.SetFillColor(ROOT.kGreen+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'All Simulation','LF')
+            else:
+                draw = '2'
+                eff.SetLineColor(ROOT.kBlue+2)
+                eff.SetFillColor(ROOT.kBlue+2)
+                eff.SetFillStyle(1001)
+                lg.AddEntry(eff,'EWK+QCD MC','LF')
+        #lg.AddEntry(eff, pretty.get(entry.name, entry.name), 'LF')
         draw += same
         eff.Draw(draw)
         effs.append(eff)
@@ -487,6 +584,6 @@ for nminus1 in nminus1s:
         iarp+=1
     # end for entry in to_use[name]: # entry is a specific sample
     lg.Draw()
-    ps.save(nminus1+'_wald')
+    ps.save(nminus1+'_allSimulation')
     print
 # end for name, mass_range in mass_bins:

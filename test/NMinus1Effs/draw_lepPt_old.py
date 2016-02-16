@@ -165,16 +165,7 @@ class nm1entry:
             #print '%20s%20s%21s%20s%20s' % ('cut', 'sampe name', 'partial weight', 'scale(ref)','scale(lumi)')
             for sample in samples:
                 f = ROOT.TFile(self.make_fn(sample.name))
-                if 'wjets' in sample.name:
-                    if nminus1 == 'NoVtxProb':
-                        h = f.Get(nminus1).Get('LeptonPt').Clone()
-                    else:
-                        h = f.Get(nminus1).Get('LeptonPt').Clone()
-                else:
-                    if nminus1 == 'NoVtxProb':
-                        h = f.Get(nminus1).Get('LeptonPt').Clone()
-                    else:
-                        h = f.Get(nminus1).Get('LeptonPt').Clone()
+                h = f.Get(nminus1).Get('LeptonPt').Clone()
                 #print '%20s%20s%20.15f%20f%20f' % (nminus1, sample.name, sample.partial_weight, refN/refXS, lumiBCD)
                 # partial_weight = cross_section * k_factor / Nevents
                 if lumi>0:

@@ -152,10 +152,7 @@ class nm1entry:
         if self.fn is not None:
             f = ROOT.TFile(self.fn)
             for nminus1 in nminus1s + ['NoNo']:
-                if 'wjets' in self.name:
-                    self.histos[nminus1] = f.Get(nminus1).Get('DimuonMassVertexConstrainedWeight').Clone()#DileptonMass
-                else:
-                    self.histos[nminus1] = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()#DileptonMass
+                self.histos[nminus1] = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()#DileptonMass
 
     def prepare_histos_sum(self, samples, lumi):
         self.histos = {}
@@ -164,16 +161,10 @@ class nm1entry:
             print '%20s%20s%21s%20s%20s' % ('cut', 'sampe name', 'partial weight', 'scale(ref)','scale(lumi)')
             for sample in samples:
                 f = ROOT.TFile(self.make_fn(sample.name))
-                if 'wjets' in sample.name:
-                    if nminus1 == 'NoVtxProb':
-                        h = f.Get(nminus1).Get('DileptonMassWeight').Clone()
-                    else:
-                        h = f.Get(nminus1).Get('DimuonMassVertexConstrainedWeight').Clone()
+                if nminus1 == 'NoVtxProb':
+                    h = f.Get(nminus1).Get('DileptonMass').Clone()
                 else:
-                    if nminus1 == 'NoVtxProb':
-                        h = f.Get(nminus1).Get('DileptonMass').Clone()
-                    else:
-                        h = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()
+                    h = f.Get(nminus1).Get('DimuonMassVertexConstrained').Clone()
                 print '%20s%20s%20.15f%20f%20f' % (nminus1, sample.name, sample.partial_weight, refN/refXS, lumiBCD)
                 # partial_weight = cross_section * k_factor / Nevents
                 if lumi>0:

@@ -11,12 +11,12 @@ last_rereco_run = 198523
 # B+C MuonPhys 50ns
 last_50ns_prompt_run = 255031
 # C+D MuonPhys 25ns
-last_25ns_prompt_run = 258750
-last_run = 256869 #last DCS run or last analyzed run
-last_prompt_run = 256869
+last_25ns_prompt_run = 260627
+last_run = 260627 #last DCS run or last analyzed run
+last_prompt_run = 260627
 
 # Sometimes the same run-range json gets made in other versions.
-prompt_version = ''
+prompt_version = '_v2'
 
 # Lumis to manually throw out.
 #to_remove = {'190949': [[82,1149]], '191090': [[56,339]]}   # These are 20/pb of "low pileup" runs in which they enabled only Mu15 and disabled Mu40 (set prescale to 0).
@@ -63,7 +63,7 @@ Prompt_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certificati
 PromptMuonsOnly25ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_25ns_JSON_MuonPhys%s.txt' % (first_run, last_25ns_prompt_run, prompt_version))
 
 # 50ns MuonPhys
-PromptMuonsOnly50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_50ns_JSON_MuonPhys%s_v2.txt' % (first_run, last_50ns_prompt_run, prompt_version))
+PromptMuonsOnly50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_50ns_JSON_MuonPhys%s.txt' % (first_run, last_50ns_prompt_run, prompt_version))
 
 def combine(prompt_ll, rereco1_ll, rereco2_ll, rereco3_ll, dcsonly_ll=None):
     prompt_ll = copy.deepcopy(prompt_ll)
