@@ -202,11 +202,8 @@ private:
     float gen_dil_rap;
     float gen_dil_eta;
     float gen_dil_phi;
-<<<<<<< HEAD
     float gen_dil_dR;
     float gen_dil_dPhi;
-=======
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
     float gen_lep_p[2];
     float gen_lep_pt[2];
     float gen_lep_px[2];
@@ -424,11 +421,8 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
     tree->Branch("gen_dil_rap", &t.gen_dil_rap, "gen_dil_rap/F");
     tree->Branch("gen_dil_eta", &t.gen_dil_eta, "gen_dil_eta/F");
     tree->Branch("gen_dil_phi", &t.gen_dil_phi, "gen_dil_phi/F");
-<<<<<<< HEAD
     tree->Branch("gen_dil_dR", &t.gen_dil_dR, "gen_dil_dR/F");
     tree->Branch("gen_dil_dPhi", &t.gen_dil_dPhi, "gen_dil_dPhi/F");
-=======
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
     tree->Branch("gen_lep_p", t.gen_lep_p, "gen_lep_p[2]/F");
     tree->Branch("gen_lep_pt", t.gen_lep_pt, "gen_lep_pt[2]/F");
     tree->Branch("gen_lep_px", t.gen_lep_px, "gen_lep_px[2]/F");
@@ -669,7 +663,6 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
     // This only works for DY/Z'/RSG events, and really just for PYTHIA!
     hardInteraction->Fill(event);
 
-<<<<<<< HEAD
     /* Generator information that can be causing problems? */
     /* 
     int EventWeight = 1.;
@@ -791,7 +784,6 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 //    t.gen_lep_noib_e[1]  = hardInteraction->lepMinusNoIB->energy();
 //    t.gen_lep_noib_eta[1] = hardInteraction->lepPlusNoIB->eta();
 //    t.gen_lep_noib_phi[1] = hardInteraction->lepPlusNoIB->phi();
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
         
     } // end if hardInteraction->IsValid()
 
@@ -994,10 +986,6 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
         //
 	const reco::Track* tk = patmuon::getPickedTrack(*mu).get();
 	assert (tk);
-<<<<<<< HEAD
-=======
-
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
 	t.lep_p[w]     = tk->p();
 	t.lep_pt[w]     = tk->pt();
 	t.lep_px[w]     = tk->px();
@@ -1005,13 +993,10 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 	t.lep_pz[w]     = tk->pz();
 	t.lep_qOverPt[w] = tk->charge() / tk->pt();
 	t.lep_pt_err[w] = ptError(tk);
-<<<<<<< HEAD
         
         //
         // Tracker Track Muon Information
         //
-=======
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
 	t.lep_tk_p[w] = mu->innerTrack()->p();
 	t.lep_tk_pt[w] = mu->innerTrack()->pt();
 	t.lep_tk_pt_err[w] = mu->innerTrack()->ptError();
@@ -1025,13 +1010,10 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 	t.lep_tk_chi2[w] = mu->innerTrack()->chi2();
 	t.lep_tk_ndf[w] = mu->innerTrack()->ndof();
 	t.lep_tk_qOverPt[w] = (mu->charge())/(mu->innerTrack()->pt());
-<<<<<<< HEAD
 
         // 
         // Global Muon Information
         //
-=======
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
 	t.lep_glb_p[w] = mu->globalTrack()->p();
 	t.lep_glb_pt[w] = mu->globalTrack()->pt();
 	t.lep_glb_pt_err[w] = mu->globalTrack()->ptError();
@@ -1043,13 +1025,10 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 	t.lep_glb_chi2[w] = mu->globalTrack()->chi2();
 	t.lep_glb_ndf[w] = mu->globalTrack()->ndof();
 	t.lep_glb_qOverPt[w] = (mu->charge())/(mu->globalTrack()->pt());
-<<<<<<< HEAD
 
         //
         // Tracker Plus First Muon Station Muon Information
         //
-=======
->>>>>>> 7fb79259743f6c97df44fe21d93df4abdaf25b33
 	if (mu->tpfmsMuon().isNull()) {
 	  t.lep_tpfms_p[w] = -999;
 	  t.lep_tpfms_pt[w] = -999;
