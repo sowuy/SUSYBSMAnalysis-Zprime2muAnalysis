@@ -37,7 +37,7 @@ private:
     unsigned run;
     unsigned lumi;
     unsigned event;
-    //float genWeight;
+    float genWeight;
     float beamspot_x;
     float beamspot_x_err;
     float beamspot_y;
@@ -231,10 +231,10 @@ private:
   const edm::InputTag beamspot_src;
   const edm::InputTag vertices_src;
   const bool fill_gen_info;
-  //const edm::InputTag genEventInfo_;
+  const edm::InputTag TriggerResults_src;
+  const edm::InputTag genEventInfo_;
   HardInteraction* hardInteraction;
-  
-
+  //const edm::InputTag TriggerResults_src; 
 };
 
 TString replace_all(const TString& a, const TString& b, const TString& c) {
@@ -248,10 +248,19 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
     beamspot_src(cfg.getParameter<edm::InputTag>("beamspot_src")),
     vertices_src(cfg.getParameter<edm::InputTag>("vertices_src")),
     fill_gen_info(cfg.existsAs<edm::ParameterSet>("hardInteraction")),
-    //genEventInfo_(cfg.getUntrackedParameter<edm::InputTag>("genEventInfo")),
+    TriggerResults_src(cfg.getParameter<edm::InputTag>("TriggerResults_src")),
+    genEventInfo_(cfg.getUntrackedParameter<edm::InputTag>("genEventInfo")),
     hardInteraction(fill_gen_info ? new HardInteraction(cfg.getParameter<edm::ParameterSet>("hardInteraction")) : 0)
    
 {
+ 
+  consumes<pat::CompositeCandidateCollection>(dimu_src);
+  consumes<reco::BeamSpot>(beamspot_src);
+  consumes<reco::VertexCollection>(vertices_src);
+  consumes<edm::TriggerResults>(TriggerResults_src);
+  consumes<GenEventInfoProduct>(genEventInfo_);
+  
+ 
   edm::Service<TFileService> fs;
   tree = fs->make<TTree>("t", "");
   tree->Branch("run", &t.run, "run/i");
@@ -410,7 +419,7 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
   tree->Branch("GoodVtx", &t.GoodVtx, "GoodVtx/O");
   tree->Branch("NoScraping", &t.NoScraping, "NoScraping/O");
   if (fill_gen_info) {
-    //tree->Branch("genWeight", &t.genWeight, "genWeight/F");
+    tree->Branch("genWeight", &t.genWeight, "genWeight/F");
     tree->Branch("gen_res_mass", &t.gen_res_mass, "gen_res_mass/F");
     tree->Branch("gen_res_pt", &t.gen_res_pt, "gen_res_pt/F");
     tree->Branch("gen_res_rap", &t.gen_res_rap, "gen_res_rap/F");
@@ -504,7 +513,6 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
     "lep_isTrackerMuon[X] && "						\
     "lep_tuneP_pt[X] > " offlineMinPt " && "				\
     "abs(lep_dB[X]) < 0.2 && "						\
-    "lep_chi2dof[X] < 10 && "						\
     "lep_glb_numberOfValidTrackerLayers[X] > 5 && "			\
     "lep_glb_numberOfValidPixelHits[X] >= 1 && "			\
     "lep_glb_numberOfValidMuonHits[X] > 0 && "				\
@@ -515,7 +523,6 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
   TString loose_no_iso_pt_ptErr = 
     "lep_isGlobalMuon[X] && "						\
     "lep_isTrackerMuon[X] && " 						\
-    "lep_chi2dof[X] < 10 && " 						\
     "lep_glb_numberOfValidTrackerLayers[X] > 5 && "			\
     "lep_glb_numberOfValidPixelHits[X] >= 1 && "			\
     "lep_glb_numberOfValidMuonHits[X] > 0 && " 				\
@@ -629,9 +636,16 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
   t.event = event.id().event();
 
   // Get Trigger information
+
+
+
+
   edm::Handle<edm::TriggerResults> respat;
-  event.getByLabel(edm::InputTag("TriggerResults", "", "PAT"), respat);
+  //event.getByLabel(edm::InputTag("TriggerResults", "", "PAT"), respat);
+  event.getByLabel(TriggerResults_src, respat);
+  
   const edm::TriggerNames& namespat = event.triggerNames(*respat);
+  
   if (namespat.triggerIndex("goodDataHLTPhysicsDeclared") < respat->size()) {
     t.GoodDataRan = 1;
     t.HLTPhysicsDeclared = respat->accept(namespat.triggerIndex("goodDataHLTPhysicsDeclared"));
@@ -663,14 +677,12 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
     // This only works for DY/Z'/RSG events, and really just for PYTHIA!
     hardInteraction->Fill(event);
 
-    /* Generator information that can be causing problems? */
-    /* 
-    int EventWeight = 1.;
-    edm::Handle<GenEventInfoProduct> gen_ev_info;
-    event.getByLabel(genEventInfo_, gen_ev_info);
-    EventWeight = gen_ev_info->weight();
-    t.genWeight = ( EventWeight > 0 ) ? 1 : -1;
-    */
+   int EventWeight = 1.;
+   edm::Handle<GenEventInfoProduct> gen_ev_info;
+   event.getByLabel(genEventInfo_, gen_ev_info);
+   EventWeight = gen_ev_info->weight();
+   t.genWeight = ( EventWeight > 0 ) ? 1 : -1;
+
 
     //
     // Store Generator Level information
@@ -1060,7 +1072,7 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 	  t.lep_cocktail_ndf[w] = cocktail->ndof();
 	  t.lep_cocktail_qOverPt[w] = (mu->charge())/(cocktail->pt());
 	  t.lep_cocktail_choice[w] = short(patmuon::whichTrack(*mu, cocktail));
-	}
+        }
 	if (mu->tunePMuonBestTrack().isNull()) {
 	  t.lep_tuneP_p[w] = -999;
 	  t.lep_tuneP_pt[w] = -999;
@@ -1133,8 +1145,8 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 	t.lep_emEt[w] = mu->isolationR03().emEt;
 	t.lep_hadEt[w] = mu->isolationR03().hadEt;
 	t.lep_hoEt[w] = mu->isolationR03().hoEt;
-    t.lep_pfIso[w] = mu->pfIsolationR04().sumChargedHadronPt + mu->pfIsolationR04().sumNeutralHadronEt + mu->pfIsolationR04().sumPhotonEt;
-    t.lep_pfIsoDB[w] = mu->pfIsolationR04().sumChargedHadronPt + std::max(mu->pfIsolationR04().sumNeutralHadronEt + mu->pfIsolationR04().sumPhotonEt - 0.5*mu->pfIsolationR04().sumPUPt,0.0);
+        t.lep_pfIso[w] = mu->pfIsolationR04().sumChargedHadronPt + mu->pfIsolationR04().sumNeutralHadronEt + mu->pfIsolationR04().sumPhotonEt;
+        t.lep_pfIsoDB[w] = mu->pfIsolationR04().sumChargedHadronPt + std::max(mu->pfIsolationR04().sumNeutralHadronEt + mu->pfIsolationR04().sumPhotonEt - 0.5*mu->pfIsolationR04().sumPUPt,0.0);
 	if (mu->isTimeValid()) {
 	  t.lep_timeNdof[w] = mu->time().nDof;
 	  t.lep_timeInOut[w] = mu->time().timeAtIpInOut;

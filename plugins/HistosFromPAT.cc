@@ -151,6 +151,13 @@ Zprime2muHistosFromPAT::Zprime2muHistosFromPAT(const edm::ParameterSet& cfg)
     _usePrescaleWeight(cfg.getUntrackedParameter<bool>("usePrescaleWeight",false)),
     _prescaleWeight(1)
 {
+
+  consumes<reco::CandidateView>(lepton_src);
+  consumes<pat::CompositeCandidateCollection>(dilepton_src);
+  consumes<reco::BeamSpot>(beamspot_src);
+  consumes<reco::VertexCollection>(vertex_src);
+  
+
   std::string title_prefix = cfg.getUntrackedParameter<std::string>("titlePrefix", "");
   if (title_prefix.size() && title_prefix[title_prefix.size()-1] != ' ')
     title_prefix += " ";
@@ -553,4 +560,3 @@ void Zprime2muHistosFromPAT::analyze(const edm::Event& event, const edm::EventSe
 }
 
 DEFINE_FWK_MODULE(Zprime2muHistosFromPAT);
-

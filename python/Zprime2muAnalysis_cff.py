@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 import HLTrigger.HLTfilters.hltHighLevel_cfi
 goodDataFilter = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
 goodDataFilter.TriggerResultsTag = cms.InputTag('TriggerResults', '', 'PAT')
-goodDataFilter.HLTPaths = ['goodDataAll'] # can set to just 'goodDataPrimaryVertexFilter', for example
+goodDataFilter.HLTPaths = ['goodDataPrimaryVertexFilter'] # can set to just 'goodDataPrimaryVertexFilter', for example
 #goodDataFilter.HLTPaths = ['goodDataMETFilter']
 goodDataFilter.andOr = False # = AND
 
@@ -16,6 +16,8 @@ from OurSelectionDec2012_cff import allDimuons, dimuons, loose_cut
 leptons = cms.EDProducer('Zprime2muLeptonProducer',
                          muon_src = cms.InputTag('cleanPatMuonsTriggerMatch'), #JMTBAD changeme after new PAT tuples
                          electron_src = cms.InputTag('cleanPatElectrons'),
+                         muon_srcSecond = cms.InputTag('cleanPatMuonsTriggerMatch'), #JMTBAD changeme after new PAT tuples
+                         electron_srcSecond = cms.InputTag('cleanPatElectrons'),
                          muon_cuts = cms.string(loose_cut),
                          electron_cuts = cms.string('userInt("HEEPId") == 0'),
                          muon_track_for_momentum = cms.string('TunePNew'),
