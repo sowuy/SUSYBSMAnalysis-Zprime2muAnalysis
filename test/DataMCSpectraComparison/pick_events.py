@@ -35,7 +35,7 @@ config.Data.splitting = 'EventAwareLumiBased'
 config.Data.unitsPerJob = 10000
 config.Data.publication = True
 config.Data.publishDataName = '%(name)s'
-config.Data.outLFN = '/store/user/federica/Pickevents' 
+config.Data.outLFN = '/store/user/cschnaib/Pickevents' 
 
 config.Site.storageSite = 'T2_US_Purdue'
 

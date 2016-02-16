@@ -81,3 +81,4 @@ trigger::TriggerObjectCollection get_L3_muons(const edm::Event& event, const std
 
   return L3_muons;
 }
+

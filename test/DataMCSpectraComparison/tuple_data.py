@@ -127,10 +127,14 @@ config.Data.lumiMask = '%(lumi_mask)s'
             dataset = '/SingleMuon/Run2015B-PromptReco-v1/AOD'
             name    = 'SingleMuonRun2015B-Prompt'
             tag     = 'GR_P_V56'
-        if run1 >= 253888 :
+        if run1 >= 253888: # and run2 < 256629:
             dataset = '/SingleMuon/Run2015C-PromptReco-v1/AOD'
             name    = 'SingleMuonRun2015C-Prompt'
             tag     = '74X_dataRun2_Prompt_v1'
+#        if run1 >= 256629: ## Run not complete
+#            dataset = '/SingleMuon/Run2015D-PromptReco-v3/AOD'
+#            name    = 'SingleMuonRun2015D-Prompt'
+#            tag     = '74X_dataRun2_Prompt_v1'
         else:
             raise ValueError("don't know how to do a run_limits production for run range [%i,%i]" % run_limits)
 

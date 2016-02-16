@@ -12,11 +12,11 @@ last_rereco_run = 198523
 last_50ns_prompt_run = 255031
 # C+D MuonPhys 25ns
 last_25ns_prompt_run = 260627
-last_run = 260627 #last DCS run or last analyzed run
-last_prompt_run = 260627
+last_run = 256869 #last DCS run or last analyzed run
+last_prompt_run = 256869
 
 # Sometimes the same run-range json gets made in other versions.
-prompt_version = '_v2'
+prompt_version = ''
 
 # Lumis to manually throw out.
 #to_remove = {'190949': [[82,1149]], '191090': [[56,339]]}   # These are 20/pb of "low pileup" runs in which they enabled only Mu15 and disabled Mu40 (set prescale to 0).
@@ -57,13 +57,16 @@ DCSOnlyForNewRuns_ll.removeRuns(runs_to_remove_from_dcsonly)
 #Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_MuonPhys.txt
 
 # 25ns Golden
-Prompt_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_25ns_JSON%s.txt' % (first_run, last_25ns_prompt_run, prompt_version))
+Prompt25ns_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_25ns_JSON%s.txt' % (first_run, last_25ns_prompt_run, prompt_version))
 
 # 25ns MuonPhys
 PromptMuonsOnly25ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_25ns_JSON_MuonPhys%s.txt' % (first_run, last_25ns_prompt_run, prompt_version))
 
+# 50ns Golden
+Prompt50ns_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_25ns_JSON%s_v2.txt' % (first_run, last_50ns_prompt_run, prompt_version))
+
 # 50ns MuonPhys
-PromptMuonsOnly50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_50ns_JSON_MuonPhys%s.txt' % (first_run, last_50ns_prompt_run, prompt_version))
+PromptMuonsOnly50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_50ns_JSON_MuonPhys%s_v2.txt' % (first_run, last_50ns_prompt_run, prompt_version))
 
 def combine(prompt_ll, rereco1_ll, rereco2_ll, rereco3_ll, dcsonly_ll=None):
     prompt_ll = copy.deepcopy(prompt_ll)
@@ -76,7 +79,8 @@ def combine(prompt_ll, rereco1_ll, rereco2_ll, rereco3_ll, dcsonly_ll=None):
     return ll
 
 # Combine all lists example : Run2012_ll          = combine(Prompt_ll,          Jul13_ll,          Aug06_ll,          Aug24_ll)
-Run2015_ll          = Prompt_ll
+Run201525ns_ll          = Prompt25ns_ll
+Run201550ns_ll          = Prompt50ns_ll
 Run2015MuonsOnly25ns_ll = PromptMuonsOnly25ns_ll
 Run2015MuonsOnly50ns_ll = PromptMuonsOnly50ns_ll
 
@@ -85,7 +89,7 @@ dcsonly_ll.removeRuns(runs_to_remove_from_dcsonly)
 #Run2012PlusDCSOnly_ll          = Jan22_ll | dcsonly_ll
 #Run2012PlusDCSOnlyMuonsOnly_ll = Jan22MuonsOnly_ll | dcsonly_ll
 
-all_ll_names = ['DCSOnly', 'Run2015', 'Run2015MuonsOnly25ns','Run2015MuonsOnly50ns']
+all_ll_names = ['DCSOnly', 'Run201525ns', 'Run201550ns', 'Run2015MuonsOnly25ns','Run2015MuonsOnly50ns']
 
 #print 'DCSOnly', DCSOnly_ll
 #print 'Run2015', Run2015_ll
@@ -103,7 +107,8 @@ if __name__ == '__main__':
     if 'write' in sys.argv:
         Run2015MuonsOnly25ns_ll.writeJSON('Run2015MuonsOnly25ns.json')
         Run2015MuonsOnly50ns_ll.writeJSON('Run2015MuonsOnly50ns.json')
-        Run2015_ll.writeJSON('Run2015.json')
+        Run201525ns_ll.writeJSON('Run201525ns.json')
+        Run201550ns_ll.writeJSON('Run201550ns.json')
     elif 'write_all' in sys.argv:
         for base_name, ll in all_lls():
             ll.writeJSON('zp2mu_goodlumis_%s.json' % base_name)

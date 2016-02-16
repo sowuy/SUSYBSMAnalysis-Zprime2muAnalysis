@@ -4,8 +4,6 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.PATTuple_cfg import process
 
 process.p = cms.Path(process.countPatLeptons)
 
-# Loose cut on muons; stronger cuts to be applied for different
-# sets of plots (e.g. add our isolation cut, or apply VBTF).
 process.selectedPatMuons.cut = 'isGlobalMuon && pt > 20'
 
 # Want to select only events that have at least two leptons (=
@@ -41,10 +39,9 @@ config.Data.publication = True
 #config.Data.publishDBS = 'https://cmsweb.cern.ch/dbs/prod/phys03/DBSWriter/'
 config.Data.publishDBS = 'phys03'
 config.Data.publishDataName = 'datamc_%(name)s'
-config.Data.outLFNDirBase = '/store/user/rradogna'
+config.Data.outLFNDirBase = '/store/user/cschnaib'
 
-#config.Site.storageSite = 'T2_IT_Bari'
-config.Site.storageSite = 'T2_IT_Legnaro'
+config.Site.storageSite = 'T2_CH_CERN'
 '''
 
 os.system('mkdir -p crab/psets')
