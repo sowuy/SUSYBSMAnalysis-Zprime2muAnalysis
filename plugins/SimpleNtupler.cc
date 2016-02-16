@@ -728,7 +728,6 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
         t.gen_lep_noib_eta[1] = hardInteraction->lepPlusNoIB->eta();
         t.gen_lep_noib_phi[1] = hardInteraction->lepPlusNoIB->phi();
         */
-=======
    //int EventWeight = 1.;
    //edm::Handle<GenEventInfoProduct> gen_ev_info;
    //event.getByLabel(genEventInfo_, gen_ev_info);
