@@ -19,6 +19,7 @@ private:
   virtual bool filter(edm::Event&, const edm::EventSetup&);
 
   const std::string hlt_process_name;
+  edm::InputTag TriggerResults_src;
   const std::vector<std::string> trigger_paths;
   const int overall_prescale;
   const bool assume_simulation_has_prescale_1;
@@ -26,10 +27,12 @@ private:
   TH1F* randoms;
   bool _disable;
   HLTPrescaleProvider hltPrescaleProvider_;
+  
 };
 
 PrescaleToCommon::PrescaleToCommon(const edm::ParameterSet& cfg)
   : hlt_process_name(cfg.getParameter<edm::InputTag>("hlt_src").process()),
+    TriggerResults_src(cfg.getParameter<edm::InputTag>("TriggerResults_src")),
     trigger_paths(cfg.getParameter<std::vector<std::string> >("trigger_paths")),
     overall_prescale(cfg.getParameter<int>("overall_prescale")),
     assume_simulation_has_prescale_1(cfg.getParameter<bool>("assume_simulation_has_prescale_1")),
@@ -37,8 +40,8 @@ PrescaleToCommon::PrescaleToCommon(const edm::ParameterSet& cfg)
     hltPrescaleProvider_(cfg, consumesCollector(), *this)
 {
   edm::Service<TFileService> fs;
-  randoms = fs->make<TH1F>("randoms", "", 100, 0, 1);
-    
+  randoms = fs->make<TH1F>("randoms", "", 100, 0, 1); 
+  consumes<edm::TriggerResults>(TriggerResults_src);
 }
 
 //bool PrescaleToCommon::beginRun(edm::Run& run, const edm::EventSetup& setup) {
@@ -71,6 +74,7 @@ bool PrescaleToCommon::filter(edm::Event& event, const edm::EventSetup& setup) {
   std::string trigger_path;
   unsigned path_index = hlt_cfg.size();
   
+ 
     const std::vector<std::string>& pathList = hlt_cfg.triggerNames();
     std::cout<<"path size "<<pathList.size()<<std::endl;
     
@@ -97,7 +101,8 @@ bool PrescaleToCommon::filter(edm::Event& event, const edm::EventSetup& setup) {
   // ahead and skip the event.
   edm::Handle<edm::TriggerResults> hlt_results;
     
-  event.getByLabel(edm::InputTag("TriggerResults", "", hlt_process_name), hlt_results);
+  // event.getByLabel(edm::InputTag("TriggerResults", "", hlt_process_name), hlt_results);
+  event.getByLabel(TriggerResults_src, hlt_results);
   if (!hlt_results->accept(path_index))
     return false;
     

@@ -19,6 +19,9 @@ secFiles.extend( [
 
 process.maxEvents.input = -1
 
+#process.GlobalTag.globaltag = '76X_dataRun2_v15'## Data
+process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12' # MC
+
 # Define the numerators and denominators, removing cuts from the
 # allDimuons maker. "NoX" means remove cut X entirely (i.e. the
 # loose_cut denominators), "TiX" means move cut X from the loose_cut
@@ -112,7 +115,7 @@ if __name__ == '__main__' and 'submit' in sys.argv:
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_nminus1_%(name)s_%(spacing)s'
+config.General.requestName = 'ana_nminus1_%(name)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
@@ -124,15 +127,15 @@ config.Data.inputDataset =  '%(ana_dataset)s'
 config.Data.inputDBS = 'phys03'
 job_control
 config.Data.publication = False
-config.Data.outputDatasetTag = 'ana_nminus1_%(name)s_%(spacing)s'
+config.Data.outputDatasetTag = 'ana_nminus1_%(name)s'
 config.Data.outLFNDirBase = '/store/user/cschnaib'
 
 config.Site.storageSite = 'T2_CH_CERN'
 
 '''
 
-#config.General.requestName = 'ana_nminus1_%(name)s
-#config.Data.publishDataName = 'ana_nminus1_%(name)s'
+#config.Data.outputDatasetTag = 'ana_nminus1_%(name)s_%(spacing)s'
+#config.General.requestName = 'ana_nminus1_%(name)s_%(spacing)s'
 
 
     just_testing = 'testing' in sys.argv
@@ -185,7 +188,7 @@ config.Data.lumiMask = 'tmp.json' ####### use lumiMask as defined in goodlumis.p
                 os.system('crab submit -c crabConfig.py --dryrun')
 
         if not just_testing:
-            os.system('rm crabConfig.py nminus1effs_crab.py nminus1effs_crab.pyc tmp.json crabConfig.pyc')
+            os.system('rm crabConfig.py nminus1effs_crab.py nminus1effs_crab.pyc tmp.json crabConfig.pyc')# 
 
     if not 'no_mc' in sys.argv:
         crab_cfg = crab_cfg.replace('job_control','''
@@ -203,7 +206,8 @@ config.Data.unitsPerJob  = 1000
         #samples = [dy50to120_s,dy120to200_s,dy200to400_s,dy400to800_s,dy800to1400_s,dy1400to2300_s,dy2300to3500_s,dy3500to4500_s,dy4500to6000_s,dy6000_s]#,zpsi5000_s]
         #samples = [qcd50to80,qcd80to120,qcd120to170,qcd170to300,qcd300to470,qcd470to600,qcd800to1000,qcd1000to1400,qcd1400to1800,qcd1800to2400,qcd3200]
         #samples = [qcd120to170]
-        samples = [dy6000_s]
+        #samples = [dy50to120,dy120to200,dy200to400,dy400to800,dy800to1400,dy1400to2300,dy2300to3500,dy3500to4500,dy4500to6000]#,dy6000]
+        samples = [dy400to800,dy800to1400]#,dy6000]
         for sample in samples:
             print sample.name
             open('crabConfig.py', 'wt').write(crab_cfg % sample)
@@ -213,7 +217,7 @@ config.Data.unitsPerJob  = 1000
                 os.system('crab submit -c crabConfig.py --dryrun')
 
         if not just_testing:
-            os.system('rm crabConfig.py nminus1effs_crab.py nminus1effs_crab.pyc tmp.json crabConfig.pyc')
+            os.system('rm crabConfig.py nminus1effs_crab.py nminus1effs_crab.pyc tmp.json crabConfig.pyc')# 
 
 
 

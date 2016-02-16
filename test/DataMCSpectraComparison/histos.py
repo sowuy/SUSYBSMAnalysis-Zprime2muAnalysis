@@ -4,14 +4,17 @@ import sys, os, FWCore.ParameterSet.Config as cms
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import switch_hlt_process_name
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cfg import process
 
-process.source.fileNames =['file:PAT_SingleMuRun2015B-Rereco-Suite_251162_251559_20160120153115/crab_SingleMuRun2015B-Rereco-Suite_251162_251559_20160120153115/results/Zprime_123.root',
+process.source.fileNames =[#'file:PAT_SingleMuRun2015B-Rereco-Suite_251162_251559_20160120153115/crab_SingleMuRun2015B-Rereco-Suite_251162_251559_20160120153115/results/Zprime_123.root',
+                        #'/store/user/alfloren/PAATuples/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/dy50to120/160126_133202/0000/Zprime_1.root',
+                        #'/store/user/alfloren/PAATuples/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/dy50to120/160126_133202/0000/Zprime_10.root',
+                        '/store/user/alfloren/PAATuples/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/dy400to800/160126_133128/0000/Zprime_1.root',
                           #'file:Zprime_10.root',
                            ]
 process.maxEvents.input =-1
-process.GlobalTag.globaltag = '76X_dataRun2_v15'## solo per proare i dati
-#process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12'
+#process.GlobalTag.globaltag = '76X_dataRun2_v15'## 76X global tag
+process.GlobalTag.globaltag = '76X_mcRun2_asymptotic_v12'
 #process.options.wantSummary = cms.untracked.bool(True)# false di default
-process.MessageLogger.cerr.FwkReport.reportEvery = 1 # default 1000
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000 # default 1000
 
 from SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi import trigger_match, prescaled_trigger_match, trigger_paths, prescaled_trigger_paths, overall_prescale, offline_pt_threshold, prescaled_offline_pt_threshold
 
@@ -218,10 +221,7 @@ def check_prescale(process, trigger_paths, hlt_process_name='HLT'):
     process.pCheckPrescale = cms.Path(process.CheckPrescale)
 
 def for_data(process):
-    #process.GlobalTag.globaltag ='GR_P_V56'
     process.GlobalTag.globaltag ='76X_dataRun2_v15'
-    #process.GlobalTag.globaltag = 'GR_E_V47'
-    # process.GlobalTag.globaltag = 'GR_P_V54'
     ntuplify(process)
     #check_prescale(process, trigger_paths) ####### Now it seams that there are no prescaled path ########
 
@@ -279,7 +279,7 @@ if __name__ == '__main__' and 'submit' in sys.argv:
 from CRABClient.UserUtilities import config
 config = config()
 
-config.General.requestName = 'ana_datamc_%(name)s_JsonPromptReco'
+config.General.requestName = 'ana_datamc_%(name)s'
 config.General.workArea = 'crab'
 #config.General.transferLogs = True
 
@@ -292,7 +292,7 @@ config.Data.inputDBS = 'phys03'
 job_control
 config.Data.publication = False
 config.Data.outputDatasetTag = 'ana_datamc_%(name)s'
-config.Data.outLFNDirBase = '/store/user/alfloren'
+config.Data.outLFNDirBase = '/store/user/cschnaib'
 config.Data.ignoreLocality = True 
 
 config.Site.whitelist = ["T2_CH_CERN"]
@@ -321,27 +321,33 @@ config.Site.storageSite = 'T2_CH_CERN'
 
             ]
 
-        lumi_lists = [
-           # 'NoLumiMask'
-  #           'DCSOnly',
-#            'Run2012PlusDCSOnlyMuonsOnly',
-            'Run2015MuonsOnly',
-           # 'Run2015',
-            ]
+#        lumi_lists = [
+#            #'NoLumiMask'
+#            #'DCSOnly',
+#            #'Run2012PlusDCSOnlyMuonsOnly',
+#            #'Run2015MuonsOnly',
+#            #'Run2015',
+#            ]
 
-        jobs = []
-        for lumi_name in lumi_lists:
-            ll = eval(lumi_name + '_ll') if lumi_name != 'NoLumiMask' else None
-            for dd in dataset_details:
-                jobs.append(dd + (lumi_name, ll))
+#        jobs = []
+#        for lumi_name in lumi_lists:
+#            ll = eval(lumi_name + '_ll') if lumi_name != 'NoLumiMask' else None
+#            for dd in dataset_details:
+#                jobs.append(dd + (lumi_name, ll))
                 
-        for dataset_name, ana_dataset, lumi_name, lumi_list in jobs:
-            json_fn = 'tmp.json'
-            lumi_list.writeJSON(json_fn)
-            lumi_mask = json_fn
+        #for dataset_name, ana_dataset, lumi_name, lumi_list in jobs:
+#            json_fn = 'tmp.json'
+#            lumi_list.writeJSON(json_fn)
+#            lumi_mask = json_fn
 
-            name = '%s_%s' % (lumi_name, dataset_name)
-            print name
+#            name = '%s_%s' % (lumi_name, dataset_name)
+#            print name
+        for dataset_name, ana_dataset, spacing in datset_details:
+            print dataset_name, ana_dataset, spacing
+            if spacing == '25ns':
+                Run2015ReRecoMuonsOnly25ns_ll.writeJSON("tmp.json")
+            if spacing == '50ns':
+                Run2015ReRecoMuonsOnly50ns_ll.writeJSON("tmp.json")
 
             new_py = open('histos.py').read()
             new_py += "\nfor_data(process)\n"
@@ -383,9 +389,12 @@ config.Data.totalUnits = -1
 config.Data.unitsPerJob  = 10000
     ''')
 
-        from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+        #from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import samples
+        from SUSYBSMAnalysis.Zprime2muAnalysis.MCSamples import *
 
-        combine_dy_samples = len([x for x in samples if x.name in ['dy200', 'dy400', 'dy500', 'dy700', 'dy800', 'dy1500', 'dy2000', 'dy3000']]) > 0
+        samples = [dy50to120, dy120to200, dy200to400, dy400to800, dy800to1400, dy1400to2300, dy2300to3500, dy3500to4500, dy4500to6000]
+        #combine_dy_samples = len([x for x in samples if x.name in ['dy200', 'dy400', 'dy500', 'dy700', 'dy800', 'dy1500', 'dy2000', 'dy3000']]) > 0
+        combine_dy_samples = len([x for x in samples if x.name in []]) > 0
         print 'combine_dy_samples:', combine_dy_samples
 
         for sample in reversed(samples):

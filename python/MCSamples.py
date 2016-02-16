@@ -51,15 +51,15 @@ class tupleonlysample(sample):
 # Single-top cross sections are from https://twiki.cern.ch/twiki/bin/viewauth/CMS/SingleTopSigma8TeV
 # K factor for Drell-Yan samples is the ratio of the NNLO to POWHEG cross sections for M > 20 GeV bin, 1915/1871=1.024
 samples = [
-           #sample('dy50to120',     'DY50to120', '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 2898838, 209 , 1., 1975, k_factor=1.),
-           #sample('dy120to200',    'DY120to200', '/ZToMuMu_NNPDF30_13TeV-powheg_M_120_200/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 210, 1., 19.32, k_factor=1.),
+           sample('dy50to120',     'DY50to120', '/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 2898838, 209 , 1., 1975, k_factor=1.),
+           sample('dy120to200',    'DY120to200', '/ZToMuMu_NNPDF30_13TeV-powheg_M_120_200/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 210, 1., 19.32, k_factor=1.),
            sample('dy200to400',    'DY200to400', '/ZToMuMu_NNPDF30_13TeV-powheg_M_200_400/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 211, 1., 2.731, k_factor=1.),
-           # sample('dy400to800',    'DY400to800', '/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 212, 1., 0.241, k_factor=1.),
-          #  sample('dy800to1400',    'DY800to1400', '/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 72, 1., 0.01678, k_factor=1.),
-           # sample('dy1400to2300',    'DY1400to2300', '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 99600, 71 , 1., 0.00139, k_factor=1.),
-           # sample('dy2300to3500',    'DY2300to3500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 70 , 1., 0.00008948, k_factor=1.),
-           # sample('dy3500to4500',    'DY3500to4500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 30, 1., 0.0000041, k_factor=1.),
-            # sample('dy4500to6000',    'DY4500to6000', '/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v3/AODSIM',100000, 31 , 1., 4.56E-7, k_factor=1.),
+           sample('dy400to800',    'DY400to800', '/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 212, 1., 0.241, k_factor=1.),
+           sample('dy800to1400',    'DY800to1400', '/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 72, 1., 0.01678, k_factor=1.),
+           sample('dy1400to2300',    'DY1400to2300', '/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 99600, 71 , 1., 0.00139, k_factor=1.),
+           sample('dy2300to3500',    'DY2300to3500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 70 , 1., 0.00008948, k_factor=1.),
+           sample('dy3500to4500',    'DY3500to4500', '/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/AODSIM', 100000, 30, 1., 0.0000041, k_factor=1.),
+           sample('dy4500to6000',    'DY4500to6000', '/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/RunIIFall15DR76-PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v3/AODSIM',100000, 31 , 1., 4.56E-7, k_factor=1.),
     
            #sample('ttbar_pow_s',     't#bar{t}', '/TT_TuneCUETP8M1_13TeV-powheg-pythia8/RunIISpring15DR74-Startup25ns_EXOReReco_74X_Spring15_mcRun2_startup25ns_v0-v1/AODSIM', 19869898, 4 , 1., 815.96, k_factor=1.),
            # sample('tWantitop_s', 'tWantiTop',        '/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/RunIISpring15DR74-Startup25ns_EXOReReco_74X_Spring15_mcRun2_startup25ns_v0-v1/AODSIM',1000000,63 , 1., 35.6, k_factor=1.),
@@ -77,15 +77,15 @@ for sample in samples:
     # print sample.dataset.split('/')[1]
 
 
-#dy50to120.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/alfloren-dy50to120-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy120to200.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_120_200/alfloren-dy120to200-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy200to400.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_200_400/alfloren-dy200to400-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy400to800.ana_dataset ='ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/alfloren-dy400to800-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy800to1400.ana_dataset ='ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/alfloren-dy800to1400-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy1400to2300.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/alfloren-dy1400to2300-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy2300to3500.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/alfloren-dy2300to3500-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy3500to4500.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/alfloren-dy3500to4500-f1c862f6f3d7656594801a05b2168a1c/USER'
-#dy4500to6000.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/alfloren-dy4500to6000-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy50to120.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_50_120/alfloren-dy50to120-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy120to200.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_120_200/alfloren-dy120to200-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy200to400.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_200_400/alfloren-dy200to400-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy400to800.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_400_800/alfloren-dy400to800-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy800to1400.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_800_1400/alfloren-dy800to1400-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy1400to2300.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_1400_2300/alfloren-dy1400to2300-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy2300to3500.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_2300_3500/alfloren-dy2300to3500-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy3500to4500.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_3500_4500/alfloren-dy3500to4500-f1c862f6f3d7656594801a05b2168a1c/USER'
+dy4500to6000.ana_dataset ='/ZToMuMu_NNPDF30_13TeV-powheg_M_4500_6000/alfloren-dy4500to6000-f1c862f6f3d7656594801a05b2168a1c/USER'
     
 
 

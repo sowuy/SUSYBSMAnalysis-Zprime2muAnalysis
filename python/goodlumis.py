@@ -68,6 +68,18 @@ Prompt50ns_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certifi
 # 50ns MuonPhys
 PromptMuonsOnly50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_50ns_JSON_MuonPhys%s_v2.txt' % (first_run, last_50ns_prompt_run, prompt_version))
 
+# 50ns Golden 2015 ReReco
+ReRecoGolden50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_50ns_JSON.txt')
+
+# 50ns Muon 2015 ReReco
+ReRecoMuonsOnly50ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_50ns_JSON_MuonPhys.txt')
+
+# 25ns Golden 2015 ReReco
+ReRecoGolden25ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON.txt')
+
+# 25ns Muon 2015 ReReco
+ReRecoMuonsOnly25ns_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Reprocessing/Cert_13TeV_16Dec2015ReReco_Collisions15_25ns_JSON_MuonPhys.txt')
+
 def combine(prompt_ll, rereco1_ll, rereco2_ll, rereco3_ll, dcsonly_ll=None):
     prompt_ll = copy.deepcopy(prompt_ll)
     prompt_ll.removeRuns(runs_to_remove_from_prompt)
@@ -79,17 +91,22 @@ def combine(prompt_ll, rereco1_ll, rereco2_ll, rereco3_ll, dcsonly_ll=None):
     return ll
 
 # Combine all lists example : Run2012_ll          = combine(Prompt_ll,          Jul13_ll,          Aug06_ll,          Aug24_ll)
-Run201525ns_ll          = Prompt25ns_ll
-Run201550ns_ll          = Prompt50ns_ll
-Run2015MuonsOnly25ns_ll = PromptMuonsOnly25ns_ll
-Run2015MuonsOnly50ns_ll = PromptMuonsOnly50ns_ll
+Run2015Prompt25ns_ll          = Prompt25ns_ll
+Run2015Prompt50ns_ll          = Prompt50ns_ll
+Run2015PromptMuonsOnly25ns_ll = PromptMuonsOnly25ns_ll
+Run2015PromptMuonsOnly50ns_ll = PromptMuonsOnly50ns_ll
+Run2015ReReco25ns_ll          = ReReco25ns_ll
+Run2015ReReco50ns_ll          = ReReco50ns_ll
+Run2015ReRecoMuonsOnly25ns_ll = ReRecoMuonsOnly25ns_ll
+Run2015ReRecoMuonsOnly50ns_ll = ReRecoMuonsOnly50ns_ll
 
 dcsonly_ll = copy.deepcopy(DCSOnly_ll)
 dcsonly_ll.removeRuns(runs_to_remove_from_dcsonly)
 #Run2012PlusDCSOnly_ll          = Jan22_ll | dcsonly_ll
 #Run2012PlusDCSOnlyMuonsOnly_ll = Jan22MuonsOnly_ll | dcsonly_ll
 
-all_ll_names = ['DCSOnly', 'Run201525ns', 'Run201550ns', 'Run2015MuonsOnly25ns','Run2015MuonsOnly50ns']
+#all_ll_names = ['DCSOnly', 'Run201525ns', 'Run201550ns', 'Run2015MuonsOnly25ns','Run2015MuonsOnly50ns']
+all_ll_names = ['DCSOnly', 'Run2015Prompt25ns', 'Run2015Prompt50ns', 'Run2015PromptMuonsOnly25ns','Run2015PromptMuonsOnly50ns','Run2015ReReco25ns','Run2015ReReco50ns','Run2015ReRecoMuonsOnly25ns','Run2015ReRecoMuonsOnly50ns']
 
 #print 'DCSOnly', DCSOnly_ll
 #print 'Run2015', Run2015_ll
