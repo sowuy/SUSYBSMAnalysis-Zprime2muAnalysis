@@ -45,6 +45,7 @@ private:
     float beamspot_z;
     float beamspot_z_err;
     int nvertices;
+    int dil_chosen;
     float dil_mass;
     float dil_pt;
     float dil_rap;
@@ -273,6 +274,7 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
   tree->Branch("beamspot_z", &t.beamspot_z, "beamspot_z/F");
   tree->Branch("beamspot_z_err", &t.beamspot_z_err, "beamspot_z_err/F");
   tree->Branch("nvertices", &t.nvertices, "nvertices/I");
+  tree->Branch("dil_chosen", &t.dil_chosen, "dil_chosen/I");
   tree->Branch("dil_mass", &t.dil_mass, "dil_mass/F");
   tree->Branch("dil_pt", &t.dil_pt, "dil_pt/F");
   tree->Branch("dil_rap", &t.dil_rap, "dil_rap/F");
@@ -751,10 +753,15 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
   event.getByLabel(dimu_src, dils);
 
   //
-  // Loop over dil candidates in dils (should only be one per event?)
+  // Loop over dil candidates in dils
   //
+  int chosen = 0;
   BOOST_FOREACH(const pat::CompositeCandidate& dil, *dils) {
 
+    
+    // The dils come pre-sorted so that the first in the list is the one to use
+    t.dil_chosen = chosen;
+    chosen++;
     t.dil_mass = dil.mass();
     t.dil_pt = dil.pt();
     t.dil_rap = dil.rapidity();
