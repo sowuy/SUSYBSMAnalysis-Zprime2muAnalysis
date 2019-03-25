@@ -7,9 +7,9 @@ def for_cmssw(ll):
 # These run numbers guide the combination of the prompt and DCS-only
 # JSONs.
 first_run = 294927 #first DCS run or first analyzed run
-last_rereco_run = 305185
-last_prompt_run = 305185
-last_run = 305185 #last DCS run or last analyzed run
+last_rereco_run = 306462
+last_prompt_run = 306462
+last_run = 306462 #last DCS run or last analyzed run
 
 # Sometimes the same run-range json gets made in other versions.
 prompt_version = ''
@@ -66,7 +66,7 @@ DCSOnlyForNewRuns_ll.removeRuns(runs_to_remove_from_dcsonly)
 #Cert_246908-255031_13TeV_PromptReco_Collisions15_25ns_JSON_MuonPhys.txt
 
 Prompt_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PromptReco/Cert_%i-%i_13TeV_PromptReco_Collisions17_JSON%s.txt' % (first_run, last_prompt_run, prompt_version))
-PromptMuonsOnly_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/PromptReco/Cert_%i-%i_13TeV_PromptReco_Collisions17_JSON_MuonPhys%s.txt' % (first_run, last_prompt_run, prompt_version))
+PromptMuonsOnly_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Final/Cert_%i-%i_13TeV_PromptReco_Collisions17_JSON_MuonPhys%s.txt' % (first_run, last_prompt_run, prompt_version))
 
 #PromptMuonsOnly_ll = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/Cert_%i-%i_13TeV_PromptReco_Collisions15_50ns_JSON_MuonPhys%s_v2.txt' % (first_run, last_prompt_run, prompt_version))
 #Prompt_ll          = LumiList('/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/Prompt/Cert_%i-%i_8TeV_PromptReco_Collisions12_JSON%s.txt'          % (first_run, last_prompt_run, prompt_version))

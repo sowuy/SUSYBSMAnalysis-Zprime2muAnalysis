@@ -500,8 +500,8 @@ void Zprime2muLeptonProducer_miniAOD::produce(edm::Event& event, const edm::Even
   // the main path and the prescaled path.
   
   Zprime2muTriggerPathsAndFilters pandf(event);
-  if (!pandf.valid)
-    throw cms::Exception("Zprime2muLeptonProducer_miniAOD") << "could not determine the HLT path and filter names for this event\n";
+  if (!pandf.valid) {
+    throw cms::Exception("Zprime2muLeptonProducer_miniAOD") << "could not determine the HLT path and filter names for this event\n";}
  
 
     edm::Handle<edm::TriggerResults> triggerBits;
@@ -521,31 +521,31 @@ void Zprime2muLeptonProducer_miniAOD::produce(edm::Event& event, const edm::Even
 //     L3_muons_2.clear();
     prescaled_L3_muons.clear();
     for (pat::TriggerObjectStandAlone obj : *trigger_summary_src) { // note: not "const &" since we want to call unpackPathNames
-        obj.unpackPathNames(names);
-        obj.unpackFilterLabels(event, *triggerBits); 
-	
-	//if (obj.collection() == "hltL3MuonCandidates::HLT"){
-	for (unsigned h = 0; h < obj.filterLabels().size(); ++h) {
-	  
-	  
-	 //this should not be hard coded! 
-	//std::cout << obj.filterLabels()[h] << std::endl;   
-	if (obj.filterLabels()[h] == pandf.filter){ 
-	    //FilterMatched[j] = 1;
-	    L3_muons.push_back(obj);
-    }
-//     if (obj.filterLabels()[h] == pandf.filter_2){
-//          //FilterMatched[j] = 1;
-//          L3_muons_2.push_back(obj);
-//     }
-    
-	  if (obj.filterLabels()[h] ==	pandf.prescaled_filter){
-	    //FilterMatched[j] = 1;
-	    prescaled_L3_muons.push_back(obj);
-	  } 
-	 }
-       // }
-	j++;
+			obj.unpackPathNames(names);
+			obj.unpackFilterLabels(event, *triggerBits); 
+		
+		//if (obj.collection() == "hltL3MuonCandidates::HLT"){
+		for (unsigned h = 0; h < obj.filterLabels().size(); ++h) {
+		  
+		  
+		 //this should not be hard coded! 
+		//std::cout << obj.filterLabels()[h] << std::endl;   
+		if (obj.filterLabels()[h] == pandf.filter){ 
+			//FilterMatched[j] = 1;
+			L3_muons.push_back(obj);
+		}
+	//     if (obj.filterLabels()[h] == pandf.filter_2){
+	//          //FilterMatched[j] = 1;
+	//          L3_muons_2.push_back(obj);
+	//     }
+		
+		  if (obj.filterLabels()[h] ==	pandf.prescaled_filter){
+			//FilterMatched[j] = 1;
+			prescaled_L3_muons.push_back(obj);
+		  } 
+		 }
+		   // }
+		j++;
     }
 //    std::cout<<"quel trigger path = "<<pandf.filter<<std::endl;
 //    std::cout<<"nombre de muon that triggered HLT_50 = "<<L3_muons.size()<<std::endl;
