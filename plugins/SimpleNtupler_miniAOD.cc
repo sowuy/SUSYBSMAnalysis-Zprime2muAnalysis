@@ -47,7 +47,7 @@ private:
     float beamspot_z;
     float beamspot_z_err;
     int nvertices;
-    int dil_chosen;
+    int n_dils;
     float dil_mass;
     float dil_pt;
     float dil_rap;
@@ -138,6 +138,19 @@ private:
     float lep_cocktail_ndf[2];
     float lep_cocktail_qOverPt[2];
     short lep_cocktail_choice[2];
+    float lep_dyt_p[2];
+    float lep_dyt_pt[2];
+    float lep_dyt_pt_err[2];
+    float lep_dyt_px[2];
+    float lep_dyt_py[2];
+    float lep_dyt_pz[2];
+    float lep_dyt_eta[2];
+    float lep_dyt_phi[2];
+    float lep_dyt_dz[2];
+    float lep_dyt_vz[2];
+    float lep_dyt_chi2[2];
+    float lep_dyt_ndf[2];
+    float lep_dyt_qOverPt[2];
     float lep_tuneP_p[2];
     float lep_tuneP_pt[2];
     float lep_tuneP_pt_err[2];
@@ -151,6 +164,14 @@ private:
     float lep_tuneP_chi2[2];
     float lep_tuneP_ndf[2];
     float lep_tuneP_qOverPt[2];
+    int lep_q[2];
+    int lep_tk_q[2];
+    int lep_glb_q[2];
+    int lep_tpfms_q[2];
+    int lep_picky_q[2];
+    int lep_cocktail_q[2];
+    int lep_dyt_q[2];
+    int lep_tuneP_q[2];
     float lep_triggerMatchPt[2];
     float lep_triggerMatchEta[2];
     float lep_chi2dof[2];
@@ -209,6 +230,7 @@ private:
     float gen_dil_phi;
     float gen_dil_dR;
     float gen_dil_dPhi;
+    int gen_lep_q[2];
     float gen_lep_p[2];
     float gen_lep_pt[2];
     float gen_lep_px[2];
@@ -292,7 +314,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("beamspot_z", &t.beamspot_z, "beamspot_z/F");
   tree->Branch("beamspot_z_err", &t.beamspot_z_err, "beamspot_z_err/F");
   tree->Branch("nvertices", &t.nvertices, "nvertices/I");
-  tree->Branch("dil_chosen", &t.dil_chosen, "dil_chosen/I");
+  tree->Branch("n_dils", &t.n_dils, "n_dils/I");
   tree->Branch("dil_mass", &t.dil_mass, "dil_mass/F");
   tree->Branch("dil_pt", &t.dil_pt, "dil_pt/F");
   tree->Branch("dil_rap", &t.dil_rap, "dil_rap/F");
@@ -316,6 +338,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("vertex_z_err", &t.vertex_z_err, "vertex_z_err/F");
   tree->Branch("lep_id", t.lep_id, "lep_id[2]/I");
   tree->Branch("lep_heep_id", t.lep_heep_id, "lep_heep_id[2]/I");
+  tree->Branch("lep_q", t.lep_q, "lep_q[2]/I");
   tree->Branch("lep_p", t.lep_p, "lep_p[2]/F");
   tree->Branch("lep_pt", t.lep_pt, "lep_pt[2]/F");
   tree->Branch("lep_pt_err", t.lep_pt_err, "lep_pt_err[2]/F");
@@ -326,6 +349,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("lep_eta", t.lep_eta, "lep_eta[2]/F");
   tree->Branch("lep_phi", t.lep_phi, "lep_phi[2]/F");
   tree->Branch("lep_qOverPt", t.lep_qOverPt, "lep_qOverPt[2]/F");
+  tree->Branch("lep_tk_q", t.lep_tk_q, "lep_tk_q[2]/I");
   tree->Branch("lep_tk_p", t.lep_tk_p, "lep_tk_p[2]/F");
   tree->Branch("lep_tk_pt", t.lep_tk_pt, "lep_tk_pt[2]/F");
   tree->Branch("lep_tk_pt_err", t.lep_tk_pt_err, "lep_tk_pt_err[2]/F");
@@ -339,6 +363,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("lep_tk_chi2", t.lep_tk_chi2, "lep_tk_chi2[2]/F");
   tree->Branch("lep_tk_ndf", t.lep_tk_ndf, "lep_tk_ndf[2]/F");
   tree->Branch("lep_tk_qOverPt", t.lep_tk_qOverPt, "lep_tk_qOverPt[2]/F");
+  tree->Branch("lep_glb_q", t.lep_glb_q, "lep_glb_q[2]/I");
   tree->Branch("lep_glb_p", t.lep_glb_p, "lep_glb_p[2]/F");
   tree->Branch("lep_glb_pt", t.lep_glb_pt, "lep_glb_pt[2]/F");
   tree->Branch("lep_glb_pt_err", t.lep_glb_pt_err, "lep_glb_pt_err[2]/F");
@@ -350,6 +375,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("lep_glb_chi2", t.lep_glb_chi2, "lep_glb_chi2[2]/F");
   tree->Branch("lep_glb_ndf", t.lep_glb_ndf, "lep_glb_ndf[2]/F");
   tree->Branch("lep_glb_qOverPt", t.lep_glb_qOverPt, "lep_glb_qOverPt[2]/F");
+  tree->Branch("lep_tpfms_q", t.lep_tpfms_q, "lep_tpfms_q[2]/I");
   tree->Branch("lep_tpfms_p", t.lep_tpfms_p, "lep_tpfms_p[2]/F");
   tree->Branch("lep_tpfms_pt", t.lep_tpfms_pt, "lep_tpfms_pt[2]/F");
   tree->Branch("lep_tpfms_pt_err", t.lep_tpfms_pt_err, "lep_tpfms_pt_err[2]/F");
@@ -361,6 +387,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("lep_tpfms_chi2", t.lep_tpfms_chi2, "lep_tpfms_chi2[2]/F");
   tree->Branch("lep_tpfms_ndf", t.lep_tpfms_ndf, "lep_tpfms_ndf[2]/F");
   tree->Branch("lep_tpfms_qOverPt", t.lep_tpfms_qOverPt, "lep_tpfms_qOverPt[2]/F");
+  tree->Branch("lep_picky_q", t.lep_picky_q, "lep_picky_q[2]/I");
   tree->Branch("lep_picky_p", t.lep_picky_p, "lep_picky_p[2]/F");
   tree->Branch("lep_picky_pt", t.lep_picky_pt, "lep_picky_pt[2]/F");
   tree->Branch("lep_picky_pt_err", t.lep_picky_pt_err, "lep_picky_pt_err[2]/F");
@@ -372,6 +399,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("lep_picky_chi2", t.lep_picky_chi2, "lep_picky_chi2[2]/F");
   tree->Branch("lep_picky_ndf", t.lep_picky_ndf, "lep_picky_ndf[2]/F");
   tree->Branch("lep_picky_qOverPt", t.lep_picky_qOverPt, "lep_picky_qOverPt[2]/F");
+  tree->Branch("lep_cocktail_q", t.lep_cocktail_q, "lep_cocktail_q[2]/I");
   tree->Branch("lep_cocktail_p", t.lep_cocktail_p, "lep_cocktail_p[2]/F");
   tree->Branch("lep_cocktail_pt", t.lep_cocktail_pt, "lep_cocktail_pt[2]/F");
   tree->Branch("lep_cocktail_pt_err", t.lep_cocktail_pt_err, "lep_cocktail_pt_err[2]/F");
@@ -384,6 +412,19 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
   tree->Branch("lep_cocktail_ndf", t.lep_cocktail_ndf, "lep_cocktail_ndf[2]/F");
   tree->Branch("lep_cocktail_qOverPt", t.lep_cocktail_qOverPt, "lep_cocktail_qOverPt[2]/F");
   tree->Branch("lep_cocktail_choice", t.lep_cocktail_choice, "lep_cocktail_choice[2]/S");
+  tree->Branch("lep_dyt_q", t.lep_dyt_q, "lep_dyt_q[2]/I");
+  tree->Branch("lep_dyt_p", t.lep_dyt_p, "lep_dyt_p[2]/F");
+  tree->Branch("lep_dyt_pt", t.lep_dyt_pt, "lep_dyt_pt[2]/F");
+  tree->Branch("lep_dyt_pt_err", t.lep_dyt_pt_err, "lep_dyt_pt_err[2]/F");
+  tree->Branch("lep_dyt_px", t.lep_dyt_px, "lep_dyt_px[2]/F");
+  tree->Branch("lep_dyt_py", t.lep_dyt_py, "lep_dyt_py[2]/F");
+  tree->Branch("lep_dyt_pz", t.lep_dyt_pz, "lep_dyt_pz[2]/F");
+  tree->Branch("lep_dyt_eta", t.lep_dyt_eta, "lep_dyt_eta[2]/F");
+  tree->Branch("lep_dyt_phi", t.lep_dyt_phi, "lep_dyt_phi[2]/F");
+  tree->Branch("lep_dyt_chi2", t.lep_dyt_chi2, "lep_dyt_chi2[2]/F");
+  tree->Branch("lep_dyt_ndf", t.lep_dyt_ndf, "lep_dyt_ndf[2]/F");
+  tree->Branch("lep_dyt_qOverPt", t.lep_dyt_qOverPt, "lep_dyt_qOverPt[2]/F");
+  tree->Branch("lep_tuneP_q", t.lep_tuneP_q, "lep_tuneP_q[2]/I");
   tree->Branch("lep_tuneP_p", t.lep_tuneP_p, "lep_tuneP_p[2]/F");
   tree->Branch("lep_tuneP_pt", t.lep_tuneP_pt, "lep_tuneP_pt[2]/F");
   tree->Branch("lep_tuneP_pt_err", t.lep_tuneP_pt_err, "lep_tuneP_pt_err[2]/F");
@@ -460,6 +501,7 @@ SimpleNtupler_miniAOD::SimpleNtupler_miniAOD(const edm::ParameterSet& cfg)
     tree->Branch("gen_dil_phi", &t.gen_dil_phi, "gen_dil_phi/F");
     tree->Branch("gen_dil_dR", &t.gen_dil_dR, "gen_dil_dR/F");
     tree->Branch("gen_dil_dPhi", &t.gen_dil_dPhi, "gen_dil_dPhi/F");
+    tree->Branch("gen_lep_q", t.gen_lep_q, "gen_lep_q[2]/I");
     tree->Branch("gen_lep_p", t.gen_lep_p, "gen_lep_p[2]/F");
     tree->Branch("gen_lep_pt", t.gen_lep_pt, "gen_lep_pt[2]/F");
     tree->Branch("gen_lep_px", t.gen_lep_px, "gen_lep_px[2]/F");
@@ -713,7 +755,14 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
     edm::Handle<GenEventInfoProduct> gen_ev_info;
     event.getByLabel(genEventInfo_, gen_ev_info);
     EventWeight = gen_ev_info->weight();
-    t.genWeight = ( EventWeight > 0 ) ? 1 : -1;
+    if (gen_ev_info.isValid()) {
+        EventWeight = gen_ev_info->weight();
+        t.genWeight = ( EventWeight > 0.0 ) ? 1.0 : -1.0;
+    }
+    else {
+        EventWeight = 1.0;
+        t.genWeight = 1.0;
+    }
     
     
     //
@@ -735,6 +784,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
       t.gen_dil_dR   = deltaR(*hardInteraction->lepMinusNoIB, *hardInteraction->lepPlusNoIB);
       t.gen_dil_dPhi = deltaPhi(*hardInteraction->lepMinusNoIB, *hardInteraction->lepPlusNoIB);
 //       
+      t.gen_lep_q[0] = hardInteraction->lepMinusNoIB->charge();
       t.gen_lep_p[0]  = hardInteraction->lepMinusNoIB->p();
       t.gen_lep_pt[0]  = hardInteraction->lepMinusNoIB->pt();
       t.gen_lep_px[0]  = hardInteraction->lepMinusNoIB->px();
@@ -745,6 +795,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
       t.gen_lep_phi[0] = hardInteraction->lepMinusNoIB->phi();
       t.gen_lep_qOverPt[0] = hardInteraction->lepMinusNoIB->charge() / hardInteraction->lepMinusNoIB->pt();
 //       
+      t.gen_lep_q[1] = hardInteraction->lepPlusNoIB->charge();
       t.gen_lep_p[1]  = hardInteraction->lepPlusNoIB->p();
       t.gen_lep_pt[1]  = hardInteraction->lepPlusNoIB->pt();
       t.gen_lep_px[1]  = hardInteraction->lepPlusNoIB->px();
@@ -785,13 +836,11 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
   //
   // Loop over dil candidates in dils
   //
-  int chosen = 0;
+  t.n_dils = (*dils).size();
   BOOST_FOREACH(const pat::CompositeCandidate& dil, *dils) {
 
     
     // The dils come pre-sorted so that the first in the list is the one to use
-    t.dil_chosen = chosen;
-    chosen++;
     t.dil_mass = dil.mass();
     t.dil_pt = dil.pt();
     t.dil_rap = dil.rapidity();
@@ -893,6 +942,17 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 	t.lep_cocktail_chi2[w] = -999;
 	t.lep_cocktail_ndf[w] = -999;
 	t.lep_cocktail_qOverPt[w] = -999;
+	t.lep_dyt_p[w] = -999;
+	t.lep_dyt_pt[w] = -999;
+	t.lep_dyt_pt_err[w] = -999;
+	t.lep_dyt_px[w] = -999;
+	t.lep_dyt_py[w] = -999;
+	t.lep_dyt_pz[w] = -999;
+	t.lep_dyt_eta[w] = -999;
+	t.lep_dyt_phi[w] = -999;
+	t.lep_dyt_chi2[w] = -999;
+	t.lep_dyt_ndf[w] = -999;
+	t.lep_dyt_qOverPt[w] = -999;
 	t.lep_tuneP_p[w] = -999;
 	t.lep_tuneP_pt[w] = -999;
 	t.lep_tuneP_pt_err[w] = -999;
@@ -904,6 +964,14 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 	t.lep_tuneP_chi2[w] = -999;
 	t.lep_tuneP_ndf[w] = -999;
 	t.lep_tuneP_qOverPt[w] = -999;
+    t.lep_q[w] = 0;
+    t.lep_tk_q[w] = 0;
+    t.lep_glb_q[w] = 0;
+    t.lep_tpfms_q[w] = 0;
+    t.lep_picky_q[w] = 0;
+    t.lep_cocktail_q[w] = 0;
+    t.lep_dyt_q[w] = 0;
+    t.lep_tuneP_q[w] = 0;
 	t.lep_triggerMatchPt[w] = -999;
 	t.lep_triggerMatchEta[w] = -999;
 	t.lep_chi2dof[w] = -999;
@@ -986,6 +1054,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         //
         //
 	const reco::Track* tk = patmuon::getPickedTrack(*mu).get();
+    t.lep_q[w] = tk->charge();
 	t.lep_p[w]     = tk->p();
 	t.lep_pt[w]     = tk->pt();
 	t.lep_px[w]     = tk->px();
@@ -998,6 +1067,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         // Tracker Track Muon Information
         //
         if (mu->innerTrack().isNull()){
+		t.lep_tk_q[w] = 0;
 		t.lep_tk_p[w] = -999;
 		t.lep_tk_pt[w] = -999;
 		t.lep_tk_pt_err[w] = -999;
@@ -1014,6 +1084,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 
 	}
 	else{
+		t.lep_tk_q[w] = mu->innerTrack()->charge();
 		t.lep_tk_p[w] = mu->innerTrack()->p();
 		t.lep_tk_pt[w] = mu->innerTrack()->pt();
 		t.lep_tk_pt_err[w] = mu->innerTrack()->ptError();
@@ -1032,6 +1103,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         // Global Muon Information
         //
         if (mu->globalTrack().isNull()){
+		t.lep_glb_q[w] = 0;
 		t.lep_glb_p[w] = -999;
 		t.lep_glb_pt[w] = -999;
 		t.lep_glb_pt_err[w] = -999;
@@ -1045,6 +1117,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 		t.lep_glb_qOverPt[w] = -999;
 	}
         else{
+		t.lep_glb_q[w] = mu->globalTrack()->charge();
 		t.lep_glb_p[w] = mu->globalTrack()->p();
 		t.lep_glb_pt[w] = mu->globalTrack()->pt();
 		t.lep_glb_pt_err[w] = mu->globalTrack()->ptError();
@@ -1061,6 +1134,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         // Tracker Plus First Muon Station Muon Information
         //
 	if (!(mu->tpfmsTrack().refCore().isAvailable())) {
+	  t.lep_tpfms_q[w] = 0;
 	  t.lep_tpfms_p[w] = -999;
 	  t.lep_tpfms_pt[w] = -999;
 	  t.lep_tpfms_pt_err[w] = -999;
@@ -1074,6 +1148,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 	  t.lep_tpfms_qOverPt[w] = -999;
 	}
 	else {
+	  t.lep_tpfms_q[w] = mu->tpfmsTrack()->charge();
 	  t.lep_tpfms_p[w] = mu->tpfmsTrack()->p();
 	  t.lep_tpfms_pt[w] = mu->tpfmsTrack()->pt();
 	  t.lep_tpfms_pt_err[w] = mu->tpfmsTrack()->ptError();
@@ -1091,6 +1166,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         // Picky Muon Information
         //
 	if (!(mu->pickyTrack().refCore().isAvailable())) {
+	  t.lep_picky_q[w] = 0;
 	  t.lep_picky_p[w] = -999;
 	  t.lep_picky_pt[w] = -999;
 	  t.lep_picky_pt_err[w] = -999;
@@ -1104,6 +1180,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 	  t.lep_picky_qOverPt[w] = -999;
 	}
 	else {
+	  t.lep_picky_q[w] = mu->pickyTrack()->charge();
 	  t.lep_picky_p[w] = mu->pickyTrack()->p();
 	  t.lep_picky_pt[w] = mu->pickyTrack()->pt();
 	  t.lep_picky_pt_err[w] = mu->pickyTrack()->ptError();
@@ -1119,6 +1196,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         if (!mu->hasUserInt("hasTeVMuons") || mu->userInt("hasTeVMuons")){
 	        reco::TrackRef cocktail = muon::tevOptimized(*mu, 200, 17, 40, 0.25).first;
        		 if (cocktail.isNull()) {
+          	 t.lep_cocktail_q[w] = 0;
           	 t.lep_cocktail_p[w] = -999;
           	 t.lep_cocktail_pt[w] = -999;
            	 t.lep_cocktail_pt_err[w] = -999;
@@ -1133,6 +1211,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
           	 t.lep_cocktail_choice[w] = -999;
         	}
         	else {
+          	 t.lep_cocktail_q[w] = cocktail->charge();
           	 t.lep_cocktail_p[w] = cocktail->p();
           	 t.lep_cocktail_pt[w] = cocktail->pt();
           	 t.lep_cocktail_pt_err[w] = cocktail->ptError();
@@ -1148,7 +1227,38 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
         	}
 
 	}
+
+	if (!(mu->dytTrack().refCore().isAvailable())) {
+	  t.lep_dyt_q[w] = 0;
+	  t.lep_dyt_p[w] = -999;
+	  t.lep_dyt_pt[w] = -999;
+	  t.lep_dyt_pt_err[w] = -999;
+	  t.lep_dyt_px[w] = -999;
+	  t.lep_dyt_py[w] = -999;
+	  t.lep_dyt_pz[w] = -999;
+	  t.lep_dyt_eta[w] = -999;
+	  t.lep_dyt_phi[w] = -999;
+	  t.lep_dyt_chi2[w] = -999;
+	  t.lep_dyt_ndf[w] = -999;
+	  t.lep_dyt_qOverPt[w] = -999;
+	}
+	else {
+	  t.lep_dyt_q[w] = mu->dytTrack()->charge();
+	  t.lep_dyt_p[w] = mu->dytTrack()->p();
+	  t.lep_dyt_pt[w] = mu->dytTrack()->pt();
+	  t.lep_dyt_pt_err[w] = mu->dytTrack()->ptError();
+	  t.lep_dyt_px[w] = mu->dytTrack()->px();
+	  t.lep_dyt_py[w] = mu->dytTrack()->py();
+	  t.lep_dyt_pz[w] = mu->dytTrack()->pz();
+	  t.lep_dyt_eta[w] = mu->dytTrack()->eta();
+	  t.lep_dyt_phi[w] = mu->dytTrack()->phi();
+	  t.lep_dyt_chi2[w] = mu->dytTrack()->chi2();
+	  t.lep_dyt_ndf[w] = mu->dytTrack()->ndof();
+	  t.lep_dyt_qOverPt[w] = (mu->charge())/(mu->dytTrack()->pt());
+	}
+
 	if (!(mu->tunePMuonBestTrack().refCore().isAvailable())) {
+	  t.lep_tuneP_q[w] = 0;
 	  t.lep_tuneP_p[w] = -999;
 	  t.lep_tuneP_pt[w] = -999;
 	  t.lep_tuneP_pt_err[w] = -999;
@@ -1162,6 +1272,7 @@ void SimpleNtupler_miniAOD::analyze(const edm::Event& event, const edm::EventSet
 	  t.lep_tuneP_qOverPt[w] = -999;
 	}
 	else {
+	  t.lep_tuneP_q[w] = mu->tunePMuonBestTrack()->charge();
 	  t.lep_tuneP_p[w] = mu->tunePMuonBestTrack()->p();
 	  t.lep_tuneP_pt[w] = mu->tunePMuonBestTrack()->pt();
 	  t.lep_tuneP_pt_err[w] = mu->tunePMuonBestTrack()->ptError();
