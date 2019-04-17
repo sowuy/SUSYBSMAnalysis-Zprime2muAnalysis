@@ -1,4 +1,5 @@
 #include "TH1F.h"
+#include "TProfile.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
@@ -38,6 +39,8 @@ class EfficiencyFromMCMini : public edm::EDAnalyzer {
   const double acceptance_max_eta_2;
   const double acceptance_min_pt;
   HardInteraction hardInteraction;
+  double nnpdf30_scaling(const double&);
+  const bool scale_to_nnpdf30;
 
   //-- e.g. { {L3s passing Mu50}, {L3s passing OldMu100}, {L3s passing TkMu100} }
   // or 
@@ -45,6 +48,7 @@ class EfficiencyFromMCMini : public edm::EDAnalyzer {
   std::vector<pat::TriggerObjectStandAloneCollection> vec_L3_muons;
 
   TH1F *GenWeight;
+  TProfile *NNPDF30Weight;
 
   typedef std::pair<TH1F*, TH1F*> effhistos;
 
@@ -113,6 +117,7 @@ EfficiencyFromMCMini::EfficiencyFromMCMini(const edm::ParameterSet& cfg)
     acceptance_max_eta_2(cfg.getParameter<double>("acceptance_max_eta_2")),
     acceptance_min_pt(cfg.getParameter<double>("acceptance_min_pt")),
     hardInteraction(cfg.getParameter<edm::ParameterSet>("hardInteraction")),
+    scale_to_nnpdf30(cfg.getParameter<bool>("scale_to_nnpdf30")),
     _useMadgraphWeight(cfg.getParameter<bool>("useMadgraphWeight")),
     _theWeight(1.)
 {
@@ -128,6 +133,7 @@ EfficiencyFromMCMini::EfficiencyFromMCMini(const edm::ParameterSet& cfg)
   TH1::SetDefaultSumw2(true);
 
   GenWeight = fs->make<TH1F>("GenWeight", "weight per event", 4, -2,2);
+  NNPDF30Weight = fs->make<TProfile>("NNPDF30Weight","Scaling from NNPDF31 to NNDPDF30",nbins,min_mass,max_mass);
 
   accnopt           = make_eff_pair("AccNoPt", "Acceptance (no p_{T} cut) vs. mass");
   acceptance        = make_eff_pair("Acceptance", "Acceptance vs. mass");
@@ -192,6 +198,9 @@ void EfficiencyFromMCMini::analyze(const edm::Event& event, const edm::EventSetu
 
   const double m = use_resonance_mass ? hardInteraction.resonance->mass() : hardInteraction.dilepton().mass();
   const double m_denom = use_resonance_mass_denom ? hardInteraction.resonance->mass() : hardInteraction.dilepton().mass();
+
+  _theWeight = scale_to_nnpdf30 ? _theWeight * nnpdf30_scaling(m) : _theWeight;
+  NNPDF30Weight->Fill(m,nnpdf30_scaling(m));
   
   accnopt.second->Fill( m_denom, _theWeight );
   accnopt_bb.second->Fill( m_denom, _theWeight );
@@ -346,6 +355,20 @@ void EfficiencyFromMCMini::analyze(const edm::Event& event, const edm::EventSetu
   }
 
 }
+
+double EfficiencyFromMCMini::nnpdf30_scaling(const double &m) {
+    double a = 0.9292;
+    double b = 5.486E-5;
+    double c = 6.572E-9;
+    double d = -1.142E-11;
+    double e = 4.876E-15;
+    double f = -4.117E-19;
+
+    if (m>6000) return 1.0;
+    
+    return a + b*m + c*m*m + d*m*m*m + e*m*m*m*m + f*m*m*m*m*m;
+}
+
 
 
 

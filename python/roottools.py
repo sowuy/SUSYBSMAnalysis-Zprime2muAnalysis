@@ -493,7 +493,7 @@ class plot_saver:
             self.c.SetLogy(0)
         if C:
             C = os.path.join(self.plot_dir, n + '.C')
-            self.c.SaveAs(C_fn)
+            self.c.SaveAs(C)
         if C_log:
             self.c.SetLogy(1)
             C_log = os.path.join(self.plot_dir, n + '_log.C')
@@ -576,10 +576,12 @@ def set_zp2mu_style(date_pages=False):
     ROOT.gStyle.SetStatW(0.25)
     ROOT.gStyle.SetStatFormat('6.4g')
     ROOT.gStyle.SetPalette(1)
-    #ROOT.gStyle.SetTitleFont(52, 'XY')
-    #ROOT.gStyle.SetLabelFont(52, 'XY')
-    #ROOT.gStyle.SetStatFont(52)
+    ROOT.gStyle.SetTitleFont(42, 'XYZ')
+    ROOT.gStyle.SetLabelFont(42, 'XYZ')
+    ROOT.gStyle.SetStatFont(42)
+    ROOT.gStyle.SetLegendFont(42)                # helvetica normal
     ROOT.gErrorIgnoreLevel = 1001 # Suppress TCanvas::SaveAs messages.
+    ROOT.TGaxis.SetExponentOffset(-0.06, 0.02, "y")
 
 def setTDRStyle():
 #- From PhysicsTools/Utilities/macros/setTDRStyle.C
@@ -656,7 +658,7 @@ def setTDRStyle():
     # tdrStyle.SetStatY(Float_t y = 0)
 
 # Margins:
-    tdrStyle.SetPadTopMargin(0.05)
+    tdrStyle.SetPadTopMargin(0.1)
     tdrStyle.SetPadBottomMargin(0.13)
     tdrStyle.SetPadLeftMargin(0.13)
     tdrStyle.SetPadRightMargin(0.05)

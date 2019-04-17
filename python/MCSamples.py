@@ -76,6 +76,21 @@ samples = [
     sample('dy4500to6000', 'DY4500to6000', '/ZToMuMu_NNPDF31_13TeV-powheg_M_4500_6000/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM', 100000, 70, 1., 2.787e-07, k_factor=1., cross_section_uncert=1.702e-10, frac_neg_weight=0.00349),
     sample('dy6000toInf', 'DY6000toInf', '/ZToMuMu_NNPDF31_13TeV-powheg_M_6000_Inf/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM', 100000, 70, 1., 9.569e-09, k_factor=1., cross_section_uncert=8.431e-12, frac_neg_weight=0.00933),
 
+    # XS taken from 2017 samples w/o "PSweights"
+    #sample('dyJetsToLL_ht70to100','/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM',10019684,70,1.,XXXX),
+    sample('dyJetsToLL_ht100to200_v2','DYJetsToLL_HT-100to200','/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',11530510,70,1.,174.0),
+    sample('dyJetsToLL_ht100to200_v1','DYJetsToLL_HT-100to200','/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM',6353263,70,1.,174.0), # in production
+    sample('dyJetsToLL_ht200to400','DYJetsToLL_HT-200to400','/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',11225887,70,1.,53.27),
+    sample('dyJetsToLL_ht400to600_ext2v3','DYJetsToLL_HT-400to600','/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext2-v3/MINIAODSIM',9358053,70,1.,7.79),
+    sample('dyJetsToLL_ht400to600_v7','DYJetsToLL_HT-400to600','/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v7/MINIAODSIM',9697098,70,1.,7.79),
+    sample('dyJetsToLL_ht400to600_v4','DYJetsToLL_HT-400to600','/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v4/MINIAODSIM',7718938,70,1.,7.79),
+    sample('dyJetsToLL_ht400to600_v3','DYJetsToLL_HT-400to600','/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM',9840466,70,1.,7.79),
+    sample('dyJetsToLL_ht400to600_v2','DYJetsToLL_HT-400to600','/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',9643184,70,1.,7.79),
+    sample('dyJetsToLL_ht600to800','DYJetsToLL_HT-600to800','/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',8862104,70,1.,1.882),
+    sample('dyJetsToLL_ht800to1200','DYJetsToLL_HT-800to1200','/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',3138129,70,1.,0.8729),
+    sample('dyJetsToLL_ht1200to2500','DYJetsToLL_HT-1200to2500','/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',536416,70,1.,0.2079), # in production
+    sample('dyJetsToLL_ht2500toInf','DYJetsToLL_HT-2500toInf','/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM',427051,70,1.,0.003765),
+
     # Diboson
     sample('WZ', 'WZ', '/WZ_TuneCP5_13TeV-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v3/MINIAODSIM', 3885000, 98, 1., 27.6, k_factor=1., cross_section_uncert=0.04),
     #sample('WZ', 'WZ', '/WZ_TuneCP5_13TeV-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM', XXXX, 98, 1., 27.6, k_factor=1., cross_section_uncert=0.04), # in production
@@ -127,7 +142,7 @@ samples = [
 
     # DYJetsToLL - in the past we've used amcatnloFXFX but why?
     #sample('dyInclusive50_amcatnlo', 'DYInclusive50', '/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM', 997561, 209 , 1., 6529.0, k_factor=1., is_madgraph=True, cross_section_uncert=28.29, frac_neg_weight=0.1624),  
- 	#sample('dyInclusive50_madgraph', 'DYInclusive50', '/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM', 100194597, 209 , 1., 5343.0, k_factor=1., is_madgraph=True, cross_section_uncert=12.64, frac_neg_weight=0.0004962), # NNLO XS is 6225.42 and has fractional uncertainty of 2% see 
+ 	sample('dyInclusive50_madgraph', 'DYInclusive50', '/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM', 100194597, 209 , 1., 5343.0, k_factor=1., is_madgraph=True, cross_section_uncert=12.64, frac_neg_weight=0.0004962), # NNLO XS is 6225.42 and has fractional uncertainty of 2% see 
     # https://indico.cern.ch/event/746829/contributions/3138541/attachments/1717905/2772129/Drell-Yan_jets_crosssection.pdf
 
     ]

@@ -23,7 +23,9 @@ HistosFromPAT_MiniAOD = cms.EDAnalyzer('Zprime2muHistosFromPAT',
                                use_bs_and_pv = cms.bool(True),
                                useMadgraphWeight = cms.bool(True),
                                usekFactor = cms.bool(False),
-			       hardInteraction = hardInteraction_MiniAOD,
+                               hardInteraction = hardInteraction_MiniAOD,
                                doElectrons = cms.bool(False),
+                               doSmear = cms.bool(False),
+                               doScaleUncert = cms.bool(False),
                                pu_weights = cms.vstring()
 )

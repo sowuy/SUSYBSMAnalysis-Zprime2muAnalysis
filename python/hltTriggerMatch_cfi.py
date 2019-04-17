@@ -34,7 +34,7 @@ trigger_match = 'userFloat("TriggerMatchPt") > %(trigger_pt_threshold)i ' % loca
 
 #overall_prescale = 1
 prescaled_trigger_pt_threshold = 27
-prescaled_offline_pt_threshold = 27
+prescaled_offline_pt_threshold = 30
 
 # http://fwyzard.web.cern.ch/fwyzard/hlt/2015/summary
 #Path HLT_Mu27: 2015
@@ -136,12 +136,16 @@ overall_prescale = 500
 prescaled_trigger_match = trigger_match.replace('Trigger', 'prescaledTrigger').replace('%i' % trigger_pt_threshold, '%i' % prescaled_trigger_pt_threshold)
 
 
+# To get filter paths
+# Search run summary on cmswbm.cern.ch with a run number containing the trigger path name
+# "TRIGGER_MODE" -> Search "MuXY" and click it
+
 # -- for updated plugins/Zprime2muLeptonProducer_miniAOD.cc
 # Mu50:     hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q::HLT
 # OldMu100: hltL3fL1sMu22Or25L1f0L2f10QL3Filtered100Q::HLT
 # TkMu100:  hltL3fL1sMu25f0TkFiltered100Q::HLT
 
-# Mu27:     hltL3fL1sMu22Or25L1f0L2f10QL3Filtered27Q::HLT
+# Mu27:     hltL3fL1sMu22Or25L1f0L2f10QL3Filtered27Q::HLT # <-- This one
 # Mu27      hltL3fL1sMu25L1f0L2f10QL3Filtered27Q::HLT (???)
 # TkMu27:   hltL3fL1sMu22Or25f0TkFiltered27Q::HLT
 
