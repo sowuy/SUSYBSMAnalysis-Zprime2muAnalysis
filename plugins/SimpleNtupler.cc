@@ -182,6 +182,7 @@ private:
     short lep_glb_rpcStationsWithValidHits[2];
     short lep_glb_innermostMuonStationWithValidHits[2];
     short lep_glb_outermostMuonStationWithValidHits[2];
+    short lep_TuneP_numberOfValidMuonHits[2];	
     short lep_numberOfMatches[2];
     short lep_numberOfMatchedStations[2];
     unsigned int lep_stationMask[2];
@@ -421,6 +422,7 @@ SimpleNtupler::SimpleNtupler(const edm::ParameterSet& cfg)
   tree->Branch("lep_glb_rpcStationsWithValidHits", t.lep_glb_rpcStationsWithValidHits, "lep_glb_rpcStationsWithValidHits[2]/S");
   tree->Branch("lep_glb_innermostMuonStationWithValidHits", t.lep_glb_innermostMuonStationWithValidHits, "lep_glb_innermostMuonStationWithValidHits[2]/S");
   tree->Branch("lep_glb_outermostMuonStationWithValidHits", t.lep_glb_outermostMuonStationWithValidHits, "lep_glb_outermostMuonStationWithValidHits[2]/S");
+  tree->Branch("lep_TuneP_numberOfValidMuonHits", t.lep_TuneP_numberOfValidMuonHits, "lep_TuneP_numberOfValidMuonHits[2]/S");
   tree->Branch("lep_numberOfMatches", t.lep_numberOfMatches, "lep_numberOfMatches[2]/S");
   tree->Branch("lep_numberOfMatchedStations", t.lep_numberOfMatchedStations, "lep_numberOfMatchedStations[2]/S");
   tree->Branch("lep_stationMask", t.lep_stationMask, "lep_stationMask[2]/I");
@@ -922,6 +924,7 @@ void SimpleNtupler::analyze(const edm::Event& event, const edm::EventSetup&) {
 	t.lep_glb_rpcStationsWithValidHits[w] = -999;
         t.lep_glb_innermostMuonStationWithValidHits[w] = -999;
         t.lep_glb_outermostMuonStationWithValidHits[w] = -999;
+	t.lep_TuneP_numberOfValidMuonHits[w] = -999;
 	t.lep_numberOfMatches[w] = -999;
 	t.lep_numberOfMatchedStations[w] = -999;
         t.lep_stationMask[w] = 999;
