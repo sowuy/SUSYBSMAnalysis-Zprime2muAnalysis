@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # customize CRAB request name here
-ex = 'chargeMisId_test'
+ex = 'chargeMisId_wPtCutOnly'
 
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 # 2017
@@ -204,12 +204,12 @@ config.General.workArea = 'crab'
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'histos_crab.py'   
 config.Data.inputDataset =  '%(ana_dataset)s'
-config.Data.inputDBS = 'global'
+config.Data.inputDBS = 'phys03'
 job_control
 config.Data.publication = False
 config.Data.outputDatasetTag = 'ana_datamc_%(name)s%(extra)s'
-config.Data.outLFNDirBase = '/store/user/'+getUsernameFromSiteDB()
-config.Site.storageSite = 'T2_CH_CERN'
+config.Data.outLFNDirBase = '/store/user/swuycken'
+config.Site.storageSite = 'T2_BE_UCL'
 '''
     
     just_testing = 'testing' in sys.argv
@@ -282,7 +282,7 @@ config.Data.unitsPerJob = %(neventsperjob)s
         for sample in samples:
             name = sample.name
             ana_dataset = sample.dataset
-            if 'dy800to1400' not in name: continue
+            if 'muonGun' not in name: continue
             print name
 
             new_py = open('submit_chargemisid_histos.py').read()

@@ -75,6 +75,7 @@ samples = [
     sample('dy3500to4500', 'DY3500to4500', '/ZToMuMu_NNPDF31_13TeV-powheg_M_3500_4500/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM', 100000, 70, 1., 3.191e-06, k_factor=1., cross_section_uncert=2.243e-09, frac_neg_weight=0.00101),
     sample('dy4500to6000', 'DY4500to6000', '/ZToMuMu_NNPDF31_13TeV-powheg_M_4500_6000/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM', 100000, 70, 1., 2.787e-07, k_factor=1., cross_section_uncert=1.702e-10, frac_neg_weight=0.00349),
     sample('dy6000toInf', 'DY6000toInf', '/ZToMuMu_NNPDF31_13TeV-powheg_M_6000_Inf/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v2/MINIAODSIM', 100000, 70, 1., 9.569e-09, k_factor=1., cross_section_uncert=8.431e-12, frac_neg_weight=0.00933),
+    sample('muonGun', 'MuonGun_PTOT-5-2500', '/MuonGun_PTOT-5-2500/calderon-SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2_MINIAODSIMoutput-a6b654af77fa2c5986bb260b8225f8a1/USER',100000, 70 , 1., 2000.0,  k_factor=1.),
 
     # XS taken from 2017 samples w/o "PSweights"
     #sample('dyJetsToLL_ht70to100','/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM',10019684,70,1.,XXXX),

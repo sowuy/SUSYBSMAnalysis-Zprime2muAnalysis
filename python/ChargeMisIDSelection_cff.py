@@ -40,18 +40,21 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.hltTriggerMatch_cfi import trigger_match,
 #Cut to add fo MC and data samples:
 #'abs(dB) < 0.2 && ' \
 # Loose cut applies to both muons
-loose_cut = 'isGlobalMuon && ' \
-            'isTrackerMuon && ' \
-            'abs(eta) < 2.4 && ' \
-            'globalTrack.hitPattern.trackerLayersWithMeasurement > 5 && ' \
-            'globalTrack.hitPattern.numberOfValidPixelHits >= 1 && ' \
-            '(globalTrack.hitPattern.numberOfValidMuonHits > 0 || tunePMuonBestTrack.hitPattern.numberOfValidMuonHits > 0 ) && ' \
-            '( numberOfMatchedStations > 1 || (numberOfMatchedStations == 1 && !(stationMask == 1 || stationMask == 16)) || (numberOfMatchedStations == 1 && (stationMask == 1 || stationMask == 16) && numberOfMatchedRPCLayers > 2))'
+#loose_cut = 'isGlobalMuon && ' \
+#            'isTrackerMuon && ' \
+#            'abs(eta) < 2.4 && ' \
+#            'globalTrack.hitPattern.trackerLayersWithMeasurement > 5 && ' \
+#            'globalTrack.hitPattern.numberOfValidPixelHits >= 1 && ' \
+#            '(globalTrack.hitPattern.numberOfValidMuonHits > 0 || tunePMuonBestTrack.hitPattern.numberOfValidMuonHits > 0 ) && ' \
+#            '( numberOfMatchedStations > 1 || (numberOfMatchedStations == 1 && !(stationMask == 1 || stationMask == 16)) || (numberOfMatchedStations == 1 && (stationMask == 1 || stationMask == 16) && numberOfMatchedRPCLayers > 2))'
+
+loose_cut = 'abs(eta)<2.4'
 
 #'isolationR03.sumPt / innerTrack.pt < 0.10 && ' \
 
 # tight cut applies to at least one of the two muons
-tight_cut = trigger_match + ' && pt > 100'
+#tight_cut = trigger_match + ' && pt > 100'
+tight_cut = 'pt > 100'
 
 allDimuons = cms.EDProducer('Zprime2muCombiner',
                             decay = cms.string('leptons:muons@+ leptons:muons@-'),
