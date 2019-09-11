@@ -1,36 +1,35 @@
 import sys,os
 import argparse
+import subprocess
 
 parser = argparse.ArgumentParser(description='Submit DIGI-RECO of muon gun samples with user-input energies')
-parser.add_argument('-mc','--mcSample',default='MuonGun_P-5-2500',type=str,help='Muon energy in GeV')
+parser.add_argument('-mc','--mcSample',default='MuonGun_P-100',type=str,help='Muon energy in GeV')
 parser.add_argument('-s','--submit',action='store_true',help='Submit to CRAB')
 parser.add_argument('-dr','--dryRun',action='store_true',help='Make CRAB cfg files but don\'t submit')
 parser.add_argument('-x','--extra',type=str,help='Extra name to append to crab request name')
 parser.add_argument('-a','--alignment',default='asymptotic',help='Alignment scenario startup or asymptotic')
 parser.add_argument('--no_ape',action='store_true',help='Remove APEs')
+
 args = parser.parse_args()
 
 # Change these according to the output of the GEN-SIM step
-if args.mcSample=='MuonGun_P-5-2500':
-    sample = '/MuonGun_GEN-SIM/cschnaib-MuonGun_P-5-2500_GEN-SIM-27518d7f2cd626862cfca1e9cd74de4f/USER'
-elif args.mcSample=='MuonGun_P-50':
-    sample = '/MuonGun_P-50/cschnaib-MuonGun_P-50_GEN-SIM-75036ba637c5dfa992704e548e933684/USER'
+    
+if args.mcSample=='MuonGun_P-50':
+    sample = '/MuonGun_P-50/swuycken-MuonGun_P-50_GEN-SIM-75036ba637c5dfa992704e548e933684/USER'
 elif args.mcSample=='MuonGun_P-100':
-    sample = '/MuonGun_P-100/cschnaib-MuonGun_P-100_GEN-SIM-172e789d34388f16d6486ddc174cf948/USER'
+    sample = '/MuonGun_P-100/swuycken-MuonGun_P-100_GEN-SIM-172e789d34388f16d6486ddc174cf948/USER'
 elif args.mcSample=='MuonGun_P-300':
-    sample = '/MuonGun_P-300/cschnaib-MuonGun_P-300_GEN-SIM-9e3ed6671f9a06cd30649ad843ca2780/USER'
+    sample = '/MuonGun_P-300/swuycken-MuonGun_P-300_GEN-SIM-9e3ed6671f9a06cd30649ad843ca2780/USER'
 elif args.mcSample=='MuonGun_P-500':
-    sample = '/MuonGun_P-500/cschnaib-MuonGun_P-500_GEN-SIM-cdcd84152118fe658f58c7f9866e6a76/USER'
+    sample = '/MuonGun_P-500/swuycken-MuonGun_P-500_GEN-SIM-cdcd84152118fe658f58c7f9866e6a76/USER'
 elif args.mcSample=='MuonGun_P-750':
-    sample = '/MuonGun_P-750/cschnaib-MuonGun_P-750_GEN-SIM-01f21b301833a2bf82b2511220d83b1e/USER'
+    sample = '/MuonGun_P-750/swuycken-MuonGun_P-750_GEN-SIM-01f21b301833a2bf82b2511220d83b1e/USER'
 elif args.mcSample=='MuonGun_P-1000':
-    sample = '/MuonGun_P-1000/cschnaib-MuonGun_P-1000_GEN-SIM-c18e2b5607fe29091b18c24090961be2/USER'
+    sample = '/MuonGun_P-1000/swuycken-MuonGun_P-1000_GEN-SIM-c18e2b5607fe29091b18c24090961be2/USER'
 elif args.mcSample=='MuonGun_P-1250':
-    sample = '/MuonGun_P-1250/cschnaib-MuonGun_P-1250_GEN-SIM-4eb532e0fa0266ad4613f9946a6b8831/USER'
+    sample = '/MuonGun_P-1250/swuycken-MuonGun_P-1250_GEN-SIM-4eb532e0fa0266ad4613f9946a6b8831/USER'
 elif args.mcSample=='MuonGun_P-1500':
-    sample = '/MuonGun_P-1500/cschnaib-MuonGun_P-1500_GEN-SIM-b2b7528fc0837f552b37a96a2e026ea2/USER'
-elif args.mcSample=='MuonGun_P-2000':
-    sample = '/MuonGun_P-2000/cschnaib-MuonGun_P-2000_GEN-SIM-eaa43b3a63dff069d95966cf6c61569c/USER'
+    sample = '/MuonGun_P-1500/swuycken-MuonGun_P-1500_GEN-SIM-b2b7528fc0837f552b37a96a2e026ea2/USER'
 elif args.mcSample=='MuonGun_P-2500':
     sample = '/MuonGun_P-2500/cschnaib-MuonGun_P-2500_GEN-SIM-85f827a27d633e29373f39c3c042685f/USER'
 elif args.mcSample=='MuonGun_P-3000':
@@ -131,9 +130,11 @@ config.Data.unitsPerJob = 1
 config.Data.inputDBS = 'phys03'
 config.Data.publication = True
 config.Data.outputDatasetTag = '{baseName}'
-config.Data.outLFNDirBase = '/store/user/'+getUsernameFromSiteDB()
-
-config.Site.storageSite = 'T2_CH_CERN'
+config.Data.outLFNDirBase = '/store/user/swuycken'
+config.Site.whitelist = ["T2_BE_UCL"]
+config.Data.ignoreLocality = True
+config.Site.storageSite = 'T2_BE_UCL'
+config.Site.ignoreGlobalBlacklist = True
 '''
 
 with open('reco_crab.py','w') as crabfile:
@@ -143,4 +144,4 @@ if args.submit:
     os.system('crab submit -c reco_crab.py')
 if not args.dryRun:
     os.system('rm {reco_cfg} reco_crab.py'.format(**locals()))
-os.system('rm *.pyc')
+#os.system('rm *.pyc')

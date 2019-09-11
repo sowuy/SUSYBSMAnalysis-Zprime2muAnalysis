@@ -23,7 +23,7 @@ else:
     PSETHACK = 'single mu E '+str(args.energy[0])
 
 
-baseName = 'MuonGun_P'
+baseName = 'muonGun_P'
 for e in args.energy:
     print e
     baseName += '-'+str(int(e))
@@ -57,9 +57,9 @@ config.Data.unitsPerJob = {NEVTS}
 config.Data.totalUnits = config.Data.unitsPerJob * {NJOBS}
 config.Data.publication = True
 config.Data.outputDatasetTag = '{outputDatasetTag}'
-config.Data.outLFNDirBase = '/store/user/'+getUsernameFromSiteDB()
-
-config.Site.storageSite = 'T2_CH_CERN'
+config.Data.outLFNDirBase = '/store/user/swuycken/MuonGun/step0'
+config.Site.blacklist=['T2_US_Florida']
+config.Site.storageSite = 'T2_BE_UCL'
 '''
 
 with open('gensim_crab.py','w') as crabfile:

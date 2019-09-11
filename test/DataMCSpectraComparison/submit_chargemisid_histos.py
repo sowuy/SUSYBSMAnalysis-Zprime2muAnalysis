@@ -17,9 +17,12 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import goodDataFilt
 process.source.fileNames =[
         #'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/90000/FCC3FBEB-FAFE-E811-8520-0CC47AF9B32A.root',
         #'/store/mc/RunIISummer16MiniAODv2/ZToMuMu_NNPDF30_13TeV-powheg_M_6000_Inf/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/408086F7-57D1-E611-97A5-90B11C2CA412.root'
-	'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/70000/5CA2C969-F142-E811-9793-0025905A60F4.root'
+	#'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/70000/5CA2C969-F142-E811-9793-0025905A60F4.root'
+	#'/store/group/phys_higgs/cmshww/calderon/monoH-2017/muons/MuonGun_PTOT-5-2500/SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2/190716_133946/0000/step3_inMINIAODSIM_9.root'
+	'/store/group/phys_higgs/cmshww/calderon/monoH-2017/muons/MuonGun_PTOT-5-2500/SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2/190716_133946/0000/step3_inMINIAODSIM_8.root'
            ]
-process.maxEvents.input = -1
+#process.maxEvents.input = -1
+process.maxEvents.input = 1000
 
 # Legacy ReReco GT for 2017 
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2017Analysis#Conditions
@@ -277,7 +280,7 @@ config.Data.unitsPerJob = %(neventsperjob)s
         for sample in samples:
             name = sample.name
             ana_dataset = sample.dataset
-            if 'dy1400to2300' not in name: continue
+            if 'MuonGun' not in name: continue
             print name
 
             new_py = open('submit_chargemisid_histos.py').read()

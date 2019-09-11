@@ -82,6 +82,7 @@ samples = [
     sample('dy3500to4500_MUOTrkFix_2017','DY3500to4500', '/ZToMuMu_NNPDF31_13TeV-powheg_M_3500_4500/RunIIFall17MiniAODv2-MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/MINIAODSIM', 100000, 70 , 1., 3.191E-6,    k_factor=1.),
     sample('dy4500to6000_MUOTrkFix_2017','DY4500to6000', '/ZToMuMu_NNPDF31_13TeV-powheg_M_4500_6000/RunIIFall17MiniAODv2-MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/MINIAODSIM', 100000, 70 , 1., 2.787E-7,    k_factor=1.),
     sample('dy6000toInf_MUOTrkFix_2017','DY6000toInf', '/ZToMuMu_NNPDF31_13TeV-powheg_M_6000_Inf/RunIIFall17MiniAODv2-MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/MINIAODSIM', 100000, 70 , 1., 9.569E-9,    k_factor=1.),
+    sample('MuonGun_PTOT-5-2500','MuonGun','/MuonGun_PTOT-5-2500/calderon-SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2_MINIAODSIMoutput-a6b654af77fa2c5986bb260b8225f8a1/USER',100000 , 70 , 1.,2000,k_factor=1.),
 
      # ttbar
 	 #sample('ttbar','ttbar','/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',66979742,4,1.,72.1,k_factor=1.),
