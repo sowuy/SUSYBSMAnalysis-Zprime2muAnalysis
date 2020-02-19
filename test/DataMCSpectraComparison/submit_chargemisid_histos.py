@@ -2,7 +2,7 @@
 
 
 #customize CRAB request name here
-ex = 'chargeMisId_test'
+ex = 'chargeMisId_bkgStudy'
 
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVAnalysisSummaryTable
 # 2017
@@ -15,14 +15,18 @@ from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cfg import process
 from SUSYBSMAnalysis.Zprime2muAnalysis.Zprime2muAnalysis_cff import goodDataFiltersMiniAOD
 
 process.source.fileNames =[
-        #'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/90000/FCC3FBEB-FAFE-E811-8520-0CC47AF9B32A.root',
+        #'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/90000/FCC3FBEB-FAFE-E811-8520-0CC47AF9B32A.root'
         #'/store/mc/RunIISummer16MiniAODv2/ZToMuMu_NNPDF30_13TeV-powheg_M_6000_Inf/MINIAODSIM/PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v6-v1/60000/408086F7-57D1-E611-97A5-90B11C2CA412.root'
 	#'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/70000/5CA2C969-F142-E811-9793-0025905A60F4.root'
 	#'/store/group/phys_higgs/cmshww/calderon/monoH-2017/muons/MuonGun_PTOT-5-2500/SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2/190716_133946/0000/step3_inMINIAODSIM_9.root'
-	'/store/group/phys_higgs/cmshww/calderon/monoH-2017/muons/MuonGun_PTOT-5-2500/SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2/190716_133946/0000/step3_inMINIAODSIM_8.root'
+	#'/store/group/phys_higgs/cmshww/calderon/monoH-2017/muons/MuonGun_PTOT-5-2500/SingleMuFlatP5To2500_MuonTrackFix_pythia8_cfi_step2/190716_133946/0000/step3_inMINIAODSIM_8.root'
+	#'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/90000/FCC3FBEB-FAFE-E811-8520-0CC47AF9B32A.root'
+	#'/store/mc/RunIIFall17MiniAODv2/ZToMuMu_NNPDF31_13TeV-powheg_M_800_1400/MINIAODSIM/MUOTrackFix_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/90000/445B98A3-F9FE-E811-A8A5-0CC47A0091C6.root'
+	#'file:/afs/cern.ch/work/s/swuycken/private/CMSSW_9_4_2/src/SUSYBSMAnalysis/Zprime2muAnalysis/test/DataMCSpectraComparison/5454F8C1-B001-E911-A13D-842B2B7682C7.root'
+	'file:/afs/cern.ch/work/s/swuycken/private/CMSSW_9_4_2/src/SUSYBSMAnalysis/Zprime2muAnalysis/test/DataMCSpectraComparison/700F2FD2-8608-E911-ACF7-001E67A3EF48.root'
            ]
-#process.maxEvents.input = -1
-process.maxEvents.input = 1000
+process.maxEvents.input = -1
+#process.maxEvents.input = 1000
 
 # Legacy ReReco GT for 2017 
 # https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmV2017Analysis#Conditions
@@ -206,7 +210,7 @@ config.Data.inputDBS = 'global'
 job_control
 config.Data.publication = False
 config.Data.outputDatasetTag = 'ana_datamc_%(name)s%(extra)s'
-config.Data.outLFNDirBase = '/store/user/swuycken'
+config.Data.outLFNDirBase = '/store/user/swuycken/DY'
 config.Site.storageSite = 'T2_BE_UCL'
 '''
     
@@ -280,7 +284,7 @@ config.Data.unitsPerJob = %(neventsperjob)s
         for sample in samples:
             name = sample.name
             ana_dataset = sample.dataset
-            if 'MuonGun' not in name: continue
+            if 'dy4500to6000' not in name: continue
             print name
 
             new_py = open('submit_chargemisid_histos.py').read()

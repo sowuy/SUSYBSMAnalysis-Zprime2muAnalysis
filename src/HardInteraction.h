@@ -32,6 +32,8 @@ struct HardInteraction {
   // Return whether all the pointers are valid.
   bool IsValid() const;
   bool IsValidForRes() const;
+  bool IsValidForAll() const;
+  bool IsValidForNeutrinos() const;
 
   // Store pointers to all the particles from the genParticles collection.
   void Fill(const reco::GenParticleCollection& genParticles);
@@ -49,6 +51,11 @@ struct HardInteraction {
     if (lepPlus == 0 || lepMinus == 0)
       return reco::Particle::LorentzVector();
     return lepPlus->p4() + lepMinus->p4();
+  }
+  reco::Particle::LorentzVector dileptonAll() const {
+    if (lepPlusAll[0] == 0 || lepMinusAll[0] == 0)
+      return reco::Particle::LorentzVector();
+    return lepPlusAll[0]->p4() + lepMinusAll[0]->p4();
   }
 
   // The tag for the GenParticleCollection.
@@ -75,8 +82,16 @@ struct HardInteraction {
   const reco::Candidate* resonance;
   const reco::Candidate* lepPlus;
   const reco::Candidate* lepMinus;
+  std::vector <const reco::Candidate*> lepMinusAll;
+  std::vector <const reco::Candidate*> lepPlusAll;
   const reco::Candidate* lepPlusNoIB;
   const reco::Candidate* lepMinusNoIB;
+  const reco::Candidate* neutrino;
+  const reco::Candidate* antiNeutrino;
+
+  //Size of vector of candidates :
+  int sizeMinus;
+  int sizePlus;
 
   // Flag declaring whether we built the resonance ourselves, and
   // therefore own and should delete its pointer at destruction.
